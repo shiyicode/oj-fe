@@ -1,426 +1,329 @@
-import React, { PureComponent, Fragment } from 'react';
+import React, { PureComponent } from 'react';
 import { connect } from 'dva';
-import moment from 'moment';
-import {
-  Row,
-  Col,
-  Card,
-  Form,
-  Input,
-  Select,
-  Icon,
-  Button,
-  Dropdown,
-  Menu,
-  InputNumber,
-  DatePicker,
-  Modal,
-  message,
-  Badge,
-  Divider,
-} from 'antd';
-import StandardTable from 'components/StandardTable';
+import { Card, Pagination, Select, Alert, Tag } from 'antd';
+import StandardTable from '../../components/StandardTable';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
-
 import styles from './TableList.less';
+import PieGraph from './PieGraph';
+import UserTopList from './UserTopList';
 
-const FormItem = Form.Item;
 const { Option } = Select;
-const getValue = obj =>
-  Object.keys(obj)
-    .map(key => obj[key])
-    .join(',');
-const statusMap = ['default', 'processing', 'success', 'error'];
-const status = ['关闭', '运行中', '已上线', '异常'];
 
-const CreateForm = Form.create()(props => {
-  const { modalVisible, form, handleAdd, handleModalVisible } = props;
-  const okHandle = () => {
-    form.validateFields((err, fieldsValue) => {
-      if (err) return;
-      form.resetFields();
-      handleAdd(fieldsValue);
-    });
-  };
-  return (
-    <Modal
-      title="新建规则"
-      visible={modalVisible}
-      onOk={okHandle}
-      onCancel={() => handleModalVisible()}
-    >
-      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="描述">
-        {form.getFieldDecorator('desc', {
-          rules: [{ required: true, message: 'Please input some description...' }],
-        })(<Input placeholder="请输入" />)}
-      </FormItem>
-    </Modal>
-  );
-});
+function setOptions(arr) {
+  return arr.map(value => <Option value={value}>{value}</Option>);
+}
 
-@connect(({ rule, loading }) => ({
-  rule,
-  loading: loading.models.rule,
+const origin = ['官方', 'CodeVs', 'HDU'];
+const algorithm = [
+  '分治',
+  '贪心',
+  '字符串',
+  '动态规划',
+  '搜索',
+  '线性结构',
+  '链表',
+  '堆结构',
+  '树结构',
+  '图论',
+];
+const diff = ['简单', '中等', '困难', '极难'];
+
+@connect(state => ({
+  problemList: state.problemList,
 }))
-@Form.create()
-export default class TableList extends PureComponent {
-  state = {
-    modalVisible: false,
-    expandForm: false,
-    selectedRows: [],
-    formValues: {},
-  };
+class TableList extends PureComponent {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      originArray: [],
+      algorithmArray: [],
+      diffArray: [],
+    };
+
+    this.getProblemsBySearch = this.getProblemsBySearch.bind(this);
+    this.getOriginTag = this.getOriginTag.bind(this);
+    this.getAlgorithmTag = this.getAlgorithmTag.bind(this);
+    this.getDiffTag = this.getDiffTag.bind(this);
+    this.getProblemListByPage = this.getProblemListByPage.bind(this);
+  }
 
   componentDidMount() {
-    const { dispatch } = this.props;
-    dispatch({
-      type: 'rule/fetch',
-    });
-  }
-
-  handleStandardTableChange = (pagination, filtersArg, sorter) => {
-    const { dispatch } = this.props;
-    const { formValues } = this.state;
-
-    const filters = Object.keys(filtersArg).reduce((obj, key) => {
-      const newObj = { ...obj };
-      newObj[key] = getValue(filtersArg[key]);
-      return newObj;
-    }, {});
-
-    const params = {
-      currentPage: pagination.current,
-      pageSize: pagination.pageSize,
-      ...formValues,
-      ...filters,
-    };
-    if (sorter.field) {
-      params.sorter = `${sorter.field}_${sorter.order}`;
-    }
-
-    dispatch({
-      type: 'rule/fetch',
-      payload: params,
-    });
-  };
-
-  handleFormReset = () => {
-    const { form, dispatch } = this.props;
-    form.resetFields();
-    this.setState({
-      formValues: {},
-    });
-    dispatch({
-      type: 'rule/fetch',
-      payload: {},
-    });
-  };
-
-  toggleForm = () => {
-    this.setState({
-      expandForm: !this.state.expandForm,
-    });
-  };
-
-  handleMenuClick = e => {
-    const { dispatch } = this.props;
-    const { selectedRows } = this.state;
-
-    if (!selectedRows) return;
-
-    switch (e.key) {
-      case 'remove':
-        dispatch({
-          type: 'rule/remove',
-          payload: {
-            no: selectedRows.map(row => row.no).join(','),
-          },
-          callback: () => {
-            this.setState({
-              selectedRows: [],
-            });
-          },
-        });
-        break;
-      default:
-        break;
-    }
-  };
-
-  handleSelectRows = rows => {
-    this.setState({
-      selectedRows: rows,
-    });
-  };
-
-  handleSearch = e => {
-    e.preventDefault();
-
-    const { dispatch, form } = this.props;
-
-    form.validateFields((err, fieldsValue) => {
-      if (err) return;
-
-      const values = {
-        ...fieldsValue,
-        updatedAt: fieldsValue.updatedAt && fieldsValue.updatedAt.valueOf(),
-      };
-
-      this.setState({
-        formValues: values,
-      });
-
-      dispatch({
-        type: 'rule/fetch',
-        payload: values,
-      });
-    });
-  };
-
-  handleModalVisible = flag => {
-    this.setState({
-      modalVisible: !!flag,
-    });
-  };
-
-  handleAdd = fields => {
-    this.props.dispatch({
-      type: 'rule/add',
-      payload: {
-        description: fields.desc,
+    this.fetchProblemList({
+      url: 'problemList/fetch',
+      params: {
+        origin: this.state.originArray,
+        tag: this.state.algorithmArray,
+        diff: this.state.diffArray,
+        current_page: 1,
+        per_page: 10,
+        sort: 1,
+        is_asc: 1,
       },
     });
+  }
 
-    message.success('添加成功');
-    this.setState({
-      modalVisible: false,
+  // 根据题目name或id来查找题目
+  getProblemsBySearch(value) {
+    this.fetchProblemList({
+      url: 'problemList/fetch',
+      params: {
+        search: value,
+        requestPage: 1,
+      },
     });
-  };
-
-  renderSimpleForm() {
-    const { getFieldDecorator } = this.props.form;
-    return (
-      <Form onSubmit={this.handleSearch} layout="inline">
-        <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
-          <Col md={8} sm={24}>
-            <FormItem label="规则编号">
-              {getFieldDecorator('no')(<Input placeholder="请输入" />)}
-            </FormItem>
-          </Col>
-          <Col md={8} sm={24}>
-            <FormItem label="使用状态">
-              {getFieldDecorator('status')(
-                <Select placeholder="请选择" style={{ width: '100%' }}>
-                  <Option value="0">关闭</Option>
-                  <Option value="1">运行中</Option>
-                </Select>
-              )}
-            </FormItem>
-          </Col>
-          <Col md={8} sm={24}>
-            <span className={styles.submitButtons}>
-              <Button type="primary" htmlType="submit">
-                查询
-              </Button>
-              <Button style={{ marginLeft: 8 }} onClick={this.handleFormReset}>
-                重置
-              </Button>
-              <a style={{ marginLeft: 8 }} onClick={this.toggleForm}>
-                展开 <Icon type="down" />
-              </a>
-            </span>
-          </Col>
-        </Row>
-      </Form>
-    );
   }
 
-  renderAdvancedForm() {
-    const { getFieldDecorator } = this.props.form;
-    return (
-      <Form onSubmit={this.handleSearch} layout="inline">
-        <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
-          <Col md={8} sm={24}>
-            <FormItem label="规则编号">
-              {getFieldDecorator('no')(<Input placeholder="请输入" />)}
-            </FormItem>
-          </Col>
-          <Col md={8} sm={24}>
-            <FormItem label="使用状态">
-              {getFieldDecorator('status')(
-                <Select placeholder="请选择" style={{ width: '100%' }}>
-                  <Option value="0">关闭</Option>
-                  <Option value="1">运行中</Option>
-                </Select>
-              )}
-            </FormItem>
-          </Col>
-          <Col md={8} sm={24}>
-            <FormItem label="调用次数">
-              {getFieldDecorator('number')(<InputNumber style={{ width: '100%' }} />)}
-            </FormItem>
-          </Col>
-        </Row>
-        <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
-          <Col md={8} sm={24}>
-            <FormItem label="更新日期">
-              {getFieldDecorator('date')(
-                <DatePicker style={{ width: '100%' }} placeholder="请输入更新日期" />
-              )}
-            </FormItem>
-          </Col>
-          <Col md={8} sm={24}>
-            <FormItem label="使用状态">
-              {getFieldDecorator('status3')(
-                <Select placeholder="请选择" style={{ width: '100%' }}>
-                  <Option value="0">关闭</Option>
-                  <Option value="1">运行中</Option>
-                </Select>
-              )}
-            </FormItem>
-          </Col>
-          <Col md={8} sm={24}>
-            <FormItem label="使用状态">
-              {getFieldDecorator('status4')(
-                <Select placeholder="请选择" style={{ width: '100%' }}>
-                  <Option value="0">关闭</Option>
-                  <Option value="1">运行中</Option>
-                </Select>
-              )}
-            </FormItem>
-          </Col>
-        </Row>
-        <div style={{ overflow: 'hidden' }}>
-          <span style={{ float: 'right', marginBottom: 24 }}>
-            <Button type="primary" htmlType="submit">
-              查询
-            </Button>
-            <Button style={{ marginLeft: 8 }} onClick={this.handleFormReset}>
-              重置
-            </Button>
-            <a style={{ marginLeft: 8 }} onClick={this.toggleForm}>
-              收起 <Icon type="up" />
-            </a>
-          </span>
-        </div>
-      </Form>
-    );
+  // 根据标签获得题库数据
+  getProblemsByTags() {
+    this.fetchProblemList({
+      url: 'problemList/fetch',
+      params: {
+        origin: this.state.originArray,
+        tag: this.state.algorithmArray,
+        diff: this.state.diffArray,
+        current_page: 1,
+        per_page: 10,
+        sort: 1,
+        is_asc: 1,
+      },
+    });
   }
 
-  renderForm() {
-    return this.state.expandForm ? this.renderAdvancedForm() : this.renderSimpleForm();
+  getOriginTag(value) {
+    const { originArray } = this.state;
+    if (originArray.indexOf(value) === -1) {
+      originArray.push(value);
+      this.setState({
+        originArray,
+      });
+      this.getProblemsByTags();
+    }
+  }
+
+  getAlgorithmTag(value) {
+    const { algorithmArray } = this.state;
+    if (algorithmArray.indexOf(value) === -1) {
+      algorithmArray.push(value);
+      this.setState({
+        algorithmArray,
+      });
+      this.getProblemsByTags();
+    }
+  }
+
+  getDiffTag(value) {
+    const { diffArray } = this.state;
+    if (diffArray.indexOf(value) === -1) {
+      diffArray.push(value);
+      this.setState({
+        diffArray,
+      });
+      this.getProblemsByTags();
+    }
+  }
+
+  // 根据页码获得题库数据
+  getProblemListByPage(pageNumber) {
+    this.fetchProblemList({
+      url: 'problemList/fetch',
+      params: {
+        current_pag: pageNumber,
+        per_page: 10,
+        origin: this.state.originArray,
+        tag: this.state.algorithmArray,
+        diff: this.state.diffArray,
+        sort: 1,
+        is_asc: 1,
+      },
+    });
+  }
+
+  fetchProblemList(options) {
+    const { dispatch } = this.props;
+    dispatch({
+      type: options.url,
+      payload: options.params,
+    });
+  }
+
+  deleteOriginTag(index) {
+    const { originArray } = this.state;
+    originArray[index] = '';
+    this.setState({ originArray });
+    // originArray.splice(index, 1);
+    this.fetchProblemList({
+      url: 'problemList/fetch',
+      params: {
+        origin: originArray,
+        tag: this.state.algorithmArray,
+        diff: this.state.diffArray,
+        current_page: 1,
+        per_page: 10,
+        sort: 1,
+        is_asc: 1,
+      },
+    });
+    this.setState({ originArray });
+  }
+
+  deleteAlgorithmTag(index) {
+    const { algorithmArray } = this.state;
+    algorithmArray[index] = '';
+    this.setState({ algorithmArray });
+    // algorithmArray.splice(index, 1);
+    this.fetchProblemList({
+      url: 'problemList/fetch',
+      params: {
+        origin: this.state.originArray,
+        tag: algorithmArray,
+        diff: this.state.diffArray,
+        current_page: 1,
+        per_page: 10,
+        sort: 1,
+        is_asc: 1,
+      },
+    });
+  }
+
+  deleteDiffTag(index) {
+    const { diffArray } = this.state;
+    diffArray[index] = '';
+    this.setState({ diffArray });
+    // diffArray.splice(index, 1);
+    this.fetchProblemList({
+      url: 'problemList/fetch',
+      params: {
+        origin: this.state.originArray,
+        tag: this.state.algorithmArray,
+        diff: diffArray,
+        current_page: 1,
+        per_page: 10,
+        sort: 1,
+        is_asc: 1,
+      },
+    });
   }
 
   render() {
-    const { rule: { data }, loading } = this.props;
-    const { selectedRows, modalVisible } = this.state;
-
-    const columns = [
-      {
-        title: '规则编号',
-        dataIndex: 'no',
-      },
-      {
-        title: '描述',
-        dataIndex: 'description',
-      },
-      {
-        title: '服务调用次数',
-        dataIndex: 'callNo',
-        sorter: true,
-        align: 'right',
-        render: val => `${val} 万`,
-        // mark to display a total number
-        needTotal: true,
-      },
-      {
-        title: '状态',
-        dataIndex: 'status',
-        filters: [
-          {
-            text: status[0],
-            value: 0,
-          },
-          {
-            text: status[1],
-            value: 1,
-          },
-          {
-            text: status[2],
-            value: 2,
-          },
-          {
-            text: status[3],
-            value: 3,
-          },
-        ],
-        onFilter: (value, record) => record.status.toString() === value,
-        render(val) {
-          return <Badge status={statusMap[val]} text={status[val]} />;
-        },
-      },
-      {
-        title: '更新时间',
-        dataIndex: 'updatedAt',
-        sorter: true,
-        render: val => <span>{moment(val).format('YYYY-MM-DD HH:mm:ss')}</span>,
-      },
-      {
-        title: '操作',
-        render: () => (
-          <Fragment>
-            <a href="">配置</a>
-            <Divider type="vertical" />
-            <a href="">订阅警报</a>
-          </Fragment>
-        ),
-      },
-    ];
-
-    const menu = (
-      <Menu onClick={this.handleMenuClick} selectedKeys={[]}>
-        <Menu.Item key="remove">删除</Menu.Item>
-        <Menu.Item key="approval">批量审批</Menu.Item>
-      </Menu>
-    );
-
-    const parentMethods = {
-      handleAdd: this.handleAdd,
-      handleModalVisible: this.handleModalVisible,
-    };
-
+    const {
+      problemList: { loading, error, list, pagination, progress, rankList, collection },
+    } = this.props;
+    const { originArray, algorithmArray, diffArray } = this.state;
     return (
-      <PageHeaderLayout title="查询表格">
+      <PageHeaderLayout title="题库">
         <Card bordered={false}>
-          <div className={styles.tableList}>
-            <div className={styles.tableListForm}>{this.renderForm()}</div>
-            <div className={styles.tableListOperator}>
-              <Button icon="plus" type="primary" onClick={() => this.handleModalVisible(true)}>
-                新建
-              </Button>
-              {selectedRows.length > 0 && (
-                <span>
-                  <Button>批量操作</Button>
-                  <Dropdown overlay={menu}>
-                    <Button>
-                      更多操作 <Icon type="down" />
-                    </Button>
-                  </Dropdown>
-                </span>
-              )}
+          <div className={styles['problem-container']}>
+            <div className={styles['problem-list']}>
+              <div style={{ marginBottom: 10 }}>
+                <Select value="按题目来源筛选" style={{ width: 150 }} onChange={this.getOriginTag}>
+                  {setOptions(origin)}
+                </Select>{' '}
+                &nbsp;&nbsp;
+                <Select value="按算法源筛选" style={{ width: 150 }} onChange={this.getAlgorithmTag}>
+                  {setOptions(algorithm)}
+                </Select>{' '}
+                &nbsp;&nbsp;
+                <Select value="按难度筛选" style={{ width: 150 }} onChange={this.getDiffTag}>
+                  {setOptions(diff)}
+                </Select>
+                &nbsp;&nbsp;
+                {originArray &&
+                  originArray.length > 0 && (
+                    <span>
+                      {originArray.map((item, index) => {
+                        return (
+                          <Tag
+                            closable
+                            onClose={this.deleteOriginTag.bind(this, index)}
+                            color="#2db7f5"
+                          >
+                            {item}
+                          </Tag>
+                        );
+                      })}
+                    </span>
+                  )}&nbsp;&nbsp;&nbsp;&nbsp;
+                {algorithmArray &&
+                  algorithmArray.length > 0 && (
+                    <span>
+                      {algorithmArray.map((item, index) => {
+                        return (
+                          <Tag
+                            closable
+                            onClose={this.deleteAlgorithmTag.bind(this, index)}
+                            color="#2db7f5"
+                          >
+                            {item}
+                          </Tag>
+                        );
+                      })}
+                    </span>
+                  )}
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                {diffArray &&
+                  diffArray.length > 0 && (
+                    <span>
+                      {diffArray.map((item, index) => {
+                        return (
+                          <Tag
+                            closable
+                            onClose={this.deleteDiffTag.bind(this, index)}
+                            color="#2db7f5"
+                          >
+                            {item}
+                          </Tag>
+                        );
+                      })}
+                    </span>
+                  )}
+              </div>
+              <div className={styles.tableList}>
+                {
+                  <StandardTable
+                    loading={loading}
+                    data={list}
+                    collection={collection}
+                    dispatch={this.props.dispatch}
+                  />
+                }
+                {pagination &&
+                  pagination.total > 0 && (
+                    <Pagination
+                      defaultCurrent={1}
+                      total={pagination.total}
+                      onChange={this.getProblemListByPage}
+                      style={{ float: 'right', marginTop: '20px' }}
+                    />
+                  )}
+              </div>
             </div>
-            <StandardTable
-              selectedRows={selectedRows}
-              loading={loading}
-              data={data}
-              columns={columns}
-              onSelectRow={this.handleSelectRows}
-              onChange={this.handleStandardTableChange}
-            />
+            <div className={styles['problem-other']}>
+              <div className={styles.pieGraph}>
+                <h3 className={styles['title-h3']}>当前进度</h3>
+                <PieGraph
+                  dispatch={this.props.dispatch}
+                  progress={progress}
+                  loading={loading}
+                  error={error}
+                />
+              </div>
+              <div className={styles.avatorList}>
+                <h3 className={styles['title-h3']}>我的排名</h3>
+                <UserTopList
+                  dispatch={this.props.dispatch}
+                  rankList={rankList}
+                  loading={loading}
+                  error={error}
+                />
+              </div>
+            </div>
           </div>
+          {error && <Alert style={{ marginBottom: 24 }} message={error} type="error" showIcon />}
         </Card>
-        <CreateForm {...parentMethods} modalVisible={modalVisible} />
       </PageHeaderLayout>
     );
   }
 }
+
+export default TableList;

@@ -1,116 +1,184 @@
-import React, { PureComponent, Fragment } from 'react';
-import { Table, Alert } from 'antd';
+import React, { PureComponent } from 'react';
+import { Link, routerRedux } from 'dva/router';
+import { Table, Badge, Progress, Icon, notification } from 'antd';
 import styles from './index.less';
 
-function initTotalList(columns) {
-  const totalList = [];
-  columns.forEach(column => {
-    if (column.needTotal) {
-      totalList.push({ ...column, total: 0 });
-    }
-  });
-  return totalList;
-}
+const statusMap = ['default', 'processing', 'success', 'error'];
+const status = ['简单', '中等', '困难', '极难'];
+// const colors = ['', 'green', 'orange', 'pink', 'blue'];
+
+let count = 0;
+
+let target = {};
+
+let flag = ''; // 收藏和取消收藏标志
 
 class StandardTable extends PureComponent {
-  constructor(props) {
-    super(props);
-    const { columns } = props;
-    const needTotalList = initTotalList(columns);
-
-    this.state = {
-      selectedRowKeys: [],
-      needTotalList,
-    };
-  }
-
   componentWillReceiveProps(nextProps) {
-    // clean state
-    if (nextProps.selectedRows.length === 0) {
-      const needTotalList = initTotalList(nextProps.columns);
-      this.setState({
-        selectedRowKeys: [],
-        needTotalList,
-      });
+    if (nextProps.collection && nextProps.collection !== {}) {
+      if (count === 0) {
+        const { isSuccess } = nextProps.collection; // 失败和成功标志
+        let collectionInfo = '';
+        if (isSuccess) {
+          if (flag === 'set') {
+            collectionInfo = '收藏成功';
+          } else {
+            collectionInfo = '取消收藏成功';
+          }
+        } else if (flag === 'cancel') {
+          collectionInfo = '取消收藏失败';
+        } else {
+          collectionInfo = '收藏失败';
+        }
+        notification.success({
+          message: '收藏提示',
+          description: collectionInfo,
+          icon: <Icon type="smile-circle" style={{ color: '#108ee9' }} />,
+        });
+        if (isSuccess && flag === 'set') target.style.color = 'orange';
+        if (isSuccess && flag === 'cancel') {
+          target.style.color = '';
+        }
+      }
+      count++;
     }
   }
 
-  handleRowSelectChange = (selectedRowKeys, selectedRows) => {
-    let needTotalList = [...this.state.needTotalList];
-    needTotalList = needTotalList.map(item => {
-      return {
-        ...item,
-        total: selectedRows.reduce((sum, val) => {
-          return sum + parseFloat(val[item.dataIndex], 10);
-        }, 0),
-      };
-    });
-
-    if (this.props.onSelectRow) {
-      this.props.onSelectRow(selectedRows);
+  collection(e, problemId) {
+    const { dispatch } = this.props;
+    if (sessionStorage.getItem('userId')) {
+      target = e.target;
+      count = 0;
+      if (target.style.color === 'orange') {
+        flag = 'cancel';
+      } else {
+        flag = 'set';
+      }
+      dispatch({
+        type: 'problemList/collection',
+        payload: {
+          problem_id: problemId,
+          flag,
+        },
+      });
+    } else {
+      dispatch(routerRedux.push('/user/login'));
     }
+  }
 
-    this.setState({ selectedRowKeys, needTotalList });
-  };
-
-  handleTableChange = (pagination, filters, sorter) => {
-    this.props.onChange(pagination, filters, sorter);
-  };
-
-  cleanSelectedKeys = () => {
-    this.handleRowSelectChange([], []);
-  };
+  // 渲染对应的收藏按钮
+  renderStar(isCollect) {
+    if (isCollect === true) {
+      return <Icon type="star" style={{ color: 'orange' }} />;
+    } else {
+      return <Icon type="star" />;
+    }
+  }
 
   render() {
-    const { selectedRowKeys, needTotalList } = this.state;
-    const { data: { list, pagination }, loading, columns, rowKey } = this.props;
+    const columns = [
+      {
+        key: 'problemId',
+        title: '题目编号',
+        dataIndex: 'problemId',
+        render: val => {
+          if (val.status === 1) {
+            return (
+              <span>
+                <Icon type="smile-o" style={{ color: '#4EF037', fontWeight: 'bold' }} />&nbsp;&nbsp;{
+                  val.num
+                }
+              </span>
+            );
+          } else if (val.status === 2) {
+            return (
+              <span>
+                <Icon type="meh-o" style={{ color: '#FD2E2E', fontWeight: 'bold' }} />&nbsp;&nbsp;{
+                  val.num
+                }
+              </span>
+            );
+          } else {
+            return (
+              <span>
+                <span style={{ display: 'inline-block', width: 14, height: 14 }} />&nbsp;&nbsp;{
+                  val.num
+                }
+              </span>
+            );
+          }
+        },
+        sorter: (a, b) => a.problemId.num - b.problemId.num,
+      },
+      {
+        key: 'problemName',
+        title: '题目名称',
+        dataIndex: 'problemName',
+        render: val => {
+          if (val.name) {
+            return (
+              <div>
+                <Link to={`/problem/${val.id}`}>{val.name}</Link>&nbsp;&nbsp;
+                <span
+                  onClick={e => {
+                    this.collection(e, val.id);
+                  }}
+                  id={`collect-${val.id}`}
+                  style={{ display: 'none' }}
+                >
+                  {this.renderStar(val.isCollect)}
+                </span>
+              </div>
+            );
+          }
+        },
+        sorter: (a, b) => a.problemName - b.problemName,
+      },
+      {
+        key: 'problemDiff',
+        title: '难度等级 ',
+        dataIndex: 'problemDiff',
+        render(val) {
+          return <Badge status={statusMap[val]} text={status[val]} />;
+        },
+        sorter: (a, b) => a.problemDiff - b.problemDiff,
+      },
+      {
+        key: 'problemProgress',
+        title: '通过率',
+        dataIndex: 'problemProgress',
+        render: val => <Progress percent={val} />,
+        sorter: (a, b) => a.problemProgress - b.problemProgress,
+      },
+    ];
 
-    const paginationProps = {
-      showSizeChanger: true,
-      showQuickJumper: true,
-      ...pagination,
-    };
-
-    const rowSelection = {
-      selectedRowKeys,
-      onChange: this.handleRowSelectChange,
-      getCheckboxProps: record => ({
-        disabled: record.disabled,
-      }),
-    };
+    const { data, loading } = this.props;
 
     return (
       <div className={styles.standardTable}>
-        <div className={styles.tableAlert}>
-          <Alert
-            message={
-              <Fragment>
-                已选择 <a style={{ fontWeight: 600 }}>{selectedRowKeys.length}</a> 项&nbsp;&nbsp;
-                {needTotalList.map(item => (
-                  <span style={{ marginLeft: 8 }} key={item.dataIndex}>
-                    {item.title}总计&nbsp;
-                    <span style={{ fontWeight: 600 }}>
-                      {item.render ? item.render(item.total) : item.total}
-                    </span>
-                  </span>
-                ))}
-                <a onClick={this.cleanSelectedKeys} style={{ marginLeft: 24 }}>
-                  清空
-                </a>
-              </Fragment>
-            }
-            type="info"
-            showIcon
-          />
-        </div>
         <Table
           loading={loading}
-          rowKey={rowKey || 'key'}
-          rowSelection={rowSelection}
-          dataSource={list}
+          dataSource={data}
           columns={columns}
-          pagination={paginationProps}
-          onChange={this.handleTableChange}
+          pagination={false}
+          onRow={record => {
+            return {
+              onMouseEnter: () => {
+                // 鼠标移入行，显示收藏按钮
+                const elem = document.getElementById(`collect-${record.problemName.id}`);
+                if (elem) {
+                  elem.style.display = '';
+                }
+              },
+              onMouseLeave: () => {
+                // 鼠标移出行，不显示收藏按钮
+                const elem = document.getElementById(`collect-${record.problemName.id}`);
+                if (elem) {
+                  elem.style.display = 'none';
+                }
+              },
+            };
+          }}
         />
       </div>
     );

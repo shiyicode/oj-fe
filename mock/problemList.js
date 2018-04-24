@@ -1,0 +1,105 @@
+// mock tableListDataSource
+const tableListDataSource = [];
+for (let i = 0; i < 10; i += 1) {
+  tableListDataSource.push({
+    key: `000${i}}`,
+    id: i,
+    status: Math.round(Math.random() * 2),
+    title: '迎春舞会之三人组舞',
+    problemDiff: Math.round(Math.random() * 3),
+    problemValue: Math.ceil(Math.random() * 4),
+    problemProgress: Math.ceil(Math.random() * 100),
+  });
+}
+
+export function getProblemList(req, res) {
+  const result = {
+    code: 0,
+    data: {
+      list: tableListDataSource,
+      current_page: 1,
+      total: 100,
+    },
+  };
+  if (res && res.json) {
+    res.json(result);
+  } else {
+    return result;
+  }
+}
+
+export function getProblemProgress(req, res) {
+  const result = {
+    code: 0,
+    data: {
+      done_num: 500,
+      doing_num: 100,
+      undo_num: 20,
+    },
+  };
+  if (res && res.json) {
+    res.json(result);
+  } else {
+    return result;
+  }
+}
+
+export function getRankList(req, res) {
+  const userList = [];
+  for (let i = 0; i < 5; i += 1) {
+    userList.push({
+      user_id: i,
+      rank_num: 60 + i,
+      avator: 'https://gw.alipayobjects.com/zos/rmsportal/UjusLxePxWGkttaqqmUI.png',
+      nick_name: '一棵树',
+    });
+  }
+  const result = {
+    code: 0,
+    data: {
+      userList,
+    },
+  };
+  if (res && res.json) {
+    res.json(result);
+  } else {
+    return result;
+  }
+}
+
+export function collection(req, res) {
+  const result = {
+    code: 0,
+    data: true,
+  };
+  if (res && res.json) {
+    res.json(result);
+  } else {
+    return result;
+  }
+}
+
+export function getCollectionList(req, res) {
+  const list = [];
+  for (let i = 0; i < 10; i += 1) {
+    list.push(true);
+  }
+
+  const result = {
+    code: 0,
+    data: list,
+  };
+  if (res && res.json) {
+    res.json(result);
+  } else {
+    return result;
+  }
+}
+
+export default {
+  getProblemList,
+  getProblemProgress,
+  getRankList,
+  collection,
+  getCollectionList,
+};

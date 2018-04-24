@@ -77,3 +77,35 @@ export async function fakeRegister(params) {
 export async function queryNotices() {
   return request('/api/notices');
 }
+
+// 获得所有题目
+export async function queryProblem(params) {
+  return request(`/apiv1/problem/list?${stringify(params)}`);
+}
+
+// 获得做题进度
+export async function queryProblemProgress(params) {
+  return request('/authv1/problem/progress', {
+    method: 'POST',
+    body: params,
+  });
+}
+
+// 获得当前排行
+export async function queryRankList(params) {
+  return request('/authv1/problem/getranklist', {
+    method: 'POST',
+    body: params,
+  });
+}
+
+export async function queryCollection(params) {
+  return request('/authv1/problem/collection/set', {
+    method: 'POST',
+    body: params,
+  });
+}
+
+export async function queryCollectionList(params) {
+  return request(`/authv1/problem/collection/get?${stringify(params)}`);
+}

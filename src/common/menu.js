@@ -43,17 +43,17 @@ const menuData = [
     ],
   },
   {
-    name: '列表页',
+    name: '题库',
     icon: 'table',
-    path: 'list',
+    path: 'problem',
     children: [
       {
-        name: '查询表格',
-        path: 'table-list',
+        name: '公开题库',
+        path: 'open',
       },
       {
-        name: '标准列表',
-        path: 'basic-list',
+        name: '个人题库',
+        path: 'personal',
       },
       {
         name: '卡片列表',

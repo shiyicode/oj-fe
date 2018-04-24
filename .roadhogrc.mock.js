@@ -6,6 +6,13 @@ import { getProfileBasicData } from './mock/profile';
 import { getProfileAdvancedData } from './mock/profile';
 import { getNotices } from './mock/notices';
 import { format, delay } from 'roadhog-api-doc';
+import {
+  getProblemList,
+  getProblemProgress,
+  getRankList,
+  collection,
+  getCollectionList,
+} from './mock/problemList';
 
 // 是否禁用代理
 const noProxy = process.env.NO_PROXY === 'true';
@@ -135,6 +142,11 @@ const proxy = {
       path: '/base/category/list',
     });
   },
+  'GET /apiv1/problem/list': getProblemList,
+  'POST /authv1/problem/getranklist': getRankList,
+  'POST /authv1/problem/progress': getProblemProgress,
+  'POST /authv1/problem/collection/set': collection,
+  'GET /authv1/problem/collection/get': getCollectionList,
 };
 
 export default (noProxy ? {} : delay(proxy, 1000));

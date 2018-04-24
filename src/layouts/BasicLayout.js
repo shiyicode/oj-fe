@@ -104,9 +104,9 @@ class BasicLayout extends React.PureComponent {
         isMobile: mobile,
       });
     });
-    this.props.dispatch({
-      type: 'user/fetchCurrent',
-    });
+    // this.props.dispatch({
+    //   type: 'user/fetchCurrent',
+    // });
   }
   componentWillUnmount() {
     unenquireScreen(this.enquireHandler);
@@ -173,7 +173,7 @@ class BasicLayout extends React.PureComponent {
   };
   render() {
     const {
-      currentUser,
+      // currentUser,
       collapsed,
       fetchingNotices,
       notices,
@@ -181,6 +181,12 @@ class BasicLayout extends React.PureComponent {
       match,
       location,
     } = this.props;
+    const currentUser = {
+      name: 'Serati Ma',
+      avatar: 'https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png',
+      userid: '00000001',
+      notifyCount: 12,
+    };
     const bashRedirect = this.getBashRedirect();
     const layout = (
       <Layout>
@@ -226,7 +232,7 @@ class BasicLayout extends React.PureComponent {
                   redirectPath="/exception/403"
                 />
               ))}
-              <Redirect exact from="/" to={bashRedirect} />
+              <Redirect exact from="/" to="/problem/open" />
               <Route render={NotFound} />
             </Switch>
           </Content>
