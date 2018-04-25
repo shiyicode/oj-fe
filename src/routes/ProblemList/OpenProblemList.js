@@ -129,7 +129,7 @@ class OpenProblemList extends PureComponent {
     this.fetchProblemList({
       url: 'problemList/fetch',
       params: {
-        current_pag: pageNumber,
+        current_page: pageNumber,
         per_page: 10,
         origin: this.state.originArray,
         tag: this.state.algorithmArray,

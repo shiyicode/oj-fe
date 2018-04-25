@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import { Button, Popover, Icon, Radio, Tooltip } from 'antd';
 import AceEditor from 'react-ace';
 import getDefaultLangs from '../../utils/langFormat';
-import styles from './css/Problem.less';
-//语言
+import styles from './index.less';
+// 语言
 import 'brace/mode/c_cpp';
 import 'brace/mode/python';
 import 'brace/mode/java';
-//背景色
+// 背景色
 import 'brace/theme/github';
 import 'brace/theme/xcode';
 import 'brace/theme/monokai';

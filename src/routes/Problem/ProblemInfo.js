@@ -1,26 +1,26 @@
 import React, { Component } from 'react';
 import { Card } from 'antd';
-import styles from './css/Problem.less';
+import styles from './index.less';
 
 class ProblemInfo extends Component {
   render() {
     const { problemInfo, infoLoading } = this.props;
     return (
-      <div style={{ padding: '0 5px' }}>
+      <div>
         <Card title="题目描述" className={styles.cardPlus} loading={infoLoading}>
           <p>{problemInfo.description}</p>
         </Card>
         <Card title="输入描述" className={styles.cardPlus} loading={infoLoading}>
-          <p>{problemInfo.inputDes}</p>
+          <p>{problemInfo.input_des}</p>
         </Card>
         <Card title="输出描述" className={styles.cardPlus} loading={infoLoading}>
-          <p>{problemInfo.outputDes}</p>
+          <p>{problemInfo.output_des}</p>
         </Card>
         <Card title="样例输入" className={styles.cardPlus} loading={infoLoading}>
-          <p>{problemInfo.inputCase}</p>
+          <p>{problemInfo.input_case}</p>
         </Card>
         <Card title="样例输出" className={styles.cardPlus} loading={infoLoading}>
-          <p>{problemInfo.outputCase}</p>
+          <p>{problemInfo.output_case}</p>
         </Card>
         <Card title="数据范围及提示" className={styles.cardPlus} loading={infoLoading}>
           <p>{problemInfo.hint}</p>

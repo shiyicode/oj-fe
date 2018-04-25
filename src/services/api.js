@@ -124,5 +124,14 @@ export async function fakeAccountLogin(params) {
 
 // 获得题目信息
 export async function getProblemInfo(params) {
-  return request(`/apiv1/problem/getmess${params}`);
+  return request(`/apiv1/problem/getmess?${stringify(params)}`);
 }
+
+// 获得提交的代码
+export async function getCode(params) {
+  return request('/authv1/problem/getcode', {
+    method: 'POST',
+    body: params,
+  });
+}
+

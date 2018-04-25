@@ -108,9 +108,11 @@ export const getRouterData = app => {
       component: dynamicWrapper(app, ['form'], () => import('../routes/Forms/AdvancedForm')),
     },
     '/problem/open': {
-      component: dynamicWrapper(app, ['problemList'], () =>
-        import('../routes/ProblemList/OpenProblemList')
+      component: dynamicWrapper(app, ['problemList'], () => import('../routes/ProblemList/OpenProblemList')
       ),
+    },
+    '/problem/detail/:id': {
+      component: dynamicWrapper(app, ['problem'], () => import('../routes/Problem')),
     },
     '/problem/personal': {
       component: dynamicWrapper(app, ['list'], () => import('../routes/ProblemList/BasicList')),

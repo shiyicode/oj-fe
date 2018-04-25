@@ -52,6 +52,9 @@ const menuData = [
         path: 'open',
       },
       {
+        path: 'detail/:id',
+      },
+      {
         name: '个人题库',
         path: 'personal',
       },

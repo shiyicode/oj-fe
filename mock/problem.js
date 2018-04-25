@@ -28,58 +28,19 @@ export function getProblemInfo(req, res) {
   }
 }
 
-export function getTestList(req, res, url) {
-  const testList = [
-    {
-      key: '1',
-      runStatus: 'Compile Error',
-      runTime: 4013,
-      runSpace: 256,
-      runLanguage: 'Java',
-      submitDate: '2017/11/30 19:45:02',
-    },
-    {
-      key: '2',
-      runStatus: 'RunTime Error',
-      runTime: 4013,
-      runSpace: 256,
-      runLanguage: 'Java',
-      submitDate: '2017/11/30 19:45:02',
-    },
-    {
-      key: '3',
-      runStatus: 'Time Limit Exceeded',
-      runTime: 4013,
-      runSpace: 256,
-      runLanguage: 'Java',
-      submitDate: '2017/11/30 19:45:02',
-    },
-    {
-      key: '4',
-      runStatus: 'Wrong Answer',
-      runTime: 4013,
-      runSpace: 256,
-      runLanguage: 'Java',
-      submitDate: '2017/11/30 19:45:02',
-    },
-    {
-      key: '5',
-      runStatus: 'Accepted',
-      runTime: 4013,
-      runSpace: 256,
-      runLanguage: 'Java',
-      submitDate: '2017/11/30 19:45:02',
-    },
-  ];
-
+export function getCode(req, res) {
+  const result = {
+    code: 0,
+    data: '',
+  };
   if (res && res.json) {
-    res.json(testList);
+    res.json(result);
   } else {
-    return testList;
+    return result;
   }
 }
 
-export function getTestResult(req, res, url) {
+export function getTestResult(req, res) {
   const testResult = {
     runStatus: 4,
     runRate: 100,

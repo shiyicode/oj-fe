@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Spin, Progress, Row, Col, Card } from 'antd';
 
-//进度条的变化
+// 进度条的变化
 const arr = [
   '正在提交Submiting',
   '等待测试Pending',

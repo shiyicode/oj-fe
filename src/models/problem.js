@@ -1,7 +1,7 @@
 import {
   getProblemInfo,
   getTestResult,
-  getTestListInfo,
+  getCode,
   submitCode,
   saveCode,
 } from '../services/api';
@@ -19,16 +19,13 @@ export default {
     testResult: {
       result: 1,
     },
-    testList: {
-      list: [],
-      totalPages: 0,
-    },
+    code: '',
     loading: true,
     error: '',
   },
 
   effects: {
-    *getProblemInfo({ payload }, { call, put }) {
+    *fetchProblemInfo({ payload }, { call, put }) {
       yield put({
         type: 'changeLoading',
         payload: true,
@@ -45,6 +42,25 @@ export default {
           payload: {
             error: '服务器错误！',
           },
+        });
+      }
+      yield put({
+        type: 'changeLoading',
+        payload: false,
+      });
+    },
+
+    *fetchCode ({ payload }, { call, put }) {
+      yield put({
+        type: 'changeLoading',
+        payload: true,
+      });
+      const response = yield call(getCode, payload);
+
+      if (response.code === 0) {
+        yield put({
+          type: 'saveSubmitCodeStatus',
+          payload: response.data,
         });
       }
       yield put({
@@ -94,24 +110,6 @@ export default {
           }
         }
       }
-    },
-
-    *getTestList({ payload }, { call, put }) {
-      yield put({
-        type: 'changeLoading',
-        payload: true,
-      });
-      const response = yield call(getTestListInfo, payload);
-      if (response.code === 0) {
-        yield put({
-          type: 'saveTestList',
-          payload: getTestListResponse(response),
-        });
-      }
-      yield put({
-        type: 'changeLoading',
-        payload: false,
-      });
     },
 
     *saveCode({ payload }, { call, put }) {

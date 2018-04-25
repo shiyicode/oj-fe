@@ -3,10 +3,9 @@ import { Tabs, Row, Col, Rate, Icon } from 'antd';
 import ProblemInfo from './ProblemInfo';
 import ProblemTest from './ProblemTest';
 import ProblemData from './ProblemData';
-import ProblemSubmission from './ProblemSubmission';
-import styles from './css/Problem.less';
+import styles from './index.less';
 
-const TabPane = Tabs.TabPane;
+const { TabPane } = Tabs;
 
 class ChoiceTab extends Component {
   constructor(props) {
@@ -19,7 +18,7 @@ class ChoiceTab extends Component {
     this.props.changeIndex(key);
     const { problemInfo } = this.props;
     if (key === '4') {
-      const dispatch = this.props.dispatch;
+      const { dispatch } = this.props;
       dispatch({
         type: 'problem/getTestList',
         payload: {
@@ -31,40 +30,34 @@ class ChoiceTab extends Component {
   }
 
   render() {
-    const { problemInfo, testList, testResult, loading, submitStatus } = this.props;
+    const { problemInfo, testResult, loading, submitStatus } = this.props;
     return (
       <div className={styles.problemTab}>
         <div className="problem-header">
           <h1>{problemInfo.title}</h1>
           <Row>
-            <Col md={5} xs={24}>
+            <Col md={8} xs={24}>
               <Icon type="clock-circle" />
-              {problemInfo.timeLimit}ms
+              {problemInfo.time_limit}ms
             </Col>
-            <Col md={7} xs={24}>
+            <Col md={8} xs={24}>
               <Icon type="pie-chart" />
-              {problemInfo.memoryLimit}kb
+              {problemInfo.memory_limit}kb
             </Col>
-            <Col md={12} xs={24}>
-              <Icon type="up-square" />
-              <Rate
-                disabled
-                style={{ cursor: 'auto' }}
-                className="rate"
-                defaultValue={3}
-                style={{ marginTop: '-8px', fontSize: '16px' }}
-              />
+            <Col md={8} xs={24}>
+              <Icon type="check-square" />
+              {problemInfo.ac_rate}%
             </Col>
           </Row>
         </div>
         <Tabs activeKey={this.props.tabIndex} onChange={this.getTestList}>
-          <TabPane tab="描述" key="1">
+          <TabPane tab={<span><Icon type="file-text" />描述</span>} key="1">
             <ProblemInfo problemInfo={problemInfo} infoLoading={loading} />
           </TabPane>
-          <TabPane tab="数据" key="2">
+          <TabPane tab={<span><Icon type="code-o" />数据</span>} key="2">
             <ProblemData codeValue={this.props.codeValue} />
           </TabPane>
-          <TabPane tab="测评" key="3">
+          <TabPane tab={<span><Icon type="dashboard" />测评</span>} key="3">
             <ProblemTest
               testResult={testResult}
               testLoading={loading}
@@ -72,9 +65,6 @@ class ChoiceTab extends Component {
               problemId={problemInfo.id}
               submitStatus={submitStatus}
             />
-          </TabPane>
-          <TabPane tab="历史" key="4">
-            <ProblemSubmission testList={testList} historyLoading={loading} />
           </TabPane>
         </Tabs>
       </div>

@@ -28,14 +28,14 @@ export default class Problem extends PureComponent {
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch({
-      type: 'problem/getProblemInfo',
+      type: 'problem/fetchProblemInfo',
       payload: {
         id: this.props.match.params.id,
       },
     });
   }
 
-  //改变编辑器和题目信息区域的大小
+  // 改变编辑器和题目信息区域的大小
   changeEditorSize() {
     let left, right, editorWidth, iconType;
     if (this.state.left === '48%') {
@@ -47,7 +47,7 @@ export default class Problem extends PureComponent {
       right = '63%';
       iconType = 'left';
     }
-    this.setState({ left, right, editorWidth, iconType });
+    this.setState({ left, right, iconType });
   }
 
   setCodeValue(value) {
@@ -56,7 +56,7 @@ export default class Problem extends PureComponent {
     });
   }
 
-  //当点击提交代码按钮时切换tabs
+  // 当点击提交代码按钮时切换tabs
   checkActive(key) {
     let tabIndex;
     if (arguments.length > 0) {
@@ -76,7 +76,7 @@ export default class Problem extends PureComponent {
     return (
       <PageHeaderLayout title="题目">
         <Card bordered={false}>
-          {!problem.problemInfo.error ? (
+          { problem.error === '' ? (
             <div className={styles.problemContainer}>
               <div style={{ width: this.state.left }} className={styles.animation}>
                 <ChoiceTab

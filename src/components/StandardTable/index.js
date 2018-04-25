@@ -38,13 +38,14 @@ class StandardTable extends PureComponent {
           message: '收藏提示',
           description: collectionInfo,
           icon: warnIcon,
+          duration: 2,
         });
         if (isSuccess && flag === 'set') target.style.color = 'orange';
         if (isSuccess && flag === 'cancel') {
           target.style.color = '';
         }
       }
-      count++;
+      count += 1;
     }
   }
 
@@ -83,7 +84,7 @@ class StandardTable extends PureComponent {
     const columns = [
       {
         key: 'problemId',
-        title: '题目编号',
+        title: '编号',
         dataIndex: 'problemId',
         render: val => {
           if (val.status === 1) {
@@ -122,7 +123,7 @@ class StandardTable extends PureComponent {
           if (val.name) {
             return (
               <div>
-                <Link to={`/problem/${val.id}`}>{val.name}</Link>&nbsp;&nbsp;
+                <Link to={`/problem/detail/${val.id}`}>{val.name}</Link>&nbsp;&nbsp;
                 <span
                   onClick={e => {
                     this.collection(e, val.id);

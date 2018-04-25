@@ -62,6 +62,7 @@ import axios from 'axios';
 export default function request (path, options) {
   // const url = `http://192.168.1.110:9001${path}`;
   const url = `http://www.fightcoder.com:9001${path}`;
+  // const url = path;
   if (arguments.length < 2) {
     return axios.get(url, {withCredentials: true})
       .then( response => {
