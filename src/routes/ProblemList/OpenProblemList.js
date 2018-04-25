@@ -101,24 +101,27 @@ class OpenProblemList extends PureComponent {
     const originArray = values;
     this.setState({
       originArray,
+    }, () => {
+      this.getProblemsByTags();
     });
-    this.getProblemsByTags();
   }
 
   getAlgorithmTag(values) {
     const algorithmArray = values;
     this.setState({
       algorithmArray,
+    }, () => {
+      this.getProblemsByTags();
     });
-    this.getProblemsByTags();
   }
 
   getDiffTag(values) {
     const diffArray = values;
     this.setState({
       diffArray,
+    }, () => {
+      this.getProblemsByTags();
     });
-    this.getProblemsByTags();
   }
 
   // 根据页码获得题库数据
