@@ -13,6 +13,7 @@ import {
   collection,
   getCollectionList,
 } from './mock/problemList';
+import { getProblemInfo } from './mock/problem';
 
 // 是否禁用代理
 const noProxy = process.env.NO_PROXY === 'true';
@@ -78,32 +79,41 @@ const proxy = {
   'GET /api/fake_chart_data': getFakeChartData,
   'GET /api/profile/basic': getProfileBasicData,
   'GET /api/profile/advanced': getProfileAdvancedData,
-  'POST /api/login/account': (req, res) => {
-    const { password, userName, type } = req.body;
-    if (password === '888888' && userName === 'admin') {
+  'POST /apiv1/login': (req, res) => {
+    const { password, email, type } = req.body;
+    if (password === '888888' && email === 'admin') {
       res.send({
-        status: 'ok',
-        type,
-        currentAuthority: 'admin',
+        code: 0,
+        data: '12345',
       });
-      return;
     }
-    if (password === '123456' && userName === 'user') {
+    else if (password === '123456' && email === 'user') {
       res.send({
-        status: 'ok',
-        type,
-        currentAuthority: 'user',
+        code: 0,
+        data: '12345',
       });
-      return;
+    } else {
+      res.send({
+        code: 1,
+        type,
+        currentAuthority: 'guest',
+      });
     }
+  },
+  'POST /apiv1/register': (req, res) => {
     res.send({
-      status: 'error',
-      type,
-      currentAuthority: 'guest',
+      code: 0,
+      data: {
+        status: true,
+        userId: '123456',
+      },
     });
   },
-  'POST /api/register': (req, res) => {
-    res.send({ status: 'ok', currentAuthority: 'user' });
+  'POST /apiv1/check': (req, res) => {
+    res.send({
+      code: 0,
+      data: false,
+    });
   },
   'GET /api/notices': getNotices,
   'GET /api/500': (req, res) => {
@@ -147,6 +157,7 @@ const proxy = {
   'POST /authv1/problem/progress': getProblemProgress,
   'POST /authv1/problem/collection/set': collection,
   'GET /authv1/problem/collection/get': getCollectionList,
+  'GET /apiv1/problem/getmess': getProblemInfo,
 };
 
 export default (noProxy ? {} : delay(proxy, 1000));

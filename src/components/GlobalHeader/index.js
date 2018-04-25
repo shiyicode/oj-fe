@@ -157,7 +157,10 @@ export default class GlobalHeader extends PureComponent {
               </span>
             </Dropdown>
           ) : (
-            <Spin size="small" style={{ marginLeft: 8 }} />
+            <div className={styles.loginAction} >
+              <Link to="/user/login" className={styles.login}>登录</Link>
+              <Link to="/user/register" className={styles.register}>注册</Link>
+            </div>
           )}
         </div>
       </div>

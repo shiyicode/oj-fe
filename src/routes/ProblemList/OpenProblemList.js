@@ -1,16 +1,20 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
-import { Card, Pagination, Select, Alert, Tag } from 'antd';
+import { Card, Pagination, Alert, Tag, Checkbox, Popover, Button } from 'antd';
 import StandardTable from '../../components/StandardTable';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 import styles from './TableList.less';
 import PieGraph from './PieGraph';
 import UserTopList from './UserTopList';
 
-const { Option } = Select;
+const CheckboxGroup = Checkbox.Group;
 
-function setOptions(arr) {
-  return arr.map(value => <Option value={value}>{value}</Option>);
+
+function setCheckbox (arr) {
+  return arr.map( (value) =>
+    <div key={value} style={{padding: '5px 0'}}>
+      <Checkbox value={value}>{value}</Checkbox>
+    </div>);
 }
 
 const origin = ['官方', 'CodeVs', 'HDU'];
@@ -31,7 +35,7 @@ const diff = ['简单', '中等', '困难', '极难'];
 @connect(state => ({
   problemList: state.problemList,
 }))
-class TableList extends PureComponent {
+class OpenProblemList extends PureComponent {
   constructor(props) {
     super(props);
 
@@ -45,6 +49,9 @@ class TableList extends PureComponent {
     this.getOriginTag = this.getOriginTag.bind(this);
     this.getAlgorithmTag = this.getAlgorithmTag.bind(this);
     this.getDiffTag = this.getDiffTag.bind(this);
+    this.deleteAlgorithmTag = this.deleteAlgorithmTag.bind(this);
+    this.deleteOriginTag = this.deleteOriginTag.bind(this);
+    this.deleteDiffTag = this.deleteDiffTag.bind(this);
     this.getProblemListByPage = this.getProblemListByPage.bind(this);
   }
 
@@ -90,37 +97,28 @@ class TableList extends PureComponent {
     });
   }
 
-  getOriginTag(value) {
-    const { originArray } = this.state;
-    if (originArray.indexOf(value) === -1) {
-      originArray.push(value);
-      this.setState({
-        originArray,
-      });
-      this.getProblemsByTags();
-    }
+  getOriginTag(values) {
+    const originArray = values;
+    this.setState({
+      originArray,
+    });
+    this.getProblemsByTags();
   }
 
-  getAlgorithmTag(value) {
-    const { algorithmArray } = this.state;
-    if (algorithmArray.indexOf(value) === -1) {
-      algorithmArray.push(value);
-      this.setState({
-        algorithmArray,
-      });
-      this.getProblemsByTags();
-    }
+  getAlgorithmTag(values) {
+    const algorithmArray = values;
+    this.setState({
+      algorithmArray,
+    });
+    this.getProblemsByTags();
   }
 
-  getDiffTag(value) {
-    const { diffArray } = this.state;
-    if (diffArray.indexOf(value) === -1) {
-      diffArray.push(value);
-      this.setState({
-        diffArray,
-      });
-      this.getProblemsByTags();
-    }
+  getDiffTag(values) {
+    const diffArray = values;
+    this.setState({
+      diffArray,
+    });
+    this.getProblemsByTags();
   }
 
   // 根据页码获得题库数据
@@ -147,36 +145,13 @@ class TableList extends PureComponent {
     });
   }
 
-  deleteOriginTag(index) {
-    const { originArray } = this.state;
-    originArray[index] = '';
-    this.setState({ originArray });
-    // originArray.splice(index, 1);
+  deleteOriginTag() {
+    this.setState({originArray: []});
     this.fetchProblemList({
       url: 'problemList/fetch',
       params: {
-        origin: originArray,
+        origin: [],
         tag: this.state.algorithmArray,
-        diff: this.state.diffArray,
-        current_page: 1,
-        per_page: 10,
-        sort: 1,
-        is_asc: 1,
-      },
-    });
-    this.setState({ originArray });
-  }
-
-  deleteAlgorithmTag(index) {
-    const { algorithmArray } = this.state;
-    algorithmArray[index] = '';
-    this.setState({ algorithmArray });
-    // algorithmArray.splice(index, 1);
-    this.fetchProblemList({
-      url: 'problemList/fetch',
-      params: {
-        origin: this.state.originArray,
-        tag: algorithmArray,
         diff: this.state.diffArray,
         current_page: 1,
         per_page: 10,
@@ -186,17 +161,30 @@ class TableList extends PureComponent {
     });
   }
 
-  deleteDiffTag(index) {
-    const { diffArray } = this.state;
-    diffArray[index] = '';
-    this.setState({ diffArray });
-    // diffArray.splice(index, 1);
+  deleteAlgorithmTag() {
+    this.setState({algorithmArray: []});
+    this.fetchProblemList({
+      url: 'problemList/fetch',
+      params: {
+        origin: this.state.originArray,
+        tag: [],
+        diff: this.state.diffArray,
+        current_page: 1,
+        per_page: 10,
+        sort: 1,
+        is_asc: 1,
+      },
+    });
+  }
+
+  deleteDiffTag() {
+    this.setState({ diffArray: [] });
     this.fetchProblemList({
       url: 'problemList/fetch',
       params: {
         origin: this.state.originArray,
         tag: this.state.algorithmArray,
-        diff: diffArray,
+        diff: [],
         current_page: 1,
         per_page: 10,
         sort: 1,
@@ -209,72 +197,88 @@ class TableList extends PureComponent {
     const {
       problemList: { loading, error, list, pagination, progress, rankList, collection },
     } = this.props;
+
     const { originArray, algorithmArray, diffArray } = this.state;
+
+    const content1 = <CheckboxGroup onChange={this.getOriginTag} value={this.state.originArray}>
+                      {setCheckbox(origin)}
+                     </CheckboxGroup>
+
+    const content2 = <CheckboxGroup onChange={this.getAlgorithmTag} value={this.state.algorithmArray}>
+                        {setCheckbox(algorithm)}
+                     </CheckboxGroup>
+
+    const content3 = <CheckboxGroup onChange={this.getDiffTag} value={this.state.diffArray}>
+                        {setCheckbox(diff)}
+                     </CheckboxGroup>
+
     return (
       <PageHeaderLayout title="题库">
         <Card bordered={false}>
           <div className={styles['problem-container']}>
             <div className={styles['problem-list']}>
               <div style={{ marginBottom: 10 }}>
-                <Select value="按题目来源筛选" style={{ width: 150 }} onChange={this.getOriginTag}>
-                  {setOptions(origin)}
-                </Select>{' '}
-                &nbsp;&nbsp;
-                <Select value="按算法源筛选" style={{ width: 150 }} onChange={this.getAlgorithmTag}>
-                  {setOptions(algorithm)}
-                </Select>{' '}
-                &nbsp;&nbsp;
-                <Select value="按难度筛选" style={{ width: 150 }} onChange={this.getDiffTag}>
-                  {setOptions(diff)}
-                </Select>
+                <Popover
+                  placement="bottom"
+                  content={content1}
+                  trigger="hover"
+                  key="struct"
+                >
+                  <Button>按来源筛选</Button>
+                </Popover>
+                <Popover
+                  placement="bottom"
+                  content={content2}
+                  trigger="hover"
+                  key="algorithm"
+                >
+                  <Button className={styles.popover}>按算法筛选</Button>
+                </Popover>
+                <Popover
+                  placement="bottom"
+                  content={content3}
+                  trigger="hover"
+                  key="diff"
+                >
+                  <Button className={styles.popover}>按难度筛选</Button>
+                </Popover>
                 &nbsp;&nbsp;
                 {originArray &&
                   originArray.length > 0 && (
                     <span>
-                      {originArray.map((item, index) => {
-                        return (
-                          <Tag
-                            closable
-                            onClose={this.deleteOriginTag.bind(this, index)}
-                            color="#2db7f5"
-                          >
-                            {item}
-                          </Tag>
-                        );
-                      })}
+                      <Tag
+                        closable
+                        onClose={this.deleteOriginTag}
+                        color="#2db7f5"
+                      >
+                        {originArray.join(',')}
+                      </Tag>
+
                     </span>
                   )}&nbsp;&nbsp;&nbsp;&nbsp;
                 {algorithmArray &&
                   algorithmArray.length > 0 && (
                     <span>
-                      {algorithmArray.map((item, index) => {
-                        return (
-                          <Tag
-                            closable
-                            onClose={this.deleteAlgorithmTag.bind(this, index)}
-                            color="#2db7f5"
-                          >
-                            {item}
-                          </Tag>
-                        );
-                      })}
+                      <Tag
+                        closable
+                        onClose={this.deleteAlgorithmTag}
+                        color="#2db7f5"
+                      >
+                        {algorithmArray.join(',')}
+                      </Tag>
                     </span>
                   )}
                 &nbsp;&nbsp;&nbsp;&nbsp;
                 {diffArray &&
                   diffArray.length > 0 && (
                     <span>
-                      {diffArray.map((item, index) => {
-                        return (
-                          <Tag
-                            closable
-                            onClose={this.deleteDiffTag.bind(this, index)}
-                            color="#2db7f5"
-                          >
-                            {item}
-                          </Tag>
-                        );
-                      })}
+                      <Tag
+                        closable
+                        onClose={this.deleteDiffTag}
+                        color="#2db7f5"
+                      >
+                        {diffArray.join(',')}
+                      </Tag>
                     </span>
                   )}
               </div>
@@ -326,4 +330,4 @@ class TableList extends PureComponent {
   }
 }
 
-export default TableList;
+export default OpenProblemList;

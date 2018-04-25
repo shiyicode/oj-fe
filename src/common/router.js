@@ -108,25 +108,25 @@ export const getRouterData = app => {
       component: dynamicWrapper(app, ['form'], () => import('../routes/Forms/AdvancedForm')),
     },
     '/problem/open': {
-      component: dynamicWrapper(app, ['problemList'], () => import('../routes/List/TableList')),
+      component: dynamicWrapper(app, ['problemList'], () => import('../routes/ProblemList/OpenProblemList')),
     },
     '/problem/personal': {
-      component: dynamicWrapper(app, ['list'], () => import('../routes/List/BasicList')),
+      component: dynamicWrapper(app, ['list'], () => import('../routes/ProblemList/BasicList')),
     },
     '/list/card-list': {
-      component: dynamicWrapper(app, ['list'], () => import('../routes/List/CardList')),
+      component: dynamicWrapper(app, ['list'], () => import('../routes/ProblemList/CardList')),
     },
     '/list/search': {
-      component: dynamicWrapper(app, ['list'], () => import('../routes/List/List')),
+      component: dynamicWrapper(app, ['list'], () => import('../routes/ProblemList/List')),
     },
     '/list/search/projects': {
-      component: dynamicWrapper(app, ['list'], () => import('../routes/List/Projects')),
+      component: dynamicWrapper(app, ['list'], () => import('../routes/ProblemList/Projects')),
     },
     '/list/search/applications': {
-      component: dynamicWrapper(app, ['list'], () => import('../routes/List/Applications')),
+      component: dynamicWrapper(app, ['list'], () => import('../routes/ProblemList/Applications')),
     },
     '/list/search/articles': {
-      component: dynamicWrapper(app, ['list'], () => import('../routes/List/Articles')),
+      component: dynamicWrapper(app, ['list'], () => import('../routes/ProblemList/Articles')),
     },
     '/profile/basic': {
       component: dynamicWrapper(app, ['profile'], () => import('../routes/Profile/BasicProfile')),

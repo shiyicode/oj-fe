@@ -1,0 +1,82 @@
+.problemContainer {
+  overflow: hidden;
+  display: flex;
+  width: 100%;
+}
+
+.problemTab {
+  overflow-y: auto;
+  height: 460px;
+}
+
+.cardPlus {
+  width: 100%;
+  margin: 20px 0 !important;
+  box-shadow: 0 0 5px #ccc;
+  border-radius: 5px;
+}
+
+ul li.ant-select-dropdown-menu-item {
+  font-size: 12px;
+}
+
+.backwardIcon {
+  float: right;
+  font-size: 20px;
+  font-weight: bold;
+  padding: 260px 0px;
+  margin-left: 5px;
+  cursor: pointer;
+}
+
+.ace_scrollbar-v::-webkit-scrollbar {
+  width: 10px;
+  height:10px;
+}
+.ace_scrollbar-v::-webkit-scrollbar-track {
+  background-color:#f5f5f5;
+  border-radius: 10px;
+}
+.ace_scrollbar-v::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 10px;
+}
+
+.editorFooter {
+  margin-top: 15px;
+}
+
+.codeSize {
+  margin-top: 10px;
+}
+
+.animation {
+  transition: .3s linear;
+}
+
+.iconButton {
+  width: 30px;
+  padding: 5px !important;
+  margin-left: 10px;
+}
+
+.codeLanguage {
+  width: 100px;
+  border-radius: 5px;
+  height: 30px;
+}
+
+@media screen and (max-width: 767px) {
+
+  .icon, .editor-right {
+    display: none;
+  }
+
+  .problemInfo {
+    width: 100% !important;
+  }
+
+  .ant-tabs-tab[aria-selected="false"] {
+    display: none;
+  }
+}

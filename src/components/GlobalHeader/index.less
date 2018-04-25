@@ -85,6 +85,32 @@ i.trigger {
   }
 }
 
+.loginAction {
+  cursor: pointer;
+  padding: 0 12px;
+  display: inline-block;
+  height: 100%;
+
+  .login {
+    padding: 24px 15px;
+    color:rgba(0, 0, 0, 0.85);
+    text-decoration: none;
+    &:hover {
+      background-color: @primary-1;
+    }
+  }
+
+  .register {
+    padding: 24px 15px;
+    color:rgba(0, 0, 0, 0.85);
+    text-decoation: none;
+    &:hover {
+      background-color: @primary-1;
+    }
+  }
+}
+
+
 @media only screen and (max-width: @screen-md) {
   .header {
     :global(.ant-divider-vertical) {

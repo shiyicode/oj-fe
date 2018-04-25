@@ -22,21 +22,21 @@ const { AuthorizedRoute, check } = Authorized;
 /**
  * 根据菜单取得重定向地址.
  */
-const redirectData = [];
-const getRedirect = item => {
-  if (item && item.children) {
-    if (item.children[0] && item.children[0].path) {
-      redirectData.push({
-        from: `${item.path}`,
-        to: `${item.children[0].path}`,
-      });
-      item.children.forEach(children => {
-        getRedirect(children);
-      });
-    }
-  }
-};
-getMenuData().forEach(getRedirect);
+// const redirectData = [];
+// const getRedirect = item => {
+//   if (item && item.children) {
+//     if (item.children[0] && item.children[0].path) {
+//       redirectData.push({
+//         from: `${item.path}`,
+//         to: `${item.children[0].path}`,
+//       });
+//       item.children.forEach(children => {
+//         getRedirect(children);
+//       });
+//     }
+//   }
+// };
+// getMenuData().forEach(getRedirect);
 
 /**
  * 获取面包屑映射
@@ -187,7 +187,7 @@ class BasicLayout extends React.PureComponent {
       userid: '00000001',
       notifyCount: 12,
     };
-    const bashRedirect = this.getBashRedirect();
+    // const bashRedirect = this.getBashRedirect();
     const layout = (
       <Layout>
         <SiderMenu
@@ -219,9 +219,6 @@ class BasicLayout extends React.PureComponent {
           </Header>
           <Content style={{ margin: '24px 24px 0', height: '100%' }}>
             <Switch>
-              {redirectData.map(item => (
-                <Redirect key={item.from} exact from={item.from} to={item.to} />
-              ))}
               {getRoutes(match.path, routerData).map(item => (
                 <AuthorizedRoute
                   key={item.key}

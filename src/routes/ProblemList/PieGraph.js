@@ -63,7 +63,7 @@ export default class PieGraph extends PureComponent {
       },
     };
 
-    const colors = ['#4EF037', '#FD2E2E', '#58DADA'];
+    const colors = ['#2EB872', '#E70000', '#58DADA'];
     const series = [
       {
         name: '百分比',

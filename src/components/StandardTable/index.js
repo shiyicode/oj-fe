@@ -15,10 +15,12 @@ let flag = ''; // 收藏和取消收藏标志
 
 class StandardTable extends PureComponent {
   componentWillReceiveProps(nextProps) {
+    // 收藏和取消收藏返回时的显示逻辑
     if (nextProps.collection && nextProps.collection !== {}) {
       if (count === 0) {
         const { isSuccess } = nextProps.collection; // 失败和成功标志
         let collectionInfo = '';
+        let warnIcon = <Icon type="smile-circle" style={{ color: '#108ee9' }} />
         if (isSuccess) {
           if (flag === 'set') {
             collectionInfo = '收藏成功';
@@ -27,13 +29,15 @@ class StandardTable extends PureComponent {
           }
         } else if (flag === 'cancel') {
           collectionInfo = '取消收藏失败';
+          warnIcon = <Icon type="frown-o" style={{ color: '#108ee9' }} />
         } else {
           collectionInfo = '收藏失败';
+          warnIcon = <Icon type="frown-o" style={{ color: '#108ee9' }} />
         }
         notification.success({
           message: '收藏提示',
           description: collectionInfo,
-          icon: <Icon type="smile-circle" style={{ color: '#108ee9' }} />,
+          icon: warnIcon,
         });
         if (isSuccess && flag === 'set') target.style.color = 'orange';
         if (isSuccess && flag === 'cancel') {
@@ -71,7 +75,7 @@ class StandardTable extends PureComponent {
     if (isCollect === true) {
       return <Icon type="star" style={{ color: 'orange' }} />;
     } else {
-      return <Icon type="star" />;
+      return <Icon type="star-o" />;
     }
   }
 
