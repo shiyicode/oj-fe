@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
 import { routerRedux, Link } from 'dva/router';
-import { Form, Input, Button,  Popover, Progress, notification } from 'antd';
+import { Form, Input, Button, Popover, Progress, notification } from 'antd';
 import styles from './Register.less';
 
 const FormItem = Form.Item;
@@ -23,8 +23,7 @@ const passwordProgressMap = {
 }))
 @Form.create()
 export default class Register extends Component {
-
-  constructor (props) {
+  constructor(props) {
     super(props);
     this.checkEmailExist = this.checkEmailExist.bind(this);
   }
@@ -33,7 +32,7 @@ export default class Register extends Component {
     confirmDirty: false,
     visible: false,
     help: '',
-  }
+  };
 
   componentWillReceiveProps(nextProps) {
     // 判断注册是否成功
@@ -41,7 +40,7 @@ export default class Register extends Component {
       console.log(nextProps.register);
       sessionStorage.setItem('userId', nextProps.register.userId); // 保存用户id
       this.props.dispatch(routerRedux.push('/problem/open'));
-    } else if (nextProps.register.status === false){
+    } else if (nextProps.register.status === false) {
       notification.error({
         message: '注册提示',
         description: nextProps.register.error,
@@ -70,26 +69,24 @@ export default class Register extends Component {
       return 'pass';
     }
     return 'pool';
-  }
+  };
 
-  handleSubmit = (e) => {
+  handleSubmit = e => {
     e.preventDefault();
-    this.props.form.validateFields({ force: true },
-      (err, values) => {
-        if (!err) {
-          this.props.dispatch({
-            type: 'register/submit',
-            payload: values,
-          });
-        }
+    this.props.form.validateFields({ force: true }, (err, values) => {
+      if (!err) {
+        this.props.dispatch({
+          type: 'register/submit',
+          payload: values,
+        });
       }
-    );
-  }
+    });
+  };
 
-  handleConfirmBlur = (e) => {
+  handleConfirmBlur = e => {
     const { value } = e.target;
     this.setState({ confirmDirty: this.state.confirmDirty || !!value });
-  }
+  };
 
   checkConfirm = (rule, value, callback) => {
     const { form } = this.props;
@@ -98,7 +95,7 @@ export default class Register extends Component {
     } else {
       callback();
     }
-  }
+  };
 
   checkPassword = (rule, value, callback) => {
     if (!value) {
@@ -126,12 +123,12 @@ export default class Register extends Component {
         callback();
       }
     }
-  }
+  };
 
-  checkEmailExist (e) {
+  checkEmailExist(e) {
     const email = e.target.value;
     const reg = /^([a-zA-Z0-9_-])+@[a-zA-Z0-9_-]+((\.[a-z]{2,3}){1,2})$/;
-    if (email !== "" && reg.test(email)) {
+    if (email !== '' && reg.test(email)) {
       const { dispatch } = this.props;
       dispatch({
         type: 'register/checkEmailExist',
@@ -146,7 +143,7 @@ export default class Register extends Component {
     const { form } = this.props;
     const value = form.getFieldValue('password');
     const passwordStatus = this.getPasswordStatus();
-    return value && value.length ?
+    return value && value.length ? (
       <div className={styles[`progress-${passwordStatus}`]}>
         <Progress
           status={passwordProgressMap[passwordStatus]}
@@ -155,8 +152,9 @@ export default class Register extends Component {
           percent={value.length * 10 > 100 ? 100 : value.length * 10}
           showInfo={false}
         />
-      </div> : null;
-  }
+      </div>
+    ) : null;
+  };
 
   render() {
     const { form, register } = this.props;
@@ -169,15 +167,17 @@ export default class Register extends Component {
         <Form onSubmit={this.handleSubmit}>
           <FormItem>
             {getFieldDecorator('email', {
-              rules: [{
-                required: true, message: '请输入邮箱地址！',
-              }, {
-                type: 'email', message: '邮箱地址格式错误！',
-              }],
-            })(
-              <Input size="large" placeholder="邮箱" />
-            )}
-
+              rules: [
+                {
+                  required: true,
+                  message: '请输入邮箱地址！',
+                },
+                {
+                  type: 'email',
+                  message: '邮箱地址格式错误！',
+                },
+              ],
+            })(<Input size="large" placeholder="邮箱" />)}
           </FormItem>
           <FormItem help={this.state.help}>
             <Popover
@@ -185,7 +185,9 @@ export default class Register extends Component {
                 <div style={{ padding: '4px 0' }}>
                   {passwordStatusMap[this.getPasswordStatus()]}
                   {this.renderPasswordProgress()}
-                  <div style={{ marginTop: 10 }}>请至少输入 6 个字符。请不要使用容易被猜到的密码。</div>
+                  <div style={{ marginTop: 10 }}>
+                    请至少输入 6 个字符。请不要使用容易被猜到的密码。
+                  </div>
                 </div>
               }
               overlayStyle={{ width: 240 }}
@@ -193,40 +195,42 @@ export default class Register extends Component {
               visible={this.state.visible}
             >
               {getFieldDecorator('password', {
-                rules: [{
-                  validator: this.checkPassword,
-                }],
-              })(
-                <Input
-                  size="large"
-                  type="password"
-                  placeholder="至少6位密码，区分大小写"
-                />
-              )}
+                rules: [
+                  {
+                    validator: this.checkPassword,
+                  },
+                ],
+              })(<Input size="large" type="password" placeholder="至少6位密码，区分大小写" />)}
             </Popover>
           </FormItem>
           {
             <FormItem>
               {getFieldDecorator('confirm', {
-                rules: [{
-                  required: true, message: '请确认密码！',
-                }, {
-                  validator: this.checkConfirm,
-                }],
-              })(
-                <Input
-                  size="large"
-                  type="password"
-                  placeholder="确认密码"
-                />
-              )}
+                rules: [
+                  {
+                    required: true,
+                    message: '请确认密码！',
+                  },
+                  {
+                    validator: this.checkConfirm,
+                  },
+                ],
+              })(<Input size="large" type="password" placeholder="确认密码" />)}
             </FormItem>
           }
           <FormItem>
-            <Button size="large" loading={register.submitting} className={styles.submit} type="primary" htmlType="submit">
+            <Button
+              size="large"
+              loading={register.submitting}
+              className={styles.submit}
+              type="primary"
+              htmlType="submit"
+            >
               注册
             </Button>
-            <Link className={styles.login} to="/user/login">使用已有账户登录</Link>
+            <Link className={styles.login} to="/user/login">
+              使用已有账户登录
+            </Link>
           </FormItem>
         </Form>
       </div>

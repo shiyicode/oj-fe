@@ -10,13 +10,12 @@ import Editor from './Editor';
   problem: state.problem,
 }))
 export default class Problem extends PureComponent {
-
-  constructor (props) {
+  constructor(props) {
     super(props);
     this.state = {
       left: '48%', // 题目信息区域的大小
       right: '60%', // 编辑器区域的大小
-      iconType: 'left', 		// 方向图标，默认向左
+      iconType: 'left', // 方向图标，默认向左
       tabIndex: '1', // 默认选项卡的索引为1,
       codeValue: '',
     };
@@ -37,77 +36,79 @@ export default class Problem extends PureComponent {
   }
 
   //改变编辑器和题目信息区域的大小
-  changeEditorSize () {
+  changeEditorSize() {
     let left, right, editorWidth, iconType;
     if (this.state.left === '48%') {
       left = '38%';
       right = '73%';
       iconType = 'right';
-
-    }else {
+    } else {
       left = '48%';
       right = '63%';
       iconType = 'left';
     }
-    this.setState({left, right, editorWidth, iconType});
+    this.setState({ left, right, editorWidth, iconType });
   }
 
-  setCodeValue (value) {
+  setCodeValue(value) {
     this.setState({
       codeValue: value,
     });
   }
 
   //当点击提交代码按钮时切换tabs
-  checkActive (key) {
-    let tabIndex ;
+  checkActive(key) {
+    let tabIndex;
     if (arguments.length > 0) {
       tabIndex = key;
       this.setState({ tabIndex });
     } else {
       if (this.state.tabIndex !== '3') {
         this.setState({
-          tabIndex: '3'
+          tabIndex: '3',
         });
       }
     }
   }
 
-  render () {
-
+  render() {
     const { problem } = this.props;
     return (
       <PageHeaderLayout title="题目">
         <Card bordered={false}>
-          {
-            !problem.problemInfo.error ?
-              <div className={styles.problemContainer}>
-                <div style={{width: this.state.left}} className={styles.animation}>
-                  <ChoiceTab
-                    tabIndex={this.state.tabIndex}
-                    changeIndex={this.checkActive}
-                    {...problem}
-                    dispatch={this.props.dispatch}
-                    codeValue={this.state.codeValue}
-                  />
-                </div>
-                <div style={{width: 25}} className={styles.animation}>
-                  <Icon type={this.state.iconType} className={styles.backwardIcon} onClick={this.changeEditorSize}/>
-                </div>
-                <div style={{width: this.state.right}} className={styles.animation}>
-                  <Editor
-                    width="100%"
-                    changeIndex={this.checkActive}
-                    codeValue={problem.problemInfo.code}
-                    saveStatus={problem.saveStatus}
-                    dispatch={this.props.dispatch}
-                    setCodeValue={this.setCodeValue}
-                    problemId={this.props.match.params.id}
-                  />
-                </div>
+          {!problem.problemInfo.error ? (
+            <div className={styles.problemContainer}>
+              <div style={{ width: this.state.left }} className={styles.animation}>
+                <ChoiceTab
+                  tabIndex={this.state.tabIndex}
+                  changeIndex={this.checkActive}
+                  {...problem}
+                  dispatch={this.props.dispatch}
+                  codeValue={this.state.codeValue}
+                />
               </div>
-              : <p style={{color: '#f05050', fontSize: '20px'}}>获得题目信息失败</p>
-          }
+              <div style={{ width: 25 }} className={styles.animation}>
+                <Icon
+                  type={this.state.iconType}
+                  className={styles.backwardIcon}
+                  onClick={this.changeEditorSize}
+                />
+              </div>
+              <div style={{ width: this.state.right }} className={styles.animation}>
+                <Editor
+                  width="100%"
+                  changeIndex={this.checkActive}
+                  codeValue={problem.problemInfo.code}
+                  saveStatus={problem.saveStatus}
+                  dispatch={this.props.dispatch}
+                  setCodeValue={this.setCodeValue}
+                  problemId={this.props.match.params.id}
+                />
+              </div>
+            </div>
+          ) : (
+            <p style={{ color: '#f05050', fontSize: '20px' }}>获得题目信息失败</p>
+          )}
         </Card>
       </PageHeaderLayout>
     );

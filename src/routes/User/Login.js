@@ -14,7 +14,7 @@ export default class Login extends Component {
   state = {
     count: 0,
     type: 'account',
-  }
+  };
 
   // //获得Hash内容
   // getCodeAndState (url) {
@@ -29,7 +29,7 @@ export default class Login extends Component {
   //   }
   // }
 
-  componentDidMount () {
+  componentDidMount() {
     // let url = location.href;
     // let hashCode = this.getCodeAndState(url);
     // let arrayList;
@@ -82,11 +82,11 @@ export default class Login extends Component {
     clearInterval(this.interval);
   }
 
-  onSwitch = (key) => {
+  onSwitch = key => {
     this.setState({
       type: key,
     });
-  }
+  };
 
   // 用户手机登录，获取验证码
   onGetCaptcha = () => {
@@ -99,36 +99,27 @@ export default class Login extends Component {
         clearInterval(this.interval);
       }
     }, 1000);
-  }
+  };
 
-  handleSubmit = (e) => {
+  handleSubmit = e => {
     e.preventDefault();
     const { type } = this.state;
-    this.props.form.validateFields({ force: true },
-      (err, values) => {
-        if (!err) {
-          this.props.dispatch({
-            type: 'login/submit',
-            payload: {
-              ...values,
-              type,
-            },
-          });
-        }
+    this.props.form.validateFields({ force: true }, (err, values) => {
+      if (!err) {
+        this.props.dispatch({
+          type: 'login/submit',
+          payload: {
+            ...values,
+            type,
+          },
+        });
       }
-    );
-  }
+    });
+  };
 
-  renderMessage = (message) => {
-    return (
-      <Alert
-        style={{ marginBottom: 24 }}
-        message={message}
-        type="error"
-        showIcon
-      />
-    );
-  }
+  renderMessage = message => {
+    return <Alert style={{ marginBottom: 24 }} message={message} type="error" showIcon />;
+  };
 
   render() {
     const { form, login } = this.props;
@@ -139,15 +130,15 @@ export default class Login extends Component {
         <Form onSubmit={this.handleSubmit}>
           <Tabs animated={false} className={styles.tabs} activeKey={type} onChange={this.onSwitch}>
             <TabPane tab="账户密码登录" key="account">
-              {
-                login.status ===  false &&
-                this.renderMessage('用户名或密码错误')
-              }
+              {login.status === false && this.renderMessage('用户名或密码错误')}
               <FormItem>
                 {getFieldDecorator('email', {
-                  rules: [{
-                    required: type === 'account', message: '请输入用户名！',
-                  }],
+                  rules: [
+                    {
+                      required: type === 'account',
+                      message: '请输入用户名！',
+                    },
+                  ],
                 })(
                   <Input
                     size="large"
@@ -158,9 +149,12 @@ export default class Login extends Component {
               </FormItem>
               <FormItem>
                 {getFieldDecorator('password', {
-                  rules: [{
-                    required: type === 'account', message: '请输入密码！',
-                  }],
+                  rules: [
+                    {
+                      required: type === 'account',
+                      message: '请输入密码！',
+                    },
+                  ],
                 })(
                   <Input
                     size="large"
@@ -172,18 +166,21 @@ export default class Login extends Component {
               </FormItem>
             </TabPane>
             <TabPane tab="手机号登录" key="mobile">
-              {
-                login.status === 'error' &&
+              {login.status === 'error' &&
                 login.type === 'mobile' &&
-                this.renderMessage('验证码错误')
-              }
+                this.renderMessage('验证码错误')}
               <FormItem>
                 {getFieldDecorator('mobile', {
-                  rules: [{
-                    required: type === 'mobile', message: '请输入手机号！',
-                  }, {
-                    pattern: /^1\d{10}$/, message: '手机号格式错误！',
-                  }],
+                  rules: [
+                    {
+                      required: type === 'mobile',
+                      message: '请输入手机号！',
+                    },
+                    {
+                      pattern: /^1\d{10}$/,
+                      message: '手机号格式错误！',
+                    },
+                  ],
                 })(
                   <Input
                     size="large"
@@ -196,9 +193,12 @@ export default class Login extends Component {
                 <Row gutter={8}>
                   <Col span={16}>
                     {getFieldDecorator('captcha', {
-                      rules: [{
-                        required: type === 'mobile', message: '请输入验证码！',
-                      }],
+                      rules: [
+                        {
+                          required: type === 'mobile',
+                          message: '请输入验证码！',
+                        },
+                      ],
                     })(
                       <Input
                         size="large"
@@ -225,16 +225,21 @@ export default class Login extends Component {
             {getFieldDecorator('remember', {
               valuePropName: 'checked',
               initialValue: false,
-            })(
-              <Link to="/user/register">前往注册</Link>
-            )}
-            <a className={styles.forgot} href="">忘记密码</a>
-            <Button size="large" loading={login.submitting} className={styles.submit} type="primary" htmlType="submit">
+            })(<Link to="/user/register">前往注册</Link>)}
+            <a className={styles.forgot} href="">
+              忘记密码
+            </a>
+            <Button
+              size="large"
+              loading={login.submitting}
+              className={styles.submit}
+              type="primary"
+              htmlType="submit"
+            >
               登录
             </Button>
           </FormItem>
         </Form>
-
       </div>
     );
   }

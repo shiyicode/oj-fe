@@ -6,18 +6,16 @@ import ProblemData from './ProblemData';
 import ProblemSubmission from './ProblemSubmission';
 import styles from './css/Problem.less';
 
-
 const TabPane = Tabs.TabPane;
 
 class ChoiceTab extends Component {
-
-  constructor (props) {
+  constructor(props) {
     super(props);
 
     this.getTestList = this.getTestList.bind(this);
   }
 
-  getTestList (key) {
+  getTestList(key) {
     this.props.changeIndex(key);
     const { problemInfo } = this.props;
     if (key === '4') {
@@ -32,30 +30,36 @@ class ChoiceTab extends Component {
     }
   }
 
-  render () {
+  render() {
     const { problemInfo, testList, testResult, loading, submitStatus } = this.props;
     return (
       <div className={styles.problemTab}>
         <div className="problem-header">
           <h1>{problemInfo.title}</h1>
           <Row>
-            <Col md={5} xs={24}><Icon type="clock-circle" />{problemInfo.timeLimit}ms</Col>
-            <Col md={7} xs={24}><Icon type="pie-chart" />{problemInfo.memoryLimit}kb</Col>
-            <Col md={12} xs={24}><Icon type="up-square" />
-              <Rate disabled style={{cursor: 'auto'}}
-                    className="rate"
-                    defaultValue={3}
-                    style={{marginTop: '-8px', fontSize: '16px'}}
+            <Col md={5} xs={24}>
+              <Icon type="clock-circle" />
+              {problemInfo.timeLimit}ms
+            </Col>
+            <Col md={7} xs={24}>
+              <Icon type="pie-chart" />
+              {problemInfo.memoryLimit}kb
+            </Col>
+            <Col md={12} xs={24}>
+              <Icon type="up-square" />
+              <Rate
+                disabled
+                style={{ cursor: 'auto' }}
+                className="rate"
+                defaultValue={3}
+                style={{ marginTop: '-8px', fontSize: '16px' }}
               />
             </Col>
           </Row>
         </div>
-        <Tabs
-          activeKey={this.props.tabIndex}
-          onChange={this.getTestList}
-        >
-          <TabPane  tab="描述" key="1">
-            <ProblemInfo problemInfo={problemInfo} infoLoading={loading}/>
+        <Tabs activeKey={this.props.tabIndex} onChange={this.getTestList}>
+          <TabPane tab="描述" key="1">
+            <ProblemInfo problemInfo={problemInfo} infoLoading={loading} />
           </TabPane>
           <TabPane tab="数据" key="2">
             <ProblemData codeValue={this.props.codeValue} />
@@ -70,7 +74,7 @@ class ChoiceTab extends Component {
             />
           </TabPane>
           <TabPane tab="历史" key="4">
-            <ProblemSubmission testList={testList} historyLoading={loading}/>
+            <ProblemSubmission testList={testList} historyLoading={loading} />
           </TabPane>
         </Tabs>
       </div>
@@ -78,4 +82,4 @@ class ChoiceTab extends Component {
   }
 }
 
-export default ChoiceTab
+export default ChoiceTab;

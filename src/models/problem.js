@@ -6,7 +6,6 @@ import {
   saveCode,
 } from '../services/api';
 
-
 export default {
   namespace: 'problem',
 
@@ -76,7 +75,7 @@ export default {
       });
     },
 
-    *getTestResult ({ payload }, { call, put }) {
+    *getTestResult({ payload }, { call, put }) {
       let response = yield call(getTestResult, payload);
       if (response.code === 0) {
         yield put({
@@ -133,46 +132,46 @@ export default {
   },
 
   reducers: {
-    saveProblemInfo (state, action) {
+    saveProblemInfo(state, action) {
       return {
         ...state,
         problemInfo: action.payload,
       };
     },
 
-    saveTestList (state, action) {
+    saveTestList(state, action) {
       return {
         ...state,
         testList: action.payload,
       };
     },
 
-    saveSubmitCodeStatus (state, action) {
+    saveSubmitCodeStatus(state, action) {
       return {
         ...state,
         submitStatus: action.payload,
       };
     },
 
-    saveSaveCodeStatus (state, action) {
+    saveSaveCodeStatus(state, action) {
       return {
         ...state,
         saveStatus: action.payload,
-      }
+      };
     },
 
-    saveTestResult (state, action) {
+    saveTestResult(state, action) {
       return {
         ...state,
         testResult: action.payload,
       };
     },
 
-    changeLoading (state, action) {
+    changeLoading(state, action) {
       return {
         ...state,
         loading: action.payload,
-      }
+      };
     },
   },
-}
+};

@@ -107,7 +107,7 @@ export async function fakeRegister(params) {
 }
 
 // 检查邮箱是否被注册
-export async function checkEmail (params) {
+export async function checkEmail(params) {
   return request('apiv1/check', {
     method: 'POST',
     body: params,
@@ -123,8 +123,6 @@ export async function fakeAccountLogin(params) {
 }
 
 // 获得题目信息
-export async function getProblemInfo (params) {
+export async function getProblemInfo(params) {
   return request(`/apiv1/problem/getmess${params}`);
 }
-
-

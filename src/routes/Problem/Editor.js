@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Button, Popover, Icon, Radio, Tooltip } from 'antd';
 import AceEditor from 'react-ace';
-import getDefaultLangs  from '../../utils/langFormat';
+import getDefaultLangs from '../../utils/langFormat';
 import styles from './css/Problem.less';
 //语言
 import 'brace/mode/c_cpp';
@@ -18,8 +18,7 @@ const defaultLangList = getDefaultLangs('Luwenjing');
 let newCode = '';
 
 class Editor extends Component {
-
-  constructor (props) {
+  constructor(props) {
     super(props);
 
     this.state = {
@@ -27,7 +26,7 @@ class Editor extends Component {
       size: 4,
       lang: 'c',
       mode: 'c_cpp',
-      defaultCode: (this.props.codeValue ? this.props.codeValue : defaultLangList['c_cpp'])
+      defaultCode: this.props.codeValue ? this.props.codeValue : defaultLangList['c_cpp'],
     };
 
     this.handleTheme = this.handleTheme.bind(this);
@@ -39,11 +38,11 @@ class Editor extends Component {
     this.onChange = this.onChange.bind(this);
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.props.setCodeValue(newCode);
   }
 
-  handleLanguage (e) {
+  handleLanguage(e) {
     let mode = e.target.value === 'c' || e.target.value === 'c++' ? 'c_cpp' : e.target.value;
     this.setState({
       lang: e.target.value,
@@ -52,19 +51,19 @@ class Editor extends Component {
     });
   }
 
-  handleTheme (e) {
+  handleTheme(e) {
     this.setState({
-      theme: e.target.value
+      theme: e.target.value,
     });
   }
 
-  handleSize (e) {
+  handleSize(e) {
     this.setState({
       size: e.target.value,
     });
   }
 
-  handleRefresh () {
+  handleRefresh() {
     let lang = this.state.lang;
     let defaultCode = defaultLangList['c_cpp'];
     for (let key in defaultLangList) {
@@ -72,21 +71,21 @@ class Editor extends Component {
         defaultCode = defaultLangList[key];
       }
     }
-    this.setState( { defaultCode } );
+    this.setState({ defaultCode });
   }
 
-  handleSave () {
+  handleSave() {
     const { dispatch } = this.props;
     dispatch({
       type: 'problem/saveCode',
       payload: {
-        'problemId': this.props.problemId,
-        'code': newCode,
-      }
+        problemId: this.props.problemId,
+        code: newCode,
+      },
     });
   }
 
-  submitCode () {
+  submitCode() {
     //切换tabs
     this.props.changeIndex();
     this.props.setCodeValue(newCode);
@@ -94,10 +93,10 @@ class Editor extends Component {
     dispatch({
       type: 'problem/submitCode',
       payload: {
-        'problemId': this.props.problemId,
-        'code': newCode,
-        'language': this.state.lang,
-      }
+        problemId: this.props.problemId,
+        code: newCode,
+        language: this.state.lang,
+      },
     });
   }
 
@@ -111,37 +110,38 @@ class Editor extends Component {
     }
   }
 
-  render () {
-
+  render() {
     newCode = this.state.defaultCode;
 
-    const content = <div>
-      <h4>环境配色</h4>
-      <RadioGroup onChange={this.handleTheme} value={this.state.theme}>
-        <Radio value="xcode">xcode</Radio>
-        <Radio value="github">github</Radio>
-        <Radio value="monokai">monokai</Radio>
-      </RadioGroup>
-      <h4 className={styles.codeSize}>代码缩进</h4>
-      <RadioGroup onChange={this.handleSize} value={this.state.size}>
-        <Radio value={2}>2</Radio>
-        <Radio value={4}>4</Radio>
-        <Radio value={8}>8</Radio>
-      </RadioGroup>
-    </div>;
+    const content = (
+      <div>
+        <h4>环境配色</h4>
+        <RadioGroup onChange={this.handleTheme} value={this.state.theme}>
+          <Radio value="xcode">xcode</Radio>
+          <Radio value="github">github</Radio>
+          <Radio value="monokai">monokai</Radio>
+        </RadioGroup>
+        <h4 className={styles.codeSize}>代码缩进</h4>
+        <RadioGroup onChange={this.handleSize} value={this.state.size}>
+          <Radio value={2}>2</Radio>
+          <Radio value={4}>4</Radio>
+          <Radio value={8}>8</Radio>
+        </RadioGroup>
+      </div>
+    );
 
     return (
-      <div className={styles.editorContainer} style={{width: this.props.editorWidth}}>
+      <div className={styles.editorContainer} style={{ width: this.props.editorWidth }}>
         <AceEditor
           mode={this.state.mode}
           theme={this.state.theme}
           onChange={this.onChange}
           tabSize={this.state.size}
           name="UNIQUE_ID_OF_DIV"
-          editorProps={{$blockScrolling: true}}
+          editorProps={{ $blockScrolling: true }}
           value={this.state.defaultCode}
           fontSize={14}
-          style={{width: '100%', height: 460}}
+          style={{ width: '100%', height: 460 }}
         />
         <div className={styles.editorFooter}>
           <select className={styles.codeLanguage} onChange={this.handleLanguage}>
@@ -167,7 +167,9 @@ class Editor extends Component {
               <Icon type="save" />
             </Button>
           </Tooltip>
-          <Button type="primary" onClick={this.submitCode} style={{float: 'right'}}>提交代码</Button>
+          <Button type="primary" onClick={this.submitCode} style={{ float: 'right' }}>
+            提交代码
+          </Button>
         </div>
       </div>
     );

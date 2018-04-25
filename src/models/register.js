@@ -32,7 +32,7 @@ export default {
       }
     },
 
-    *checkEmailExist ({ payload }, { call, put }) {
+    *checkEmailExist({ payload }, { call, put }) {
       const response = yield call(checkEmail, payload);
       if (response.code === 0) {
         yield put({
@@ -53,11 +53,11 @@ export default {
       };
     },
 
-    checkEmail (state, { payload }) {
+    checkEmail(state, { payload }) {
       return {
         ...state,
         isExist: payload,
       };
-    }
+    },
   },
 };

@@ -3,8 +3,7 @@ import { Card } from 'antd';
 import styles from './css/Problem.less';
 
 class ProblemInfo extends Component {
-
-  render () {
+  render() {
     const { problemInfo, infoLoading } = this.props;
     return (
       <div style={{ padding: '0 5px' }}>

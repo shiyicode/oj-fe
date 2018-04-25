@@ -20,7 +20,7 @@ class StandardTable extends PureComponent {
       if (count === 0) {
         const { isSuccess } = nextProps.collection; // 失败和成功标志
         let collectionInfo = '';
-        let warnIcon = <Icon type="smile-circle" style={{ color: '#108ee9' }} />
+        let warnIcon = <Icon type="smile-circle" style={{ color: '#108ee9' }} />;
         if (isSuccess) {
           if (flag === 'set') {
             collectionInfo = '收藏成功';
@@ -29,10 +29,10 @@ class StandardTable extends PureComponent {
           }
         } else if (flag === 'cancel') {
           collectionInfo = '取消收藏失败';
-          warnIcon = <Icon type="frown-o" style={{ color: '#108ee9' }} />
+          warnIcon = <Icon type="frown-o" style={{ color: '#108ee9' }} />;
         } else {
           collectionInfo = '收藏失败';
-          warnIcon = <Icon type="frown-o" style={{ color: '#108ee9' }} />
+          warnIcon = <Icon type="frown-o" style={{ color: '#108ee9' }} />;
         }
         notification.success({
           message: '收藏提示',
