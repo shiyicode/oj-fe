@@ -2,6 +2,7 @@ export function getProblemInfo(req, res) {
   const problemInfo = {
     user_id: '123456',
     nick_name: '哈哈哈',
+    user_avator: 'https://gw.alipayobjects.com/zos/rmsportal/UjusLxePxWGkttaqqmUI.png',
     is_collection: 0,
     ac_rate: 11,
     time_limit: 1000,
@@ -31,7 +32,10 @@ export function getProblemInfo(req, res) {
 export function getCode(req, res) {
   const result = {
     code: 0,
-    data: '',
+    data: {
+      code: 'luwenjing',
+      language: 'c',
+    },
   };
   if (res && res.json) {
     res.json(result);
@@ -40,15 +44,75 @@ export function getCode(req, res) {
   }
 }
 
-export function getTestResult(req, res) {
-  const testResult = {
-    runStatus: 4,
-    runRate: 100,
-    runTime: '4321',
+// 提交代码返回值
+export function submitCode (req, res) {
+  const result = {
+    code: 0,
+    data: '123456',
   };
   if (res && res.json) {
-    res.json(testResult);
+    res.json(result);
   } else {
-    return testResult;
+    return result;
   }
 }
+
+// 测评返回值
+export function getCommomResult(req, res) {
+  const result = {
+      "code": 0,
+      "data": {
+        "problem_name": "tow sum",
+        "username": "luwenjing",
+        "status": 4,
+        "memory_cost": 1000,
+        "time_cost": 1000,
+        "lang": "Go",
+        "code": "代码",
+        "time": "2018.04.24 00:00:00",
+      },
+    };
+
+  if (res && res.json) {
+    res.json(result);
+  } else {
+    return result;
+  }
+}
+
+export function getTestResult (req, res) {
+  const result = {
+    "code": 0,
+    "data": {
+      "username": "fightcoder",
+      "status": 4,
+      "memory_cost": 1000,
+      "time_cost": 1000,
+      "lang": "Go",
+      "code": "代码",
+      "output": "123456",
+      "expected": "123456",
+      "time": "2018.04.24 00:00:00",
+    },
+  };
+  if (res && res.json) {
+    res.json(result);
+  } else {
+    return result;
+  }
+}
+
+// 保存代码
+export function saveCode(req, res) {
+  const result = {
+    code: 0,
+    data: true,
+  };
+
+  if (res && res.json) {
+    res.json(result);
+  } else {
+    return result;
+  }
+}
+

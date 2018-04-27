@@ -83,6 +83,16 @@ const menuData = [
     ],
   },
   {
+    name: '评测',
+    icon: 'table',
+    path: 'submission',
+    children: [
+      {
+        path: 'detail/:id',
+      },
+    ],
+  },
+  {
     name: '详情页',
     icon: 'profile',
     path: 'profile',

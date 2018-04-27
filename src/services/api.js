@@ -124,14 +124,50 @@ export async function fakeAccountLogin(params) {
 
 // 获得题目信息
 export async function getProblemInfo(params) {
-  return request(`/apiv1/problem/getmess?${stringify(params)}`);
+  return request(`/apiv1/problem/get?${stringify(params)}`);
 }
 
 // 获得提交的代码
 export async function getCode(params) {
-  return request('/authv1/problem/getcode', {
+  return request(`/authv1/problem/code/get?${stringify(params)}`)
+}
+
+// 普通提交
+export async function commonSubmit (params) {
+  return request('/authv1/submit/common', {
+    method: 'POST',
+    body: params,
+  })
+}
+
+
+// 测试提交
+export async function testSubmit (params) {
+  return request('/authv1/submit/test', {
     method: 'POST',
     body: params,
   });
 }
 
+// 获得详情
+export async function getCommonResult (params) {
+  return request(`/authv1/submit/getcommon?${stringify(params)}`);
+}
+
+// 获得详情
+export async function getTestResult (params) {
+  return request(`/authv1/submit/gettest?${stringify(params)}`);
+}
+
+// 保存代码
+export async function saveCode (params) {
+  return request('/authv1/problem/code/set', {
+    method: 'POST',
+    body: params,
+  });
+}
+
+// 获取提交记录list
+export async function getTestList (params) {
+  return request(`/apiv1/submit/list?${stringify(params)}`);
+}

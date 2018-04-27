@@ -18,11 +18,15 @@ export default class Problem extends PureComponent {
       iconType: 'left', // 方向图标，默认向左
       tabIndex: '1', // 默认选项卡的索引为1,
       codeValue: '',
+      language: '',
+      isSubmit: false,
     };
 
     this.changeEditorSize = this.changeEditorSize.bind(this);
     this.checkActive = this.checkActive.bind(this);
     this.setCodeValue = this.setCodeValue.bind(this);
+    this.setLanguage = this.setLanguage.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   componentDidMount() {
@@ -35,9 +39,21 @@ export default class Problem extends PureComponent {
     });
   }
 
+  setCodeValue(value) {
+    this.setState({
+      codeValue: value,
+    });
+  }
+
+  setLanguage(lang) {
+    this.setState({
+      language: lang,
+    });
+  }
+
   // 改变编辑器和题目信息区域的大小
   changeEditorSize() {
-    let left, right, editorWidth, iconType;
+    let left, right, iconType;
     if (this.state.left === '48%') {
       left = '38%';
       right = '73%';
@@ -48,12 +64,6 @@ export default class Problem extends PureComponent {
       iconType = 'left';
     }
     this.setState({ left, right, iconType });
-  }
-
-  setCodeValue(value) {
-    this.setState({
-      codeValue: value,
-    });
   }
 
   // 当点击提交代码按钮时切换tabs
@@ -71,6 +81,10 @@ export default class Problem extends PureComponent {
     }
   }
 
+  handleSubmit (flag) {
+    this.setState({isSubmit: flag});
+  }
+
   render() {
     const { problem } = this.props;
     return (
@@ -85,6 +99,9 @@ export default class Problem extends PureComponent {
                   {...problem}
                   dispatch={this.props.dispatch}
                   codeValue={this.state.codeValue}
+                  language={this.state.language}
+                  handleSubmit={this.handleSubmit}
+                  loading={this.state.isSubmit}
                 />
               </div>
               <div style={{ width: 25 }} className={styles.animation}>
@@ -98,11 +115,14 @@ export default class Problem extends PureComponent {
                 <Editor
                   width="100%"
                   changeIndex={this.checkActive}
-                  codeValue={problem.problemInfo.code}
+                  codeValue={problem.code}
+                  language={problem.language}
                   saveStatus={problem.saveStatus}
                   dispatch={this.props.dispatch}
                   setCodeValue={this.setCodeValue}
+                  setLanguage={this.setLanguage}
                   problemId={this.props.match.params.id}
+                  handleSubmit={this.handleSubmit}
                 />
               </div>
             </div>

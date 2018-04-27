@@ -14,6 +14,7 @@ let target = {};
 let flag = ''; // 收藏和取消收藏标志
 
 class StandardTable extends PureComponent {
+
   componentWillReceiveProps(nextProps) {
     // 收藏和取消收藏返回时的显示逻辑
     if (nextProps.collection && nextProps.collection !== {}) {
@@ -74,7 +75,7 @@ class StandardTable extends PureComponent {
   // 渲染对应的收藏按钮
   renderStar(isCollect) {
     if (isCollect === true) {
-      return <Icon type="star" style={{ color: 'orange' }} />;
+      return <Icon type="star-o" style={{ color: 'orange' }} />;
     } else {
       return <Icon type="star-o" />;
     }

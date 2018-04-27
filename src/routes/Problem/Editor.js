@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Button, Popover, Icon, Radio, Tooltip } from 'antd';
+import { Button, Popover, Icon, Radio, Tooltip, Select, Modal } from 'antd';
 import AceEditor from 'react-ace';
 import getDefaultLangs from '../../utils/langFormat';
+import { getTimeNow } from '../../utils/utils';
 import styles from './index.less';
 // 语言
 import 'brace/mode/c_cpp';
@@ -13,9 +14,11 @@ import 'brace/theme/xcode';
 import 'brace/theme/monokai';
 
 const RadioGroup = Radio.Group;
+const { Option } = Select;
+let count = 0;
 
 const defaultLangList = getDefaultLangs('Luwenjing');
-let newCode = '';
+
 
 class Editor extends Component {
   constructor(props) {
@@ -38,15 +41,50 @@ class Editor extends Component {
     this.onChange = this.onChange.bind(this);
   }
 
-  componentDidMount() {
-    this.props.setCodeValue(newCode);
+  componentDidMount () {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'problem/fetchCode',
+      payload: {
+        problem_id: this.props.problemId,
+      },
+    });
   }
 
-  handleLanguage(e) {
-    let mode = e.target.value === 'c' || e.target.value === 'c++' ? 'c_cpp' : e.target.value;
+  componentWillReceiveProps (nextProps) {
+    if (nextProps.codeValue && count === 0) {
+      const { language, codeValue } = this.props;
+      if (language && codeValue) {
+        const mode = language === 'c' || language === 'c++' ? 'c_cpp' : language;
+        this.setState({
+          defaultCode: codeValue,
+          lang: language,
+          mode,
+        });
+        this.props.setCodeValue(codeValue); // 设置代码
+        this.props.setLanguage(language); // 设置语言
+        count += 1;
+      }
+    }
+  }
+
+  // 当编辑器代码改变时触发
+  onChange(newValue) {
+    if (newValue !== '') {
+      this.props.setCodeValue(newValue); // 将代码同步给自测页面
+      this.setState({
+        defaultCode: newValue,
+      });
+    }
+  }
+
+  handleLanguage(value) {
+    const mode = value === 'c' || value === 'c++' ? 'c_cpp' : value;
+    this.props.setLanguage(value);
+    this.props.setCodeValue(defaultLangList[mode]);
     this.setState({
-      lang: e.target.value,
-      defaultCode: defaultLangList[e.target.value],
+      lang: value,
+      defaultCode: defaultLangList[mode],
       mode,
     });
   }
@@ -64,9 +102,9 @@ class Editor extends Component {
   }
 
   handleRefresh() {
-    let lang = this.state.lang;
-    let defaultCode = defaultLangList['c_cpp'];
-    for (let key in defaultLangList) {
+    const { lang } = this.state;
+    let defaultCode = defaultLangList.c_cpp;
+    for (const key in defaultLangList) {
       if (key === lang) {
         defaultCode = defaultLangList[key];
       }
@@ -75,43 +113,34 @@ class Editor extends Component {
   }
 
   handleSave() {
-    const { dispatch } = this.props;
+    const { dispatch, problemId } = this.props;
     dispatch({
       type: 'problem/saveCode',
       payload: {
-        problemId: this.props.problemId,
-        code: newCode,
+        problem_id: problemId,
+        code: this.state.defaultCode,
       },
     });
   }
 
   submitCode() {
-    //切换tabs
+    const { dispatch, problemId } = this.props;
+    const { defaultCode, lang } = this.state;
+    // 切换tabs
     this.props.changeIndex();
-    this.props.setCodeValue(newCode);
-    const { dispatch } = this.props;
+    this.props.handleSubmit(true);
     dispatch({
-      type: 'problem/submitCode',
+      type: 'problem/commonSubmitCode',
       payload: {
-        problemId: this.props.problemId,
-        code: newCode,
-        language: this.state.lang,
+        problem_id: problemId,
+        user_id: '123456',
+        code: defaultCode,
+        language: lang,
       },
     });
   }
 
-  onChange(newValue) {
-    if (newValue !== '') {
-      // this.props.setCodeValue(newValue);
-      newCode = newValue;
-      this.setState({
-        defaultCode: newCode,
-      });
-    }
-  }
-
   render() {
-    newCode = this.state.defaultCode;
 
     const content = (
       <div>
@@ -131,7 +160,7 @@ class Editor extends Component {
     );
 
     return (
-      <div className={styles.editorContainer} style={{ width: this.props.editorWidth }}>
+      <div className={styles.editorContainer} >
         <AceEditor
           mode={this.state.mode}
           theme={this.state.theme}
@@ -141,15 +170,15 @@ class Editor extends Component {
           editorProps={{ $blockScrolling: true }}
           value={this.state.defaultCode}
           fontSize={14}
-          style={{ width: '100%', height: 460 }}
+          style={{ width: '100%', height: 490 }}
         />
         <div className={styles.editorFooter}>
-          <select className={styles.codeLanguage} onChange={this.handleLanguage}>
-            <option value="c">C</option>
-            <option value="c++">C++</option>
-            <option value="java">Java</option>
-            <option value="python">Python</option>
-          </select>
+          <Select className={styles.codeLanguage} onChange={this.handleLanguage} defaultValue="选择语言">
+            <Option value="c">C</Option>
+            <Option value="c++">C++</Option>
+            <Option value="java">Java</Option>
+            <Option value="python">Python</Option>
+          </Select>
           <Popover content={content} trigger="click">
             <Tooltip title="设置">
               <Button className={styles.iconButton}>
@@ -163,7 +192,7 @@ class Editor extends Component {
             </Button>
           </Tooltip>
           <Tooltip title="保存">
-            <Button className={styles.iconButton}>
+            <Button className={styles.iconButton} onClick={this.handleSave}>
               <Icon type="save" />
             </Button>
           </Tooltip>

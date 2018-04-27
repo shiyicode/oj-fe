@@ -4,9 +4,19 @@
   width: 100%;
 }
 
+.problem-header {
+  padding-right: 10px;
+}
+
+.problem-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .problemTab {
   overflow-y: auto;
-  height: 460px;
+  height: 490px;
 }
 
 .cardPlus {
@@ -16,13 +26,13 @@
 }
 
 .cardPlus > div[class="ant-card-head"] {
-  padding: 0 10px 0 0;
+  padding: 0;
   min-height: 30px;
   border-bottom: 0;
 }
 
 .cardPlus > div[class="ant-card-body"] {
-  padding: 0 10px 0 0;
+  padding: 0;
   line-height: 25px;
 }
 
@@ -74,6 +84,10 @@ ul li.ant-select-dropdown-menu-item {
   width: 100px;
   border-radius: 5px;
   height: 30px;
+}
+
+div[class="ant-tabs-extra-content"] {
+  line-height: 45px;
 }
 
 @media screen and (max-width: 767px) {

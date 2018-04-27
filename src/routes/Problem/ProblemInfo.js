@@ -6,7 +6,7 @@ class ProblemInfo extends Component {
   render() {
     const { problemInfo, infoLoading } = this.props;
     return (
-      <div>
+      <div style={{paddingRight: 10}}>
         <Card title="题目描述" className={styles.cardPlus} loading={infoLoading}>
           <p>{problemInfo.description}</p>
         </Card>

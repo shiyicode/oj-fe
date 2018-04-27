@@ -1,25 +1,30 @@
+import { notification, Icon } from 'antd';
 import {
   getProblemInfo,
-  getTestResult,
+  commonSubmit,
+  testSubmit,
   getCode,
-  submitCode,
   saveCode,
+  getCommonResult,
+  getTestResult,
+  queryCollection,
 } from '../services/api';
+
 
 export default {
   namespace: 'problem',
 
   state: {
-    problemInfo: {},
-    submitStatus: {
-      status: 0,
-      testInfo: {},
+    problemInfo: {}, // 题目详情
+    testResult: {}, // 测试提交结果
+    commonResult: {}, // 普通提交结果
+    isSuccess: 1, // 提交代码是否成功
+    code: '', // 本题的提交代码
+    language: '',
+    collection: {
+      isSuccess: false,
+      flag: '',
     },
-    saveStatus: 0,
-    testResult: {
-      result: 1,
-    },
-    code: '',
     loading: true,
     error: '',
   },
@@ -59,7 +64,7 @@ export default {
 
       if (response.code === 0) {
         yield put({
-          type: 'saveSubmitCodeStatus',
+          type: 'getCode',
           payload: response.data,
         });
       }
@@ -69,20 +74,40 @@ export default {
       });
     },
 
-    *submitCode({ payload }, { call, put }) {
+    // 测试提交
+    *testSubmitCode({ payload }, { call, put }) {
       yield put({
         type: 'changeLoading',
         payload: true,
       });
-      const response = yield call(submitCode, payload);
-
-      if (response.code === 0) {
+      const response1 = yield call(testSubmit, payload); // 提交代码
+      if (response1.code === 0) {
+        const params = {
+          submit_id: response1.data.submit_id,
+        };
+        let response2 = yield call(getTestResult, params); // 获得测评结果
+        if (response2.code === 0) {
+          yield put({
+            type: 'saveTestResult',
+            payload: response2.data,
+          });
+          let { status } = response2.data;
+          while (status !== 0) {
+            console.log(params);
+            response2 = yield call(getTestResult, params);
+            if (response2.code === 0) {
+              status = response2.data.status;
+              yield put({
+                type: 'saveTestResult',
+                payload: response2.data,
+              });
+            }
+          }
+        }
+      } else {
         yield put({
-          type: 'saveSubmitCodeStatus',
-          payload: {
-            status: 1,
-            submitId: response.data,
-          },
+          type: 'submitCode',
+          payload: 0,
         });
       }
       yield put({
@@ -91,37 +116,88 @@ export default {
       });
     },
 
-    *getTestResult({ payload }, { call, put }) {
-      let response = yield call(getTestResult, payload);
-      if (response.code === 0) {
-        yield put({
-          type: 'saveTestResult',
-          payload: response.data.submit,
-        });
-        let status = response.data.submit.result;
-        while (status < 4) {
-          response = yield call(getTestResult, payload);
-          if (response.code === 0) {
-            status = response.data.submit.result;
-            yield put({
-              type: 'saveTestResult',
-              payload: response.data.submit,
-            });
-          }
-        }
-      }
-    },
-
-    *saveCode({ payload }, { call, put }) {
+    // 普通提交
+    *commonSubmitCode ({ payload }, { call, put }){
       yield put({
         type: 'changeLoading',
         payload: true,
       });
-      const response = yield call(saveCode, payload);
+      const response1 = yield call(commonSubmit, payload); // 提交代码
+      if (response1.code === 0) {
+        const params = {
+          submit_id: response1.data.submit_id,
+        }
+        let response2 = yield call(getCommonResult, params); // 获得测评结果
+        if (response2.code === 0) {
+          yield put({
+            type: 'saveCommonResult',
+            payload: response2.data,
+          });
+          let { status } = response2.data;
+          while (status !== 0) {
+            response2 = yield call(getCommonResult, params);
+            if (response2.code === 0) {
+              status = response2.data.status;
+              yield put({
+                type: 'saveCommonResult',
+                payload: response2.data,
+              });
+            }
+          }
+        }
+      } else {
+        yield put({
+          type: 'submitCode',
+          payload: 0,
+        });
+      }
       yield put({
-        type: 'saveSaveCodeStatus',
-        payload: response,
+        type: 'changeLoading',
+        payload: false,
       });
+    },
+
+    // 保存代码
+    *saveCode({ payload }, { call }) {
+      const response = yield call(saveCode, payload);
+      if (response.code === 0) {
+        notification.success({
+          message: '保存代码提示',
+          description: '保存成功',
+          icon: <Icon type="smile-circle" style={{ color: '#108ee9' }} />,
+          duration: 2,
+        });
+      } else {
+        notification.error({
+          message: '保存代码提示',
+          description: '保存成功',
+          icon: <Icon type="frown-o" style={{ color: '#108ee9' }} />,
+          duration: 2,
+        });
+      }
+    },
+
+    // 收藏题目
+    *collection({ payload }, { call, put }) {
+      yield put({
+        type: 'changeLoading',
+        payload: true,
+      });
+      const response = yield call(queryCollection, payload);
+      if (response && response.code === 0) {
+        yield put({
+          type: 'saveCollection',
+          payload: response.data,
+        });
+      } else {
+        yield put({
+          type: 'saveCollection',
+          payload: {
+            error: '服务器错误',
+            loading: false,
+          },
+        });
+      }
       yield put({
         type: 'changeLoading',
         payload: false,
@@ -137,24 +213,25 @@ export default {
       };
     },
 
-    saveTestList(state, action) {
+    getCode(state, action) {
       return {
         ...state,
-        testList: action.payload,
+        code: action.payload.code,
+        language: action.payload.language,
       };
     },
 
-    saveSubmitCodeStatus(state, action) {
+    submitCode (state, action) {
       return {
         ...state,
-        submitStatus: action.payload,
+        isSuccess: action.payload,
       };
     },
 
-    saveSaveCodeStatus(state, action) {
+    saveCommonResult(state, action) {
       return {
         ...state,
-        saveStatus: action.payload,
+        commonResult: action.payload,
       };
     },
 
@@ -162,6 +239,16 @@ export default {
       return {
         ...state,
         testResult: action.payload,
+      };
+    },
+
+    saveCollection(state, action) {
+      return {
+        ...state,
+        collection: {
+          isSuccess: action.payload,
+          flag: true,
+        },
       };
     },
 
