@@ -56,7 +56,7 @@ import axios from 'axios';
 //         });
 //       }
 //       return error;
-//     });
+//     }
 // }
 
 export default function request (path, options) {
