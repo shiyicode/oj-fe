@@ -37,9 +37,7 @@ export default class Register extends Component {
   componentWillReceiveProps(nextProps) {
     // 判断注册是否成功
     if (nextProps.register.status === true) {
-      console.log(nextProps.register);
-      sessionStorage.setItem('userId', nextProps.register.userId); // 保存用户id
-      this.props.dispatch(routerRedux.push('/problem/open'));
+      this.props.dispatch(routerRedux.push('/user/login'));
     } else if (nextProps.register.status === false) {
       notification.error({
         message: '注册提示',
