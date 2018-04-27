@@ -18,12 +18,15 @@ function getTestListResponse (response) {
             id: item.submit_id,
             problemName: item.problem_name,
           },
-          userName: item.username,
+          userName: {
+            userName: item.user_name,
+            userId: item.user_id,
+          },
           status: item.status,
           runningTime: item.time_cost,
           runningMemory: item.memory_cost,
-          language: item.language,
-          submitTime: item.timee,
+          language: item.lang,
+          submitTime: item.time,
         });
       });
     }
@@ -55,9 +58,10 @@ export default {
       });
       const response = yield call(getTestList, payload);
       if (response.code === 0) {
+        const data = getTestListResponse(response);
         yield put({
           type: 'save',
-          payload: getTestListResponse(response),
+          payload: data,
         });
       } else {
         yield put({
@@ -78,7 +82,8 @@ export default {
     save(state, action) {
       return {
         ...state,
-        data: action.payload,
+        list: action.payload.list,
+        pagination: action.payload.pagination,
       };
     },
     changeLoading(state, action) {
@@ -87,5 +92,5 @@ export default {
         loading: action.payload,
       };
     },
-  }
+  },
 }

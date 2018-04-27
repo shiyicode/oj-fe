@@ -171,3 +171,4 @@ export async function saveCode (params) {
 export async function getTestList (params) {
   return request(`/apiv1/submit/list?${stringify(params)}`);
 }
+

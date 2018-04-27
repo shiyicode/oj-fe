@@ -3,13 +3,14 @@ export function getTestList (req, res) {
   for (let i = 0; i < 10; i+=1) {
     testList.push({
       "problem_name":'A+B',
-      "username": "fightcoder",
-      "status": Math.round(Math.random() * 12),
+      "user_name": "fightcoder",
+      "user_id": "123",
+      "status": Math.round(Math.random() * 11),
       "memory_cost": 1000,
       "time_cost": 1000,
       "lang": "Go",
       "time": "2018.04.24 00:00:00",
-      "submit_id": "1",
+      "submit_id": 1000 + i,
     });
   }
   const result = {

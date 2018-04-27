@@ -117,11 +117,11 @@ export const getRouterData = app => {
     '/problem/personal': {
       component: dynamicWrapper(app, ['list'], () => import('../routes/ProblemList/BasicList')),
     },
-    'submission/': {
-      component: dynamicWrapper(app, ['testList'], () => import('./routes/TestList')),
+    '/submission/': {
+      component: dynamicWrapper(app, ['testList'], () => import('../routes/TestList')),
     },
-    'submission/detail/:id': {
-      component: dynamicWrapper(app, ['testInfo'], () => import('./routes/TestInfo')),
+    '/submission/detail/:id': {
+      component: dynamicWrapper(app, ['testInfo'], () => import('../routes/TestInfo')),
     },
     '/list/card-list': {
       component: dynamicWrapper(app, ['list'], () => import('../routes/ProblemList/CardList')),

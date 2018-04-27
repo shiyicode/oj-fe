@@ -85,7 +85,7 @@ export default {
             });
             // 获取题目的收藏信息
             const responseCollectionList = yield call(queryCollectionList, {
-              ids: idList.join(','),
+              problem_ids: idList.join(','),
             });
             if (responseCollectionList && responseCollectionList.code === 0) {
               const { list } = response.data;

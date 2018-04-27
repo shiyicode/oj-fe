@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { Input, Button, Card, Spin } from 'antd';
+import { routerRedux, Link } from 'dva/router';
 import styles from './index.less';
 
 const { TextArea } = Input;
 
 // 进度条的变化
 const arr = [
-  '正在提交Submiting',
   '等待测试Pending',
   '正在编译Compiling',
   '正在评测Running',
@@ -19,7 +19,7 @@ const arr = [
   '运行时错误Runtime Error',
   '系统错误System Error',
 ];
-const colors = ['#000', '#bbb', '#fad733', '#4FC1E9', 'rgb(39, 194, 76)', '#f05050'];
+const colors = ['#bbb', '#fad733', '#4FC1E9', 'rgb(39, 194, 76)', '#f05050'];
 
 class ProblemData extends Component {
   constructor(props) {
@@ -49,16 +49,20 @@ class ProblemData extends Component {
   submitCode() {
     const { codeValue, language, dispatch } = this.props;
     const { testValue } = this.state;
-    this.setState({loading: true});
-    dispatch({
-      type: 'problem/testSubmitCode',
-      payload: {
-        user_id: '123456',
-        language,
-        input: testValue.split('\n').join(','),
-        code: codeValue,
-      },
-    });
+    if (sessionStorage.getItem('userId')) {
+      this.setState({loading: true});
+      dispatch({
+        type: 'problem/testSubmitCode',
+        payload: {
+          user_id: '123456',
+          language,
+          input: testValue.split('\n').join(','),
+          code: codeValue,
+        },
+      });
+    } else {
+      dispatch(routerRedux.push('/user/login'));
+    }
   }
 
   showResult (testResult, isSuccess) {
@@ -76,9 +80,6 @@ class ProblemData extends Component {
             </Card>
             <Card title="你的输出" className={styles.cardPlus}>
               <p>{testResult.output}</p>
-            </Card>
-            <Card title="期待输出" className={styles.cardPlus}>
-              <p>{testResult.expected}</p>
             </Card>
           </div>
         }

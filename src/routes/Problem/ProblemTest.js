@@ -3,7 +3,6 @@ import { Spin, Progress, Row, Col, Card } from 'antd';
 
 // 进度条的变化
 const arr = [
-  '正在提交Submiting',
   '等待测试Pending',
   '正在编译Compiling',
   '正在评测Running',
@@ -16,7 +15,7 @@ const arr = [
   '运行时错误Runtime Error',
   '系统错误System Error',
 ];
-const colors = ['#000', '#bbb', '#fad733', '#4FC1E9', 'rgb(39, 194, 76)', '#f05050'];
+const colors = ['#bbb', '#fad733', '#4FC1E9', 'rgb(39, 194, 76)', '#f05050'];
 function changeProgress(testResult) {
   if (testResult.result < 4) {
     return <Progress percent={testResult.acCase} status="active" />;

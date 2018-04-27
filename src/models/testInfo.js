@@ -1,4 +1,4 @@
-import { getTestInfo } from '../services/api';
+import { getCommonResult } from '../services/api';
 
 export default {
   namespace: 'testInfo',
@@ -14,7 +14,7 @@ export default {
         type: 'changeLoading',
         payload: true,
       });
-      const response = yield call(getTestInfo, payload);
+      const response = yield call(getCommonResult, payload);
       if (response.code === 0) {
         yield put({
           type: 'save',
@@ -41,6 +41,6 @@ export default {
         ...state,
         loading: action.payload,
       };
-    }
+    },
   },
 };

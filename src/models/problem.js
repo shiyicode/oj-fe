@@ -170,7 +170,7 @@ export default {
       } else {
         notification.error({
           message: '保存代码提示',
-          description: '保存成功',
+          description: '保存失败',
           icon: <Icon type="frown-o" style={{ color: '#108ee9' }} />,
           duration: 2,
         });

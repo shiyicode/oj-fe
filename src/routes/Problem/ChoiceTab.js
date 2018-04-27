@@ -75,7 +75,7 @@ class ChoiceTab extends Component {
 
   collection(e) {
     const { dispatch, problemInfo } = this.props;
-    if (!sessionStorage.getItem('userId')) {
+    if (sessionStorage.getItem('userId')) {
       target = e.target;
       count = 0;
       if (target.style.color === 'orange') {
@@ -120,7 +120,7 @@ class ChoiceTab extends Component {
             <div>
               <Link to={`user/${problemInfo.user_id}`}>
                 <Tooltip title="出题者">
-                  <Avatar src={problemInfo.user_avator} style={{marginTop: -20}} />
+                  <Avatar src={problemInfo.user_avator || "https://gw.alipayobjects.com/zos/rmsportal/UjusLxePxWGkttaqqmUI.png"} style={{marginTop: -20}} />
                 </Tooltip>
               </Link>
             </div>

@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Link } from 'dva/router';
 import { connect } from 'dva';
-import { Table, Card, Tag, Pagination, Input, Select, Alert } from 'antd';
+import { Table, Card, Tag, Pagination, Select, Input, Alert } from 'antd';
 import styles from './index.less';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 
@@ -9,9 +9,9 @@ const { Option } = Select;
 const { Search } = Input;
 
 
-const statusArr = ['Submiting', 'Pending','Compiling','Running','Accepted', 'Wrong Answer', 'Compile Error','Time Limit Exceeded', 'Memory Limit Exceeded','Output Limit Exceeded', 'RunTime Error', 'System Error'];
-const colors = ['', '#bbb', '#fad733', '#4FC1E9', 'rgb(39, 194, 76)', '#f05050', '#404040'];
-const langArr = ['程序语言', 'C', 'C++', 'Java', 'Python'];
+const statusArr = ['Pending','Compiling','Running','Accepted', 'Wrong Answer', 'Compile Error','Time Limit Exceeded', 'Memory Limit Exceeded','Output Limit Exceeded', 'RunTime Error', 'System Error'];
+const colors = ['#bbb', '#fad733', '#4FC1E9', 'rgb(39, 194, 76)', '#f05050', '#404040'];
+const langArr = ['C', 'C++', 'Java', 'Python'];
 
 const columns = [{
   title: '编号',
@@ -20,20 +20,18 @@ const columns = [{
   title: '题目名称',
   dataIndex: 'problemName',
   key: 'problemName',
-  render: obj => <Link to={`/submission/${obj.id}`} >{obj.problemName}</Link>,
+  render: obj => <Link to={`/submission/detail/${obj.id}`} >{obj.problemName}</Link>,
 },{
   title: '用户',
   dataIndex: 'userName',
-  render: val => <Link to="/user/123" >{val}</Link>,
+  render: val => <Link to={`/user/${val.userId}`} >{val.userName}</Link>,
 }, {
   title: '运行状态',
   dataIndex: 'status',
   key: 'runStatus',
   render (status) {
-    if (status !== 0) {
-      const num = status > 4 ? 5 : status;
-      return <Tag color={colors[num]}>{statusArr[status]}</Tag>;
-    }
+    const num = status > 4 ? 5 : status;
+    return <Tag color={colors[num]}>{statusArr[status]}</Tag>;
   },
 }, {
   title: '耗时',
@@ -48,7 +46,7 @@ const columns = [{
 }, {
   title: '语言',
   dataIndex: 'language',
-  key: 'runLanguage',
+  key: 'language',
 }, {
   title: '提交时间',
   dataIndex: 'submitTime',
@@ -57,8 +55,9 @@ const columns = [{
 
 const params = {
   lang: '',
-  result: '',
-  requestPage: 1,
+  status: '',
+  current_page: 1,
+  per_page: 10,
 };
 
 function setSelect (arr) {
@@ -85,9 +84,7 @@ export default class TestList extends PureComponent {
     const { dispatch } =  this.props;
     dispatch({
       type: 'testList/fetch',
-      payload: {
-        requestPage: 1,
-      },
+      payload: params,
     });
   }
 
@@ -102,7 +99,7 @@ export default class TestList extends PureComponent {
     });
   }
 
-  // 根据题目名称或题目id查询
+  // 根据题目id查询
   getSearchByInputValue (value) {
     if (value !== '') {
       const { dispatch } =  this.props;
@@ -110,7 +107,7 @@ export default class TestList extends PureComponent {
         type: 'testList/fetch',
         payload: {
           requestPage: 1,
-          problemId: value,
+          problem_id: value,
         },
       });
     }
@@ -127,7 +124,7 @@ export default class TestList extends PureComponent {
   }
   // 根据分页查询
   getTestListByPage (pageNumber) {
-    params.requestPage = pageNumber;
+    params.current_page = pageNumber;
     const { dispatch } =  this.props;
     dispatch({
       type: 'testList/fetch',
@@ -137,27 +134,27 @@ export default class TestList extends PureComponent {
 
   render() {
 
-    const { testList: { loading, error, data: { list, pagination } } }= this.props;
+    const { testList: { loading, error, list, pagination } }= this.props;
     return (
       <PageHeaderLayout title="测评记录">
         <Card bordered={false}>
-          <div>
+          <div style={{marginBottom: 20}}>
             <Search
               placeholder="输入题目ID"
               enterButton
               onSearch={this.getSearchByInputValue}
-              style={{width: '30%' }}
+              style={{width: '30%', marginRight: '5%'}}
             />
             <Select
               defaultValue="程序语言"
-              style={{width: '12%', margin: '0 5%'}}
+              style={{width: '12%', marginRight: '5%'}}
               onChange={this.getLangBySelectValue}
             >
               { setSelect(langArr) }
             </Select>
             <Select
               defaultValue="测评状态"
-              style={{width: '20%'}}
+              style={{width: '15%'}}
               onChange={this.getStatusBySelectValue}
             >
               { setSelect(statusArr) }

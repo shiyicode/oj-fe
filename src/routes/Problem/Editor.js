@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { Button, Popover, Icon, Radio, Tooltip, Select, Modal } from 'antd';
+import { Button, Popover, Icon, Radio, Tooltip, Select, } from 'antd';
+import { routerRedux } from 'dva/router';
 import AceEditor from 'react-ace';
 import getDefaultLangs from '../../utils/langFormat';
-import { getTimeNow } from '../../utils/utils';
 import styles from './index.less';
 // 语言
 import 'brace/mode/c_cpp';
@@ -12,6 +12,7 @@ import 'brace/mode/java';
 import 'brace/theme/github';
 import 'brace/theme/xcode';
 import 'brace/theme/monokai';
+
 
 const RadioGroup = Radio.Group;
 const { Option } = Select;
@@ -29,6 +30,7 @@ class Editor extends Component {
       size: 4,
       lang: 'c',
       mode: 'c_cpp',
+      type: 'default',
       defaultCode: this.props.codeValue ? this.props.codeValue : defaultLangList['c_cpp'],
     };
 
@@ -42,13 +44,15 @@ class Editor extends Component {
   }
 
   componentDidMount () {
-    const { dispatch } = this.props;
-    dispatch({
-      type: 'problem/fetchCode',
-      payload: {
-        problem_id: this.props.problemId,
-      },
-    });
+    if (sessionStorage.getItem('userId')) {
+      const { dispatch } = this.props;
+      dispatch({
+        type: 'problem/fetchCode',
+        payload: {
+          problem_id: this.props.problemId,
+        },
+      });
+    }
   }
 
   componentWillReceiveProps (nextProps) {
@@ -58,7 +62,7 @@ class Editor extends Component {
         const mode = language === 'c' || language === 'c++' ? 'c_cpp' : language;
         this.setState({
           defaultCode: codeValue,
-          lang: language,
+          lang: language.toLowerCase(),
           mode,
         });
         this.props.setCodeValue(codeValue); // 设置代码
@@ -101,43 +105,69 @@ class Editor extends Component {
     });
   }
 
-  handleRefresh() {
-    const { lang } = this.state;
-    let defaultCode = defaultLangList.c_cpp;
-    for (const key in defaultLangList) {
-      if (key === lang) {
-        defaultCode = defaultLangList[key];
+  handleRefresh(e) {
+    const { value } = e.target;
+    if (value === 'default') {
+      const { lang } = this.state;
+      let defaultCode = defaultLangList.c_cpp;
+      for (const key in defaultLangList) {
+        if (key === lang) {
+          defaultCode = defaultLangList[key];
+        }
+      }
+      this.setState({
+        defaultCode,
+      });
+    } else {
+      if (sessionStorage.getItem('userId')) {
+        const { dispatch } = this.props;
+        dispatch({
+          type: 'problem/fetchCode',
+          payload: {
+            problem_id: this.props.problemId,
+          },
+        });
+        count = 0;
       }
     }
-    this.setState({ defaultCode });
   }
 
   handleSave() {
     const { dispatch, problemId } = this.props;
-    dispatch({
-      type: 'problem/saveCode',
-      payload: {
-        problem_id: problemId,
-        code: this.state.defaultCode,
-      },
-    });
+    if (sessionStorage.getItem('userId')) {
+      const { lang, defaultCode } = this.state;
+      dispatch({
+        type: 'problem/saveCode',
+        payload: {
+          problem_id: problemId,
+          save_code: defaultCode,
+          language: lang,
+        },
+      });
+    } else {
+      dispatch(routerRedux.push('/user/login'));
+    }
   }
 
   submitCode() {
     const { dispatch, problemId } = this.props;
     const { defaultCode, lang } = this.state;
     // 切换tabs
-    this.props.changeIndex();
-    this.props.handleSubmit(true);
-    dispatch({
-      type: 'problem/commonSubmitCode',
-      payload: {
-        problem_id: problemId,
-        user_id: '123456',
-        code: defaultCode,
-        language: lang,
-      },
-    });
+    if (sessionStorage.getItem('userId')) {
+      this.props.changeIndex();
+      this.props.handleSubmit(true);
+      dispatch({
+        type: 'problem/commonSubmitCode',
+        payload: {
+          problem_id: problemId,
+          user_id: '123456',
+          code: defaultCode,
+          language: lang,
+        },
+      });
+    } else {
+      dispatch(routerRedux.push('/user/login'));
+    }
   }
 
   render() {
@@ -157,6 +187,13 @@ class Editor extends Component {
           <Radio value={8}>8</Radio>
         </RadioGroup>
       </div>
+    );
+
+    const choice = (
+      <RadioGroup onChange={this.handleRefresh}>
+        <Radio value="default">返回默认</Radio>
+        <Radio value="before">返回上一次保存</Radio>
+      </RadioGroup>
     );
 
     return (
@@ -186,11 +223,13 @@ class Editor extends Component {
               </Button>
             </Tooltip>
           </Popover>
-          <Tooltip title="重做">
-            <Button className={styles.iconButton} onClick={this.handleRefresh}>
-              <Icon type="reload" />
-            </Button>
-          </Tooltip>
+          <Popover content={choice} trigger="click">
+            <Tooltip title="重做">
+              <Button className={styles.iconButton} onClick={this.handleRefresh}>
+                <Icon type="reload" />
+              </Button>
+            </Tooltip>
+          </Popover>
           <Tooltip title="保存">
             <Button className={styles.iconButton} onClick={this.handleSave}>
               <Icon type="save" />

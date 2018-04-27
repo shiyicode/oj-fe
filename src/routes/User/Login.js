@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
 import { Link } from 'dva/router';
-import { Form, Input, Tabs, Button, Icon, Checkbox, Row, Col, Alert } from 'antd';
+import { Form, Input, Tabs, Button, Icon, Row, Col, Alert } from 'antd';
 import styles from './Login.less';
+import styleIcon from './Icon.less';
 const FormItem = Form.Item;
 const { TabPane } = Tabs;
 
@@ -16,48 +17,35 @@ export default class Login extends Component {
     type: 'account',
   };
 
-  // //获得Hash内容
-  // getCodeAndState (url) {
-  //   let matchs = url.match(/\?(\S*)\#/); // 匹配问号和井号之前的部分
-  //   if (!matchs) {
-  //     matchs = url.match(/\?(\S*)/); // 匹配井号之后的部分
-  //   }
-  //   if (matchs && matchs.length > 0) {
-  //     return matchs[1];
-  //   } else {
-  //     return '';
-  //   }
-  // }
-
   componentDidMount() {
-    // let url = location.href;
-    // let hashCode = this.getCodeAndState(url);
-    // let arrayList;
-    // let code;  // code标识
-    // let status;  // 状态码
-    // let loginType;  // 登录类型
-    // if (hashCode) {
-    //   arrayList = hashCode.split('&');
-    //   if (arrayList && arrayList.length === 2) {  // qq登录传递code和state
-    //     code = arrayList[0].split('=')[1];
-    //     status = arrayList[1].split('=')[1];
-    //     loginType = 'qq';
-    //   } else if (arrayList && arrayList.length === 1) { // github只传递code
-    //     code = arrayList[0].split('=')[1];
-    //     status = 1;
-    //     loginType = 'github';
-    //   }
-    // }
-    // if (code && status) {
-    //   this.props.dispatch({
-    //     type: 'login/submit',
-    //     payload: {
-    //       'code': code,
-    //       'state': status,
-    //       'type': loginType,
-    //     },
-    //   });
-    // }
+    const url = location.href;
+    const hashCode = this.getCodeAndState(url);
+    let arrayList;
+    let code;  // code标识
+    let status;  // 状态码
+    let loginType;  // 登录类型
+    if (hashCode) {
+      arrayList = hashCode.split('&');
+      if (arrayList && arrayList.length === 2) {  // qq登录传递code和state
+        code = arrayList[0].split('=')[1];
+        status = arrayList[1].split('=')[1];
+        loginType = 'qq';
+      } else if (arrayList && arrayList.length === 1) { // github只传递code
+        code = arrayList[0].split('=')[1];
+        status = 1;
+        loginType = 'github';
+      }
+    }
+    if (code && status) {
+      this.props.dispatch({
+        type: 'login/submit',
+        payload: {
+          'code': code,
+          'state': status,
+          'type': loginType,
+        },
+      });
+    }
   }
 
   // componentWillReceiveProps(nextProps) {
@@ -100,6 +88,19 @@ export default class Login extends Component {
       }
     }, 1000);
   };
+
+  // 获得Hash内容
+  getCodeAndState(url) {
+    let matchs = url.match(/\?(\S*)\#/); // 匹配问号和井号之前的部分
+    if (!matchs) {
+      matchs = url.match(/\?(\S*)/); // 匹配井号之后的部分
+    }
+    if (matchs && matchs.length > 0) {
+      return matchs[1];
+    } else {
+      return '';
+    }
+  }
 
   handleSubmit = e => {
     e.preventDefault();
@@ -240,6 +241,18 @@ export default class Login extends Component {
             </Button>
           </FormItem>
         </Form>
+        <div className={styles.other}>
+          其他登录方式
+          {/* 需要加到 Icon 中 */}
+          <span className={styleIcon.iconWeixin} />
+          <a href="https://graph.qq.com/oauth2.0/authorize?response_type=code&client_id=101466300&redirect_uri=http%3a%2f%2fwww.fightcoder.com%2f%23%2fuser%2flogin&state=1&scope=get_user_info,get_info" >
+            <span className={styleIcon.iconQq} />
+          </a>
+          <a href="https://github.com/login/oauth/authorize?client_id=080191e49e855122ea33&scope=user:email">
+            <span className={styleIcon.iconGithub} />
+          </a>
+          <Link className={styles.register} to="/user/register">注册账户</Link>
+        </div>
       </div>
     );
   }
