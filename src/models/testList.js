@@ -67,6 +67,10 @@ export default {
         yield put({
           type: 'save',
           payload: {
+            list: [],
+            pagination: {
+              total: 0,
+            },
             error: '服务器错误',
           },
         });
@@ -84,6 +88,7 @@ export default {
         ...state,
         list: action.payload.list,
         pagination: action.payload.pagination,
+        error: action.payload.error,
       };
     },
     changeLoading(state, action) {
