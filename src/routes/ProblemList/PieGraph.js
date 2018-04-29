@@ -98,9 +98,10 @@ export default class PieGraph extends PureComponent {
 
   render() {
     const { progress } = this.props;
+    console.log(progress);
     return (
       <div>
-        { progress === undefined || progress === {} && <span>暂无数据</span>}
+        { (!progress || ( progress && !progress.ac_num )) && <span>暂无数据</span>}
         <div id="chart" style={{ height: 300 }} />
       </div>
     );
