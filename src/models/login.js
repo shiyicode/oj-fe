@@ -13,7 +13,6 @@ export default {
     *submit({ payload }, { call, put }) {
       const response = yield call(fakeAccountLogin, payload);
       if (response.code === 0) {
-        console.log(response);
         yield put({
           type: 'changeLoginStatus',
           payload: {
@@ -21,8 +20,7 @@ export default {
             userId: response.data,
           },
         });
-        sessionStorage.setItem('userId', response.data);
-        location.href = '/';
+        sessionStorage.setItem('userId', response.data.user_id);
       } else {
         yield put({
           type: 'changeLoginStatus',

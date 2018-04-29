@@ -137,7 +137,6 @@ export default {
         type: 'changeLoading',
         payload: true,
       });
-
       const response = yield call(queryProblemProgress, payload);
       if (response && response.code === 0) {
         yield put({
@@ -164,12 +163,11 @@ export default {
         type: 'changeLoading',
         payload: true,
       });
-
       const response = yield call(queryRankList, payload);
       if (response && response.code === 0) {
         yield put({
           type: 'saveRankList',
-          payload: response.data.userList,
+          payload: response.data,
         });
       } else {
         yield put({

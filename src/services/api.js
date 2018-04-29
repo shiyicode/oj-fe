@@ -71,18 +71,12 @@ export async function queryProblem(params) {
 
 // 获得做题进度
 export async function queryProblemProgress(params) {
-  return request('/authv1/problem/progress', {
-    method: 'POST',
-    body: params,
-  });
+  return request(`/apiv1/user/progress?${stringify(params)}`);
 }
 
 // 获得当前排行
 export async function queryRankList(params) {
-  return request('/authv1/problem/getranklist', {
-    method: 'POST',
-    body: params,
-  });
+  return request(`/authv1/rank/getlist?${stringify(params)}`);
 }
 
 // 收藏和取消收藏

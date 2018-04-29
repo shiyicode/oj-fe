@@ -215,6 +215,7 @@ class BasicLayout extends React.PureComponent {
               onCollapse={this.handleMenuCollapse}
               onMenuClick={this.handleMenuClick}
               onNoticeVisibleChange={this.handleNoticeVisibleChange}
+              dispatch={this.props.dispatch}
             />
           </Header>
           <Content style={{ margin: '24px 24px 0', height: '100%' }}>

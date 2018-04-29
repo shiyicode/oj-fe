@@ -1,17 +1,24 @@
 import React, { PureComponent } from 'react';
-import { Menu, Icon, Spin, Tag, Dropdown, Avatar, Divider, Tooltip } from 'antd';
+import { Menu, Icon,  Tag, Dropdown, Avatar, Divider, Tooltip } from 'antd';
 import moment from 'moment';
 import groupBy from 'lodash/groupBy';
 import Debounce from 'lodash-decorators/debounce';
-import { Link } from 'dva/router';
+import { Link, routerRedux } from 'dva/router';
 import NoticeIcon from '../NoticeIcon';
 import HeaderSearch from '../HeaderSearch';
 import styles from './index.less';
 
 export default class GlobalHeader extends PureComponent {
+
+  constructor(props) {
+    super(props);
+    this.saveUrlBeforeLogin = this.saveUrlBeforeLogin.bind(this);
+  }
+
   componentWillUnmount() {
     this.triggerResizeEvent.cancel();
   }
+
   getNoticeData() {
     const { notices = [] } = this.props;
     if (notices.length === 0) {
@@ -43,6 +50,13 @@ export default class GlobalHeader extends PureComponent {
     });
     return groupBy(newNotices, 'type');
   }
+
+  saveUrlBeforeLogin () {
+    const url = window.location.href;
+    localStorage.setItem("nowUrl", url);
+    this.props.dispatch(routerRedux.push('/user/login'));
+  }
+
   toggle = () => {
     const { collapsed, onCollapse } = this.props;
     onCollapse(!collapsed);
@@ -103,7 +117,7 @@ export default class GlobalHeader extends PureComponent {
             placeholder="站内搜索"
             dataSource={['搜索提示一', '搜索提示二', '搜索提示三']}
             onSearch={value => {
-              console.log('input', value); // eslint-disable-line
+              console.lƒog('input', value); // eslint-disable-line
             }}
             onPressEnter={value => {
               console.log('enter', value); // eslint-disable-line
@@ -157,13 +171,9 @@ export default class GlobalHeader extends PureComponent {
               </span>
             </Dropdown>
           ) : (
-            <div className={styles.loginAction}>
-              <Link to="/user/login" className={styles.login}>
-                登录
-              </Link>
-              <Link to="/user/register" className={styles.register}>
-                注册
-              </Link>
+            <div className={styles.loginAction} >
+              <span onClick={this.saveUrlBeforeLogin} className={styles.login}>登录</span>
+              <Link to="/user/register" className={styles.register}>注册</Link>
             </div>
           )}
         </div>

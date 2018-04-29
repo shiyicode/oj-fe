@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
 import { routerRedux, Link } from 'dva/router';
-import { Form, Input, Button, Popover, Progress, notification } from 'antd';
+import { Form, Input, Button, Popover, Progress, notification, message } from 'antd';
 import styles from './Register.less';
 
 const FormItem = Form.Item;
@@ -37,6 +37,7 @@ export default class Register extends Component {
   componentWillReceiveProps(nextProps) {
     // 判断注册是否成功
     if (nextProps.register.status === true) {
+      message.success('注册成功！');
       this.props.dispatch(routerRedux.push('/user/login'));
     } else if (nextProps.register.status === false) {
       notification.error({
@@ -176,6 +177,16 @@ export default class Register extends Component {
                 },
               ],
             })(<Input size="large" placeholder="邮箱" />)}
+          </FormItem>
+          <FormItem>
+            {getFieldDecorator('user_name', {
+              rules: [
+                {
+                  required: true,
+                  message: '请输入用户名！',
+                },
+              ],
+            })(<Input size="large" placeholder="用户名" />)}
           </FormItem>
           <FormItem help={this.state.help}>
             <Popover

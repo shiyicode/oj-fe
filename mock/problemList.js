@@ -32,9 +32,9 @@ export function getProblemProgress(req, res) {
   const result = {
     code: 0,
     data: {
-      done_num: 500,
-      doing_num: 100,
-      undo_num: 20,
+      ac_num: 500,
+      pre_num: 100,
+      fail_num: 20,
     },
   };
   if (res && res.json) {
@@ -52,6 +52,7 @@ export function getRankList(req, res) {
       rank_num: 60 + i,
       avator: 'https://gw.alipayobjects.com/zos/rmsportal/UjusLxePxWGkttaqqmUI.png',
       nick_name: '一棵树',
+      ac_num:89,
     });
   }
   const result = {

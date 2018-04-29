@@ -111,7 +111,7 @@ class ChoiceTab extends Component {
                 }}
               >
                 {
-                  problemInfo.is_collection === 0 ?
+                  problemInfo.is_collection === false ?
                     <Icon type="star-o"  /> :
                     <Icon type="star-o" style={{color: 'orange'}}  />
                 }

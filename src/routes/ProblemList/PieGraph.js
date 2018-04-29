@@ -4,35 +4,39 @@ import Highcharts from 'highcharts';
 
 addFunnel(Highcharts);
 
-// let count = 0;
-const data = {
-  done_num: 500,
-  doing_num: 100,
-  undo_num: 20,
-};
+let count = 0;
+// const data = {
+//   ac_num: 500,
+//   fail_num: 100,
+//   pre_num: 20,
+// };
 
 export default class PieGraph extends PureComponent {
   componentDidMount() {
-    // const { dispatch } = this.props;
-    // dispatch({
-    //   type: 'problemList/getProgress',
-    //   payload: {
-    //     user_id: 1,
-    //   },
-    // });
-
-    this.initPie(data);
+    const { dispatch } = this.props;
+    if (sessionStorage.getItem('userId')) {
+      dispatch({
+        type: 'problemList/getProgress',
+        payload: {
+          user_id: sessionStorage.getItem('userId'),
+        },
+      });
+    }
   }
 
-  // componentWillReceiveProps(nextProps) {
-  //   if (nextProps && nextProps.progress) {
-  //     if (count === 0) {
-  //       const data = nextProps.progress;
-  //       this.initPie(data);
-  //     }
-  //     count++;
-  //   }
-  // }
+  componentWillReceiveProps(nextProps) {
+    if (nextProps && nextProps.progress) {
+      if (count === 0) {
+        const data = nextProps.progress;
+        this.initPie(data);
+      }
+      count += 1;
+    }
+  }
+
+  componentWillUnmount() {
+    count = 0;
+  }
 
   initPie(progress) {
     const chart = {
@@ -70,14 +74,14 @@ export default class PieGraph extends PureComponent {
         colorByPoint: true,
         type: 'pie',
         data: [
-          ['已做', progress.done_num],
+          ['已做', progress.ac_num],
           {
             name: '正做',
-            y: progress.doing_num,
+            y: progress.fail_num,
             sliced: true,
             selected: true,
           },
-          ['待做', progress.undo_num],
+          ['待做', progress.pre_num],
         ],
       },
     ];
@@ -93,7 +97,12 @@ export default class PieGraph extends PureComponent {
   }
 
   render() {
-    // const { loading } = this.props;
-    return <div id="chart" style={{ height: 300 }} />;
+    const { progress } = this.props;
+    return (
+      <div>
+        { progress === undefined || progress === {} && <span>暂无数据</span>}
+        <div id="chart" style={{ height: 300 }} />
+      </div>
+    );
   }
 }

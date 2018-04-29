@@ -8,6 +8,7 @@ import {
   getCommonResult,
   getTestResult,
   queryCollection,
+  queryCollectionList,
 } from '../services/api';
 
 
@@ -37,11 +38,27 @@ export default {
       });
       const response = yield call(getProblemInfo, payload);
       if (response.code === 0) {
-        yield put({
-          type: 'saveProblemInfo',
-          payload: response.data,
-        });
-      } else {
+        if (sessionStorage.getItem('userId')) {
+          // 获取当前页题目的Id
+          const problemId = response.data.id;
+          // 获取题目的收藏信息
+          const responseCollection = yield call(queryCollectionList, {
+            problem_ids: problemId,
+          });
+          if (responseCollection && responseCollection.code === 0) {
+            response.data.is_collection = responseCollection.data[0];
+            yield put({
+              type: 'saveProblemInfo',
+              payload: response.data,
+            });
+          }
+        } else {
+          yield put({
+            type: 'saveProblemInfo',
+            payload: response.data,
+          });
+        }
+      }else {
         yield put({
           type: 'saveProblemInfo',
           payload: {

@@ -154,8 +154,8 @@ const proxy = {
     });
   },
   'GET /apiv1/problem/list': getProblemList,
-  'POST /authv1/problem/getranklist': getRankList,
-  'POST /authv1/problem/progress': getProblemProgress,
+  'POST /authv1/rank/getlist': getRankList,
+  'GET /apiv1/user/progress': getProblemProgress,
   'POST /authv1/problem/collection/set': collection,
   'GET /authv1/problem/collection/get': getCollectionList,
   'GET /apiv1/problem/get': getProblemInfo,
