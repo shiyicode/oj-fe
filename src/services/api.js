@@ -124,7 +124,7 @@ export async function fakeAccountLogin(params) {
 
 // 获得题目信息
 export async function getProblemInfo(params) {
-  return request(`/apiv1/problem/getmess?${stringify(params)}`);
+  return request(`/apiv1/problem/gettoplist?${stringify(params)}`);
 }
 
 // 获得提交的代码
@@ -135,3 +135,7 @@ export async function getCode(params) {
   });
 }
 
+
+export  async function getTopList(params) {
+  return request(`/apiv1/problem/gettoplist?${stringify(params)}`);
+}

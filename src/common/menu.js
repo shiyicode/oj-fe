@@ -157,6 +157,11 @@ const menuData = [
       },
     ],
   },
+  {
+    name: '排行榜',
+    icon: 'user',
+    path: 'ranklist',
+  },
 ];
 
 function formatter(data, parentPath = '/', parentAuthority) {

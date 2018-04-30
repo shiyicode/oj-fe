@@ -14,6 +14,7 @@ import {
   getCollectionList,
 } from './mock/problemList';
 import { getProblemInfo } from './mock/problem';
+import { getRankingList } from "./mock/rankList";
 
 // 是否禁用代理
 const noProxy = process.env.NO_PROXY === 'true';
@@ -158,6 +159,7 @@ const proxy = {
   'POST /authv1/problem/collection/set': collection,
   'GET /authv1/problem/collection/get': getCollectionList,
   'GET /apiv1/problem/getmess': getProblemInfo,
+  'GET /apiv1/problem/gettoplist': getRankingList,
 };
 
 export default (noProxy ? {} : delay(proxy, 1000));

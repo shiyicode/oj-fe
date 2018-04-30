@@ -117,6 +117,10 @@ export const getRouterData = app => {
     '/problem/personal': {
       component: dynamicWrapper(app, ['list'], () => import('../routes/ProblemList/BasicList')),
     },
+    '/ranklist': {
+      component: dynamicWrapper(app, ['rankList'], () => import('../routes/RankList')),
+
+    },
     '/list/card-list': {
       component: dynamicWrapper(app, ['list'], () => import('../routes/ProblemList/CardList')),
     },
