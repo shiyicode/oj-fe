@@ -11,6 +11,12 @@ import {
   queryCollectionList,
 } from '../services/api';
 
+const delay = timeout => {
+  return new Promise(resolve => {
+    setTimeout(resolve, timeout);
+  });
+};
+
 
 export default {
   namespace: 'problem',
@@ -94,8 +100,10 @@ export default {
     // 测试提交
     *testSubmitCode({ payload }, { call, put }) {
       yield put({
-        type: 'changeLoading',
-        payload: true,
+        type: 'saveTestResult',
+        payload: {
+          status: 0,
+        },
       });
       const response1 = yield call(testSubmit, payload); // 提交代码
       if (response1.code === 0) {
@@ -108,12 +116,12 @@ export default {
             type: 'saveTestResult',
             payload: response2.data,
           });
-          let { status } = response2.data;
-          while (status !== 0) {
-            console.log(params);
+          let stat = response2.data.status;
+          while (stat < 4) {
+            yield call(delay, 100);
             response2 = yield call(getTestResult, params);
             if (response2.code === 0) {
-              status = response2.data.status;
+              stat = response2.data.status;
               yield put({
                 type: 'saveTestResult',
                 payload: response2.data,
@@ -127,17 +135,15 @@ export default {
           payload: 0,
         });
       }
-      yield put({
-        type: 'changeLoading',
-        payload: false,
-      });
     },
 
     // 普通提交
     *commonSubmitCode ({ payload }, { call, put }){
       yield put({
-        type: 'changeLoading',
-        payload: true,
+        type: 'saveCommonResult',
+        payload: {
+          status: 0,
+        },
       });
       const response1 = yield call(commonSubmit, payload); // 提交代码
       if (response1.code === 0) {
@@ -150,11 +156,12 @@ export default {
             type: 'saveCommonResult',
             payload: response2.data,
           });
-          let { status } = response2.data;
-          while (status !== 0) {
+          let stat = response2.data.status;
+          while (stat < 4) {
+            yield call(delay, 100);
             response2 = yield call(getCommonResult, params);
             if (response2.code === 0) {
-              status = response2.data.status;
+              stat = response2.data.status;
               yield put({
                 type: 'saveCommonResult',
                 payload: response2.data,
@@ -168,10 +175,6 @@ export default {
           payload: 0,
         });
       }
-      yield put({
-        type: 'changeLoading',
-        payload: false,
-      });
     },
 
     // 保存代码

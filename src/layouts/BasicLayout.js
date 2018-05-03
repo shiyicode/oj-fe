@@ -104,9 +104,14 @@ class BasicLayout extends React.PureComponent {
         isMobile: mobile,
       });
     });
-    // this.props.dispatch({
-    //   type: 'user/fetchCurrent',
-    // });
+    if (sessionStorage.getItem('userName')) {
+      this.props.dispatch({
+        type: 'user/fetchCurrent',
+        payload: {
+          user_name: sessionStorage.getItem('userName'),
+        },
+      });
+    }
   }
   componentWillUnmount() {
     unenquireScreen(this.enquireHandler);
@@ -154,8 +159,13 @@ class BasicLayout extends React.PureComponent {
     });
   };
   handleMenuClick = ({ key }) => {
-    if (key === 'triggerError') {
-      this.props.dispatch(routerRedux.push('/exception/trigger'));
+    const { currentUser, dispatch } = this.props;
+    if (key === 'user') {
+      dispatch(routerRedux.push(`/usercenter/${currentUser.user_name}`));
+      return;
+    }
+    if (key === 'collection') {
+      dispatch(routerRedux.push(`/usercollection/${sessionStorage.getItem('userId')}`));
       return;
     }
     if (key === 'logout') {
@@ -173,7 +183,7 @@ class BasicLayout extends React.PureComponent {
   };
   render() {
     const {
-      // currentUser,
+      currentUser,
       collapsed,
       fetchingNotices,
       notices,
@@ -181,12 +191,7 @@ class BasicLayout extends React.PureComponent {
       match,
       location,
     } = this.props;
-    const currentUser = {
-      name: 'Serati Ma',
-      avatar: 'https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png',
-      userid: '00000001',
-      notifyCount: 12,
-    };
+
     // const bashRedirect = this.getBashRedirect();
     const layout = (
       <Layout>

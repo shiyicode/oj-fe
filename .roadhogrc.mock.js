@@ -15,6 +15,7 @@ import {
 } from './mock/problemList';
 import { getProblemInfo, getTestResult, getCommomResult, submitCode, saveCode, getCode } from './mock/problem';
 import { getTestList } from './mock/testList';
+import { getUserInfo, getCount, getRecentRank, getRecentSubmit, updateUserInfo } from './mock/user';
 
 // 是否禁用代理
 const noProxy = process.env.NO_PROXY === 'true';
@@ -85,13 +86,19 @@ const proxy = {
     if (password === '888888' && email === 'admin') {
       res.send({
         code: 0,
-        data: '12345',
+        data: {
+          user_id: '123',
+          user_name: 'luwenjing',
+        },
       });
     }
     else if (password === '123456' && email === 'user') {
       res.send({
         code: 0,
-        data: '12345',
+        data: {
+          user_id: '123',
+          user_name: 'luwening',
+        },
       });
     } else {
       res.send({
@@ -154,7 +161,7 @@ const proxy = {
     });
   },
   'GET /apiv1/problem/list': getProblemList,
-  'POST /authv1/rank/getlist': getRankList,
+  'GET /authv1/rank/getlist': getRankList,
   'GET /apiv1/user/progress': getProblemProgress,
   'POST /authv1/problem/collection/set': collection,
   'GET /authv1/problem/collection/get': getCollectionList,
@@ -166,6 +173,11 @@ const proxy = {
   'GET /apiv1/submit/list': getTestList,
   'GET /authv1/submit/getcommon': getCommomResult,
   'GET /authv1/submit/gettest': getTestResult,
+  'GET /apiv1/user/getmess': getUserInfo,
+  'GET /apiv1/user/count': getCount,
+  'POST /authv1/user/updatemess': updateUserInfo,
+  'GET /apiv1/user/recentsubmit': getRecentSubmit,
+  'GET /apiv1/user/recentrank': getRecentRank,
 };
 
 export default (noProxy ? {} : delay(proxy, 1000));

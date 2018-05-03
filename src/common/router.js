@@ -123,6 +123,12 @@ export const getRouterData = app => {
     '/submission/detail/:id': {
       component: dynamicWrapper(app, ['testInfo'], () => import('../routes/TestInfo')),
     },
+    '/usercenter/:userName': {
+      component: dynamicWrapper(app, ['user'], () => import('../routes/UserCenter')),
+    },
+    '/usercenter/write/:userName': {
+      component: dynamicWrapper(app, ['user'], () => import('../routes/UserCenter/WriteUserInfo')),
+    },
     '/list/card-list': {
       component: dynamicWrapper(app, ['list'], () => import('../routes/ProblemList/CardList')),
     },
@@ -168,9 +174,6 @@ export const getRouterData = app => {
     },
     '/user': {
       component: dynamicWrapper(app, [], () => import('../layouts/UserLayout')),
-    },
-    'user/info': {
-      component: dynamicWrapper(app, [], () => import('../routes/User/UserInfo')),
     },
     '/user/login': {
       component: dynamicWrapper(app, ['login'], () => import('../routes/User/Login')),

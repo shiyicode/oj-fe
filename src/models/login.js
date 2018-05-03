@@ -1,5 +1,5 @@
 import { routerRedux } from 'dva/router';
-import { fakeAccountLogin } from '../services/api';
+import { fakeAccountLogin, qqLogin } from '../services/api';
 
 export default {
   namespace: 'login',
@@ -21,6 +21,7 @@ export default {
           },
         });
         sessionStorage.setItem('userId', response.data.user_id);
+        sessionStorage.setItem('userName', response.data.user_name);
       } else {
         yield put({
           type: 'changeLoginStatus',
@@ -30,7 +31,17 @@ export default {
         });
       }
     },
+
+    *QQLogin(_, { call }){
+      const response = yield call(qqLogin);
+      if (response.code === 0) {
+        window.location.href = response.data;
+      }
+    },
+
     *logout(_, { put }) {
+      sessionStorage.removeItem('userId');
+      sessionStorage.removeItem('userName');
       yield put(routerRedux.push('/user/login'));
     },
   },

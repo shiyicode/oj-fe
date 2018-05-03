@@ -9,8 +9,8 @@ const { Option } = Select;
 const { Search } = Input;
 
 
-const statusArr = ['Pending','Compiling','Running','Accepted', 'Wrong Answer', 'Compile Error','Time Limit Exceeded', 'Memory Limit Exceeded','Output Limit Exceeded', 'RunTime Error', 'System Error'];
-const colors = ['#bbb', '#fad733', '#4FC1E9', 'rgb(39, 194, 76)', '#f05050', '#404040'];
+const statusArr = ['', 'Pending', 'Compiling', 'Running', 'Accepted', 'Wrong Answer', 'Compile Error','Time Limit Exceeded', 'Memory Limit Exceeded','Output Limit Exceeded', 'RunTime Error', 'System Error'];
+const colors = ['', '#bbb', '#fad733', '#4FC1E9', 'rgb(39, 194, 76)', '#f05050', '#fad733', 'rgb(43, 144, 143)', 'rgb(153, 158, 255)', 'rgb(255, 188, 117)','rgb(124, 181, 236', '#404040'];
 const langArr = ['C', 'C++', 'Java', 'Python'];
 
 const columns = [{

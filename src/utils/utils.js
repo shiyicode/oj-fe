@@ -186,3 +186,5 @@ export function getTimeNow() { // 获得本地时间
     + seperator2 + second;
   return currentdate;
 }
+
+

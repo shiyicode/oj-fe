@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { Input, Button, Card, Spin } from 'antd';
-import { routerRedux, Link } from 'dva/router';
+import { routerRedux } from 'dva/router';
 import styles from './index.less';
 
 const { TextArea } = Input;
 
 // 进度条的变化
 const arr = [
+  '正在提交Submiting',
   '等待测试Pending',
   '正在编译Compiling',
   '正在评测Running',
@@ -19,7 +20,7 @@ const arr = [
   '运行时错误Runtime Error',
   '系统错误System Error',
 ];
-const colors = ['#bbb', '#fad733', '#4FC1E9', 'rgb(39, 194, 76)', '#f05050'];
+const colors = ['#ccc', '#bbb', '#fad733', '#4FC1E9', 'rgb(39, 194, 76)', '#f05050', '#fad733', 'rgb(43, 144, 143)', 'rgb(153, 158, 255)', 'rgb(255, 188, 117)','rgb(124, 181, 236', '#404040'];
 
 class ProblemData extends Component {
   constructor(props) {
@@ -27,19 +28,11 @@ class ProblemData extends Component {
 
     this.state = {
       testValue: '',
-      loading: false,
     };
     this.submitCode = this.submitCode.bind(this);
     this.setValue = this.setValue.bind(this);
   }
 
-  componentWillReceiveProps (nextProps) {
-    if ((nextProps.testResult && nextProps.testResult.status > -1) || nextProps.isSuccess === 0) {
-      this.setState({
-        loading: false,
-      });
-    }
-  }
   setValue(e) {
     this.setState({
       testValue: e.target.value,
@@ -50,11 +43,9 @@ class ProblemData extends Component {
     const { codeValue, language, dispatch } = this.props;
     const { testValue } = this.state;
     if (sessionStorage.getItem('userId')) {
-      this.setState({loading: true});
       dispatch({
         type: 'problem/testSubmitCode',
         payload: {
-          user_id: '123456',
           language,
           input: testValue.split('\n').join(','),
           code: codeValue,
@@ -66,14 +57,14 @@ class ProblemData extends Component {
   }
 
   showResult (testResult, isSuccess) {
-    if (testResult && testResult.status > -1) {
-      const num = testResult.status > 4 ? 5 : testResult.status;
-      return <div>
-        <div style={{ fontSize: '20px' }}>
-          <span style={{ color: colors[num] }}>{arr[testResult.status]}</span>
-          <Spin spinning={num < 4} size="large" />
-        </div>
-        { testResult.status >= 4 &&
+    if (testResult && testResult.status >= 0) {
+      return  (
+        <div>
+          <div style={{ fontSize: '20px' }}>
+            <span style={{ color: colors[testResult.status] }}>{arr[testResult.status]}</span>
+            <Spin spinning={testResult.status < 4} size="large" />
+          </div>
+          { testResult.status >= 4 && (
           <div>
             <Card title="你的输入" className={styles.cardPlus}>
               <p>{this.state.testValue}</p>
@@ -82,8 +73,9 @@ class ProblemData extends Component {
               <p>{testResult.output}</p>
             </Card>
           </div>
-        }
-      </div>
+          )}
+        </div>
+      );
     }
 
     if (isSuccess === 0) {
@@ -93,7 +85,6 @@ class ProblemData extends Component {
 
   render() {
     const { testResult, isSuccess } = this.props;
-    const { loading } = this.state;
     return (
       <div style={{paddingRight: 10}}>
         <div style={{ padding: '20px 0' }}>每行一个参数</div>
@@ -107,7 +98,7 @@ class ProblemData extends Component {
         </Button>
         <div style={{clear: 'both', marginBottom: 20}} />
         {
-          loading ? <Spin spinning={loading} size="large" /> : this.showResult(testResult, isSuccess)
+          this.showResult(testResult, isSuccess)
         }
       </div>
     );

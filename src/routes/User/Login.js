@@ -12,9 +12,16 @@ const { TabPane } = Tabs;
 }))
 @Form.create()
 export default class Login extends Component {
-  state = {
-    type: 'simple',
-  };
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      type: 'simple',
+    };
+
+    this.toQQLogin = this.toQQLogin.bind(this);
+  }
 
   componentDidMount() {
     const url = location.href;
@@ -115,9 +122,17 @@ export default class Login extends Component {
     });
   };
 
+  toQQLogin() {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'login/QQLogin',
+    });
+  }
+
   renderMessage = message => {
     return <Alert style={{ marginBottom: 24 }} message={message} type="error" showIcon />;
   };
+
 
   render() {
     const { form, login } = this.props;
@@ -166,7 +181,6 @@ export default class Login extends Component {
             <TabPane tab="手机号登录" key="mobile" />
           </Tabs>
           <FormItem className={styles.additional}>
-            <Link to="/user/register">前往注册</Link>
             <a className={styles.forgot} href="">
               忘记密码
             </a>
@@ -185,9 +199,7 @@ export default class Login extends Component {
           其他登录方式
           {/* 需要加到 Icon 中 */}
           <span className={styleIcon.iconWeixin} />
-          <a href="https://graph.qq.com/oauth2.0/authorize?response_type=code&client_id=101466300&redirect_uri=http%3a%2f%2fwww.fightcoder.com%2f%23%2fuser%2flogin&state=1&scope=get_user_info,get_info" >
-            <span className={styleIcon.iconQq} />
-          </a>
+          <span className={styleIcon.iconQq} onClick={this.toQQLogin} />
           <a href="https://github.com/login/oauth/authorize?client_id=080191e49e855122ea33&scope=user:email">
             <span className={styleIcon.iconGithub} />
           </a>

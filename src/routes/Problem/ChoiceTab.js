@@ -118,7 +118,7 @@ class ChoiceTab extends Component {
               </span>
             </h1>
             <div>
-              <Link to={`user/${problemInfo.user_id}`}>
+              <Link to={`/usercenter/${problemInfo.user_name}`}>
                 <Tooltip title="出题者">
                   <Avatar src={problemInfo.user_avator || "https://gw.alipayobjects.com/zos/rmsportal/UjusLxePxWGkttaqqmUI.png"} style={{marginTop: -20}} />
                 </Tooltip>

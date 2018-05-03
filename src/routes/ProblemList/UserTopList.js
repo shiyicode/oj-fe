@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
-import { Icon, Tabs, Spin, Avatar } from 'antd';
-import { Link } from 'react-router-dom';
+import { Icon, Tabs, Avatar } from 'antd';
+import { Link } from 'dva/router';
 
 const { TabPane } = Tabs;
 
@@ -59,7 +59,7 @@ class UserTopList extends PureComponent {
               return (
                 <li key={item.rank_num} style={{ backgroundColor: index === 2 ? '#C7F3FF' : '' }}>
                   <span>{item.rank_num}</span>
-                  <Avatar src={item.avator} style={{ margin: '0 10px 5px 20px' }}/>
+                  <Avatar src={item.avator || 'https://gw.alipayobjects.com/zos/rmsportal/UjusLxePxWGkttaqqmUI.png'} style={{ margin: '0 10px 5px 20px' }}/>
                   <Link to={`/user/${item.user_id}`} style={{ color: '#000' }}>
                     {item.nick_name}
                   </Link>
@@ -84,7 +84,7 @@ class UserTopList extends PureComponent {
                 return (
                   <li key={item.rank_num} style={{ backgroundColor: index === 2 ? '#C7F3FF' : '' }}>
                     <span>{item.rank_num}</span>
-                    <Avatar src={item.avator} style={{ margin: '0 10px 5px 20px' }}/>
+                    <Avatar src={item.avator || 'https://gw.alipayobjects.com/zos/rmsportal/UjusLxePxWGkttaqqmUI.png'} style={{ margin: '0 10px 5px 20px' }}/>
                     <Link to={`/user/${item.user_id}`} style={{ color: '#000' }}>
                       {item.nick_name}
                     </Link>

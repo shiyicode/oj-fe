@@ -1,6 +1,6 @@
 export function getProblemInfo(req, res) {
   const problemInfo = {
-    user_id: '123456',
+    user_name: 'picking_up_stones',
     nick_name: '哈哈哈',
     user_avator: 'https://gw.alipayobjects.com/zos/rmsportal/UjusLxePxWGkttaqqmUI.png',
     is_collection: 0,
@@ -17,6 +17,7 @@ export function getProblemInfo(req, res) {
     input_case: '2 3 \n 2 1 2 \n 4 8 4 \n5 5',
     output_case: '36',
     hint: '0≤n≤1000',
+    language_limit: ['java', 'c'],
   };
   const result = {
     code: 0,

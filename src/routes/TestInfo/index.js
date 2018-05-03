@@ -43,13 +43,15 @@ export default class TestInfo extends PureComponent {
     }
     return (
       <PageHeaderLayout title="测评详情">
-        <Card bordered={false}>
-          <Spin spinning={loading} >
+        <Card
+          bordered={false}
+          title={
             <span style={{fontSize: '20px'}}>
-              <Link to="/problem/123">{info.problem_name}</Link> - <span>{info.lang && info.lang.toLowerCase()}</span>
+              <Link to={`/problem/detail/${info.problem_id}`}>{info.problem_name}</Link> - <span>{info.lang && info.lang.toLowerCase()}</span>
               <Tag color="rgb(39, 194, 76)" style={{marginLeft: '20px'}}>简单</Tag>
-            </span>
-            <Divider orientation="center" />
+            </span>}
+        >
+          <Spin spinning={loading} >
             <div className={styles.errorContainer}>
               <h2 style={{color: colors[info.status]}}>{statusArr[info.status]}</h2>
               <div className={styles.runRate}>

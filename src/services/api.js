@@ -166,3 +166,9 @@ export async function getTestList (params) {
   return request(`/apiv1/submit/list?${stringify(params)}`);
 }
 
+// qq登录
+export async function qqLogin (params) {
+  return request(`/apiv1/getqqurl?${stringify(params)}`);
+}
+
+

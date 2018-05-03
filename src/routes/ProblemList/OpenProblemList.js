@@ -286,14 +286,12 @@ class OpenProblemList extends PureComponent {
                   )}
               </div>
               <div className={styles.tableList}>
-                {
-                  <StandardTable
-                    loading={loading}
-                    data={list}
-                    collection={collection}
-                    dispatch={this.props.dispatch}
-                  />
-                }
+                <StandardTable
+                  loading={loading}
+                  data={list}
+                  collection={collection}
+                  dispatch={this.props.dispatch}
+                />
                 {pagination &&
                   pagination.total > 0 && (
                     <Pagination

@@ -123,6 +123,7 @@ export default class Problem extends PureComponent {
                   setLanguage={this.setLanguage}
                   problemId={this.props.match.params.id}
                   handleSubmit={this.handleSubmit}
+                  problemInfo={problem.problemInfo}
                 />
               </div>
             </div>

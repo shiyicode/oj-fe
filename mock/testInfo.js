@@ -2,6 +2,7 @@ export function getTestInfo (req, res) {
   const result = {
     "code": 0,
     "data": {
+      "problem_id": "123",
       "problem_name": "tow sum",
       "user_name": "luwenjing",
       "user_id": "123",

@@ -82,14 +82,11 @@ export default class GlobalHeader extends PureComponent {
     } = this.props;
     const menu = (
       <Menu className={styles.menu} selectedKeys={[]} onClick={onMenuClick}>
-        <Menu.Item disabled>
-          <Icon type="user" />个人中心
+        <Menu.Item key="user">
+          <Icon type="user" />我的主页
         </Menu.Item>
-        <Menu.Item disabled>
-          <Icon type="setting" />设置
-        </Menu.Item>
-        <Menu.Item key="triggerError">
-          <Icon type="close-circle" />触发报错
+        <Menu.Item type="collection">
+          <Icon type="star-o" />收藏的题目
         </Menu.Item>
         <Menu.Divider />
         <Menu.Item key="logout">
@@ -123,24 +120,14 @@ export default class GlobalHeader extends PureComponent {
               console.log('enter', value); // eslint-disable-line
             }}
           />
-          <Tooltip title="使用文档">
-            <a
-              target="_blank"
-              href="http://pro.ant.design/docs/getting-started"
-              rel="noopener noreferrer"
-              className={styles.action}
-            >
-              <Icon type="question-circle-o" />
-            </a>
-          </Tooltip>
           <NoticeIcon
             className={styles.action}
             count={currentUser.notifyCount}
-            onItemClick={(item, tabProps) => {
-              console.log(item, tabProps); // eslint-disable-line
-            }}
-            onClear={onNoticeClear}
-            onPopupVisibleChange={onNoticeVisibleChange}
+            // onItemClick={(item, tabProps) => {
+            //   console.log(item, tabProps); // eslint-disable-line
+            // }}
+            // onClear={onNoticeClear}
+            // onPopupVisibleChange={onNoticeVisibleChange}
             loading={fetchingNotices}
             popupAlign={{ offset: [20, -16] }}
           >
@@ -166,8 +153,8 @@ export default class GlobalHeader extends PureComponent {
           {sessionStorage.getItem('userId') ? (
             <Dropdown overlay={menu}>
               <span className={`${styles.action} ${styles.account}`}>
-                <Avatar size="small" className={styles.avatar} src={currentUser.avatar} />
-                <span className={styles.name}>{currentUser.name}</span>
+                <Avatar size="small" className={styles.avatar} src={currentUser.avator || 'https://gw.alipayobjects.com/zos/rmsportal/UjusLxePxWGkttaqqmUI.png'} />
+                <span className={styles.name}>{currentUser.user_name}</span>
               </span>
             </Dropdown>
           ) : (

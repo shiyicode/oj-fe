@@ -3,6 +3,7 @@ import { Spin, Progress, Row, Col, Card } from 'antd';
 
 // 进度条的变化
 const arr = [
+  '正在提交Submiting',
   '等待测试Pending',
   '正在编译Compiling',
   '正在评测Running',
@@ -15,7 +16,7 @@ const arr = [
   '运行时错误Runtime Error',
   '系统错误System Error',
 ];
-const colors = ['#bbb', '#fad733', '#4FC1E9', 'rgb(39, 194, 76)', '#f05050'];
+const colors = ['#ccc', '#bbb', '#fad733', '#4FC1E9', 'rgb(39, 194, 76)', '#f05050', '#fad733', 'rgb(43, 144, 143)', 'rgb(153, 158, 255)', 'rgb(255, 188, 117)','rgb(124, 181, 236', '#404040'];
 function changeProgress(testResult) {
   if (testResult.result < 4) {
     return <Progress percent={testResult.acCase} status="active" />;
@@ -44,7 +45,8 @@ class ProblemTest extends Component {
       this.setState({
         isSubmit: -1,
       });
-    } else if (nextProps.testResult.status > -1) {
+      this.props.handleSubmit(false);
+    } else if (nextProps.testResult.status > 0) {
       this.setState({
         isSubmit: 1,
       });
@@ -54,11 +56,10 @@ class ProblemTest extends Component {
 
   showResult (testResult) {
     if (testResult && testResult.status > -1) {
-      const num = testResult.status > 4 ? 5 : testResult.status;
       return <div>
         <div style={{ fontSize: '20px' }}>
-          <span style={{ color: colors[num] }}>{arr[testResult.status]}</span>
-          <Spin spinning={num < 4} size="large" />
+          <span style={{ color: colors[testResult.status] }}>{arr[testResult.status]}</span>
+          <Spin spinning={testResult.status < 4} size="large" />
         </div>
         {
           testResult.status >= 4 &&
@@ -78,7 +79,12 @@ class ProblemTest extends Component {
   render() {
     const { testResult, loading } = this.props;
     const { isSubmit } = this.state;
-    if (isSubmit === 0) {
+    if (testResult.status >= 0) {
+      return (
+          this.showResult(testResult)
+        );
+    }
+    if (isSubmit === 0 && loading === false) {
       return (
         <Card>
           <p style={{ color: '#fcc44d', fontSize: '20px' }}>尚未提交</p>
@@ -89,10 +95,6 @@ class ProblemTest extends Component {
         <Card>
           <p style={{ color: '#f05050', fontSize: '20px' }}>提交失败</p>
         </Card>
-      );
-    } else {
-      return (
-        loading ? <Spin spinning={loading} size="large" /> : this.showResult(testResult)
       );
     }
   }

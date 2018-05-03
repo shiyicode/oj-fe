@@ -54,37 +54,37 @@ const menuData = [
       {
         path: 'detail/:id',
       },
-      {
-        name: '个人题库',
-        path: 'personal',
-      },
-      // {
-      //   name: '卡片列表',
-      //   path: 'card-list',
-      // },
-      // {
-      //   name: '搜索列表',
-      //   path: 'search',
-      //   children: [
-      //     {
-      //       name: '搜索列表（文章）',
-      //       path: 'articles',
-      //     },
-      //     {
-      //       name: '搜索列表（项目）',
-      //       path: 'projects',
-      //     },
-      //     {
-      //       name: '搜索列表（应用）',
-      //       path: 'applications',
-      //     },
-      //   ],
-      // },
+    //   {
+    //     name: '个人题库',
+    //     path: 'personal',
+    //   },
+    //   {
+    //     name: '卡片列表',
+    //     path: 'card-list',
+    //   },
+    //   {
+    //     name: '搜索列表',
+    //     path: 'search',
+    //     children: [
+    //       {
+    //         name: '搜索列表（文章）',
+    //         path: 'articles',
+    //       },
+    //       {
+    //         name: '搜索列表（项目）',
+    //         path: 'projects',
+    //       },
+    //       {
+    //         name: '搜索列表（应用）',
+    //         path: 'applications',
+    //       },
+    //     ],
+    //   },
     ],
   },
   {
     name: '评测',
-    icon: 'table',
+    icon: 'profile',
     path: 'submission',
     children: [
       {
@@ -161,10 +161,11 @@ const menuData = [
         name: '注册',
         path: 'register',
       },
-      {
-        name: '注册结果',
-        path: 'register-result',
-      },
+      // },
+      // {
+      //   name: '注册结果',
+      //   path: 'register-result',
+      // },
     ],
   },
 ];

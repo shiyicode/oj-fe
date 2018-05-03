@@ -30,8 +30,7 @@ class Editor extends Component {
       size: 4,
       lang: 'c',
       mode: 'c_cpp',
-      type: 'default',
-      defaultCode: this.props.codeValue ? this.props.codeValue : defaultLangList['c_cpp'],
+      defaultCode: defaultLangList['c_cpp'],
     };
 
     this.handleTheme = this.handleTheme.bind(this);
@@ -57,7 +56,7 @@ class Editor extends Component {
 
   componentWillReceiveProps (nextProps) {
     if (nextProps.codeValue && count === 0) {
-      const { language, codeValue } = this.props;
+      const { language, codeValue } = nextProps;
       if (language && codeValue) {
         const mode = language === 'c' || language === 'c++' ? 'c_cpp' : language;
         this.setState({
@@ -160,7 +159,6 @@ class Editor extends Component {
         type: 'problem/commonSubmitCode',
         payload: {
           problem_id: problemId,
-          user_id: '123456',
           code: defaultCode,
           language: lang,
         },
@@ -171,7 +169,7 @@ class Editor extends Component {
   }
 
   render() {
-
+    const { language_limit } = this.props.problemInfo;
     const content = (
       <div>
         <h4>环境配色</h4>
@@ -205,16 +203,17 @@ class Editor extends Component {
           tabSize={this.state.size}
           name="UNIQUE_ID_OF_DIV"
           editorProps={{ $blockScrolling: true }}
-          value={this.state.defaultCode}
+          value={this.props.codeValue ? this.props.codeValue : this.state.defaultCode}
           fontSize={14}
           style={{ width: '100%', height: 490 }}
         />
         <div className={styles.editorFooter}>
           <Select className={styles.codeLanguage} onChange={this.handleLanguage} defaultValue="选择语言">
-            <Option value="c">C</Option>
-            <Option value="c++">C++</Option>
-            <Option value="java">Java</Option>
-            <Option value="python">Python</Option>
+            {
+              language_limit && language_limit.length > 0 &&  language_limit.map( (item) => {
+                return <Option value={item}>{item}</Option>
+              })
+            }
           </Select>
           <Popover content={content} trigger="click">
             <Tooltip title="设置">

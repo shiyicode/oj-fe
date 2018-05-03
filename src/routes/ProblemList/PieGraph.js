@@ -18,7 +18,7 @@ export default class PieGraph extends PureComponent {
       dispatch({
         type: 'problemList/getProgress',
         payload: {
-          user_id: sessionStorage.getItem('userId'),
+          user_name: sessionStorage.getItem('userName'),
         },
       });
     }
@@ -98,7 +98,6 @@ export default class PieGraph extends PureComponent {
 
   render() {
     const { progress } = this.props;
-    console.log(progress);
     return (
       <div>
         { (!progress || ( progress && !progress.ac_num )) && <span>暂无数据</span>}

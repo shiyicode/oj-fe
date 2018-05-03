@@ -18,6 +18,8 @@ const passwordProgressMap = {
   pool: 'exception',
 };
 
+let count = 0;
+
 @connect(state => ({
   register: state.register,
 }))
@@ -36,10 +38,12 @@ export default class Register extends Component {
 
   componentWillReceiveProps(nextProps) {
     // 判断注册是否成功
-    if (nextProps.register.status === true) {
+    if (nextProps.register.status === true && count === 0) {
+      count += 1;
       message.success('注册成功！');
       this.props.dispatch(routerRedux.push('/user/login'));
-    } else if (nextProps.register.status === false) {
+    } else if (nextProps.register.status === false && count === 0) {
+      count += 1;
       notification.error({
         message: '注册提示',
         description: nextProps.register.error,
@@ -74,6 +78,7 @@ export default class Register extends Component {
     e.preventDefault();
     this.props.form.validateFields({ force: true }, (err, values) => {
       if (!err) {
+        count = 0;
         this.props.dispatch({
           type: 'register/submit',
           payload: values,
