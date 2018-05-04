@@ -103,7 +103,7 @@ class ChoiceTab extends Component {
         <div className={styles['problem-header']}>
           <div className={styles['problem-title']}>
             <h1>
-              {problemInfo.title}&nbsp;&nbsp;
+              <span dangerouslySetInnerHTML={{__html: problemInfo.title}} />&nbsp;&nbsp;
               <span
                 style={{fontSize: 26, fontWeight: 500, cursor: 'pointer'}}
                 onClick={e => {

@@ -124,7 +124,7 @@ class StandardTable extends PureComponent {
           if (val.name) {
             return (
               <div>
-                <Link to={`/problem/detail/${val.id}`}>{val.name}</Link>&nbsp;&nbsp;
+                <Link to={`/problem/detail/${val.id}`}><span dangerouslySetInnerHTML={{__html: val.name}} /></Link>&nbsp;&nbsp;
                 <span
                   onClick={e => {
                     this.collection(e, val.id);
