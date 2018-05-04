@@ -18,7 +18,7 @@ class UserBasic extends PureComponent {
           </div>
           <div className={styles['info-header-basic']}>
             <h1 style={{marginLeft: 20}}>{userInfo.nick_name}</h1>
-            <div><span><Icon type={userInfo.sex === '男'? 'man' : 'woman'} />{userInfo.sex}</span>&nbsp;&nbsp;&nbsp;&nbsp;<span><Icon type="calendar" />{userInfo.birthday}</span></div>
+            <div style={{marginLeft: 20}}><span><Icon type={userInfo.sex === '男'? 'man' : 'woman'} />{userInfo.sex}</span>&nbsp;&nbsp;&nbsp;&nbsp;<span><Icon type="calendar" />{userInfo.birthday}</span></div>
           </div>
           <div className={styles['info-header-editor']}>
             { userInfo.user_name === sessionStorage.getItem('userName') && (

@@ -53,7 +53,9 @@ export default class Problem extends PureComponent {
 
   // 改变编辑器和题目信息区域的大小
   changeEditorSize() {
-    let left, right, iconType;
+    let left;
+    let right;
+    let iconType;
     if (this.state.left === '48%') {
       left = '38%';
       right = '73%';

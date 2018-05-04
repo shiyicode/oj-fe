@@ -56,20 +56,24 @@ class Editor extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    if (nextProps.codeValue && count === 0) {
-      const { language, codeValue } = nextProps;
-      if (language && codeValue) {
-        const mode = language === 'c' || language === 'c++' ? 'c_cpp' : language;
-        this.setState({
-          defaultCode: codeValue,
-          lang: language.toLowerCase(),
-          mode,
-        });
-        this.props.setCodeValue(codeValue); // 设置代码
-        this.props.setLanguage(language); // 设置语言
-        count += 1;
-      }
+    if (count === 1) {
+      let { language, codeValue } = nextProps;
+      language = language || 'c';
+      codeValue = codeValue || defaultLangList['c_cpp'];
+      const mode = language === 'c' || language === 'c++' ? 'c_cpp' : language;
+      this.setState({
+        defaultCode: codeValue,
+        lang: language.toLowerCase(),
+        mode,
+      });
+      this.props.setCodeValue(codeValue); // 设置代码
+      this.props.setLanguage(language); // 设置语言
     }
+    count += 1;
+  }
+
+  componentWillUnmount() {
+    count = 0;
   }
 
   // 当编辑器代码改变时触发
@@ -206,7 +210,7 @@ class Editor extends Component {
           editorProps={{ $blockScrolling: true }}
           value={this.state.defaultCode}
           fontSize={14}
-          style={{ width: '100%', height: 490 }}
+          style={{ width: '100%', height: 510 }}
         />
         <div className={styles.editorFooter}>
           <Select className={styles.codeLanguage} onChange={this.handleLanguage} defaultValue="选择语言">

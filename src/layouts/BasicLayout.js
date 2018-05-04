@@ -165,11 +165,11 @@ class BasicLayout extends React.PureComponent {
       return;
     }
     if (key === 'collection') {
-      dispatch(routerRedux.push(`/usercollection/${sessionStorage.getItem('userId')}`));
+      dispatch(routerRedux.push(`#/usercollection/${sessionStorage.getItem('userId')}`));
       return;
     }
     if (key === 'logout') {
-      this.props.dispatch({
+      dispatch({
         type: 'login/logout',
       });
     }
@@ -243,9 +243,9 @@ class BasicLayout extends React.PureComponent {
             <GlobalFooter
               links={[
                 {
-                  key: 'Pro 首页',
-                  title: 'Pro 首页',
-                  href: 'http://pro.ant.design',
+                  key: 'FightCoder 首页',
+                  title: '首页',
+                  href: 'http://www.fightcoder.com',
                   blankTarget: true,
                 },
                 {
@@ -255,15 +255,15 @@ class BasicLayout extends React.PureComponent {
                   blankTarget: true,
                 },
                 {
-                  key: 'Ant Design',
-                  title: 'Ant Design',
-                  href: 'http://ant.design',
+                  key: 'FightCoder',
+                  title: 'FightCoder',
+                  href: 'http://www.fightcoder.com',
                   blankTarget: true,
                 },
               ]}
               copyright={
                 <Fragment>
-                  Copyright <Icon type="copyright" /> 2018 蚂蚁金服体验技术部出品
+                  Copyright <Icon type="copyright" /> {new Date().getFullYear()} 西安邮电大学
                 </Fragment>
               }
             />

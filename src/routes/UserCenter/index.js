@@ -43,6 +43,7 @@ class UserCenter extends PureComponent {
     });
   }
 
+
   render () {
 
     const { user: { userInfo, count, submitList, rankList, loading } } = this.props;
@@ -57,7 +58,6 @@ class UserCenter extends PureComponent {
             <UserLine
               submitList={submitList}
               rankList={rankList}
-              dispatch={this.props.dispatch}
               userName={userInfo.user_name}
               loading={loading}
             />
