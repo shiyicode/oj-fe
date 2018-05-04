@@ -26,6 +26,12 @@ const { TextArea } = Input;
 @Form.create()
 export default class BasicForms extends PureComponent {
 
+  constructor(props) {
+    super(props);
+
+    this.handleReset = this.handleReset.bind(this);
+  }
+
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch({
@@ -50,10 +56,13 @@ export default class BasicForms extends PureComponent {
     });
   }
 
+  handleReset() {
+    this.props.form.resetFields();
+  }
+
   render() {
     const { submitting, user: { userInfo } } = this.props;
     const { getFieldDecorator } = this.props.form;
-
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -218,7 +227,7 @@ export default class BasicForms extends PureComponent {
               <Button type="primary" htmlType="submit" loading={submitting}>
                 提交
               </Button>
-              <Button style={{ marginLeft: 8 }} htmlType="reset">取消</Button>
+              <Button style={{ marginLeft: 8 }} onClick={this.handleReset}>取消</Button>
             </FormItem>
           </Form>
         </Card>
