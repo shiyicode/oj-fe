@@ -26,24 +26,6 @@ const diff = ['简单', '中等', '困难', '极难'];
   problemList: state.problemList,
 }))
 class OpenProblemList extends PureComponent {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      originArray: [],
-      algorithmArray: [],
-      diffArray: [],
-    };
-
-    this.getProblemsBySearch = this.getProblemsBySearch.bind(this);
-    this.getOriginTag = this.getOriginTag.bind(this);
-    this.getAlgorithmTag = this.getAlgorithmTag.bind(this);
-    this.getDiffTag = this.getDiffTag.bind(this);
-    this.deleteAlgorithmTag = this.deleteAlgorithmTag.bind(this);
-    this.deleteOriginTag = this.deleteOriginTag.bind(this);
-    this.deleteDiffTag = this.deleteDiffTag.bind(this);
-    this.getProblemListByPage = this.getProblemListByPage.bind(this);
-  }
 
   componentDidMount() {
     this.fetchProblemList({
@@ -57,60 +39,6 @@ class OpenProblemList extends PureComponent {
         sort: 1,
         is_asc: 1,
       },
-    });
-  }
-
-  // 根据题目name或id来查找题目
-  getProblemsBySearch(value) {
-    this.fetchProblemList({
-      url: 'problemList/fetch',
-      params: {
-        search: value,
-        requestPage: 1,
-      },
-    });
-  }
-
-  // 根据标签获得题库数据
-  getProblemsByTags() {
-    this.fetchProblemList({
-      url: 'problemList/fetch',
-      params: {
-        origin: this.state.originArray,
-        tag: this.state.algorithmArray,
-        diff: this.state.diffArray,
-        current_page: 1,
-        per_page: 10,
-        sort: 1,
-        is_asc: 1,
-      },
-    });
-  }
-
-  getOriginTag(values) {
-    const originArray = values;
-    this.setState({
-      originArray,
-    }, () => {
-      this.getProblemsByTags();
-    });
-  }
-
-  getAlgorithmTag(values) {
-    const algorithmArray = values;
-    this.setState({
-      algorithmArray,
-    }, () => {
-      this.getProblemsByTags();
-    });
-  }
-
-  getDiffTag(values) {
-    const diffArray = values;
-    this.setState({
-      diffArray,
-    }, () => {
-      this.getProblemsByTags();
     });
   }
 
@@ -138,59 +66,10 @@ class OpenProblemList extends PureComponent {
     });
   }
 
-  deleteOriginTag() {
-    this.setState({originArray: []});
-    this.fetchProblemList({
-      url: 'problemList/fetch',
-      params: {
-        origin: [],
-        tag: this.state.algorithmArray,
-        diff: this.state.diffArray,
-        current_page: 1,
-        per_page: 10,
-        sort: 1,
-        is_asc: 1,
-      },
-    });
-  }
-
-  deleteAlgorithmTag() {
-    this.setState({algorithmArray: []});
-    this.fetchProblemList({
-      url: 'problemList/fetch',
-      params: {
-        origin: this.state.originArray,
-        tag: [],
-        diff: this.state.diffArray,
-        current_page: 1,
-        per_page: 10,
-        sort: 1,
-        is_asc: 1,
-      },
-    });
-  }
-
-  deleteDiffTag() {
-    this.setState({ diffArray: [] });
-    this.fetchProblemList({
-      url: 'problemList/fetch',
-      params: {
-        origin: this.state.originArray,
-        tag: this.state.algorithmArray,
-        diff: [],
-        current_page: 1,
-        per_page: 10,
-        sort: 1,
-        is_asc: 1,
-      },
-    });
-  }
-
   render() {
     const {
       problemList: { loading, error, list, pagination, collection },
     } = this.props;
-
 
     return (
       <PageHeaderLayout title="题库">

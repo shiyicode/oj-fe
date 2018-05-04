@@ -204,7 +204,7 @@ class Editor extends Component {
           tabSize={this.state.size}
           name="UNIQUE_ID_OF_DIV"
           editorProps={{ $blockScrolling: true }}
-          value={this.props.codeValue ? this.props.codeValue : this.state.defaultCode}
+          value={this.state.defaultCode}
           fontSize={14}
           style={{ width: '100%', height: 490 }}
         />

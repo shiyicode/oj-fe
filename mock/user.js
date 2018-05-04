@@ -95,3 +95,32 @@ export function updateUserInfo (req, res) {
     return result;
   }
 }
+
+export function getColloctProblem (req, res) {
+  const tableListDataSource = [];
+  for (let i = 0; i < 10; i += 1) {
+    tableListDataSource.push({
+      key: `000${i}}`,
+      id: i,
+      status: Math.round(Math.random() * 2),
+      title: '迎春舞会之三人组舞',
+      problemDiff: Math.round(Math.random() * 3),
+      problemValue: Math.ceil(Math.random() * 4),
+      problemProgress: Math.ceil(Math.random() * 100),
+    });
+  }
+  const result = {
+    code: 0,
+    data: {
+      list: tableListDataSource,
+      current_page: 1,
+      total: 100,
+    },
+  };
+  if (res && res.json) {
+    return res.json(result);
+  } else {
+    return result;
+  }
+
+}
