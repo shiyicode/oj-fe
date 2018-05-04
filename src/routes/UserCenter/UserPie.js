@@ -10,7 +10,6 @@ export default class UserPie extends PureComponent {
 
   componentWillReceiveProps (nextProps) {
     if (nextProps && nextProps.count) {
-      console.log(nextProps.count);
       this.initPie(nextProps.count);
     }
   }

@@ -57,7 +57,7 @@ export default class Login extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.login.status === true) {
       if (nextProps.login.isFirst === 'true') {
-        window.location.href = '/#/user/userInfo'; // 跳到填写个人信息页
+        window.location.href = `/usercenter/write/${nextProps.login.userName}`; // 跳到填写个人信息页
       } else {
         const beforeUrl = localStorage.getItem('nowUrl');
         if (beforeUrl) {
@@ -149,14 +149,14 @@ export default class Login extends Component {
                   rules: [
                     {
                       required: type === 'simple',
-                      message: '请输入用户名！',
+                      message: '请输入邮箱！',
                     },
                   ],
                 })(
                   <Input
                     size="large"
                     prefix={<Icon type="user" className={styles.prefixIcon} />}
-                    placeholder="用户名"
+                    placeholder="邮箱"
                   />
                 )}
               </FormItem>

@@ -48,9 +48,9 @@ class UserCenter extends PureComponent {
     const { user: { userInfo, count, submitList, rankList, loading } } = this.props;
     return (
       <PageHeaderLayout title="用户详情">
-        <Card bordered={false} loading={loading} title={`${userInfo.user_name}的个人主页`} style={{minHeight: 500}}>
+        <Card bordered={false} loading={loading} title={`${userInfo.nick_name}的个人主页`} style={{minHeight: 500}}>
           <div className={styles['info-main']}>
-            <UserBasic  userInfo={userInfo} loading={loading}/>
+            <UserBasic  userInfo={userInfo} loading={loading} />
             <UserPie count={count} loading={loading} />
           </div>
           <div>

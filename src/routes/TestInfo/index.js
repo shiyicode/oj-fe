@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
-import { Link } from 'dva/router';
+import { Link, routerRedux } from 'dva/router';
 import { Card, Tag, Spin, Divider } from 'antd';
 import AceEditor from 'react-ace';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
@@ -26,10 +26,14 @@ export default class TestInfo extends PureComponent {
 
   componentDidMount () {
     const { dispatch } = this.props;
-    dispatch({
-      type: 'testInfo/fetch',
-      payload: { submit_id: this.props.match.params.id },
-    });
+    if (sessionStorage.getItem('userId')) {
+      dispatch({
+        type: 'testInfo/fetch',
+        payload: { submit_id: this.props.match.params.id },
+      });
+    } else {
+      dispatch(routerRedux.push('/user/login'));
+    }
   }
 
   render () {

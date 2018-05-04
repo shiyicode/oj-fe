@@ -12,7 +12,7 @@ export function getUserInfo (req, res) {
       "blog": "https://blog.csdn.net/Picking_up_stones",
       "git": "https://github.com/lwjcode",
       "description": "如果你知道自己去哪，全世界都会为你让路",
-      "birthday": "1995-01-10",
+      "birthday": "",
       "daily_address": ['陕西省', '西安市', '长安区'],
       "stat_school": "大学",
       "school_name": "西安邮电大学",

@@ -6,7 +6,7 @@ export default {
 
   state: {
     status: undefined,
-    userId: '',
+    userName: '',
   },
 
   effects: {
@@ -17,7 +17,7 @@ export default {
           type: 'changeLoginStatus',
           payload: {
             status: true,
-            userId: response.data,
+            userName: response.data.user_name,
           },
         });
         sessionStorage.setItem('userId', response.data.user_id);
@@ -51,6 +51,7 @@ export default {
       return {
         ...state,
         status: payload.status,
+        userName: payload.userName,
       };
     },
   },

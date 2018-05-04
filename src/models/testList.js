@@ -21,6 +21,7 @@ function getTestListResponse (response) {
           userName: {
             userName: item.user_name,
             userId: item.user_id,
+            nickName: item.nick_name,
           },
           status: item.status,
           runningTime: item.time_cost,

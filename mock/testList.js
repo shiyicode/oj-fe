@@ -4,11 +4,12 @@ export function getTestList (req, res) {
     testList.push({
       "problem_name":'A+B',
       "user_name": "fightcoder",
+      "nick_name": 'hahhah',
       "user_id": "123",
       "status": Math.round(Math.random() * 7),
       "memory_cost": 1000,
       "time_cost": 1000,
-      "lang": "Go",
+      "lang": "golang",
       "time": "2018.04.24 00:00:00",
       "submit_id": 1000 + i,
     });

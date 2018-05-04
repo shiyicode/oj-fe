@@ -112,13 +112,6 @@ export default class GlobalHeader extends PureComponent {
           <HeaderSearch
             className={`${styles.action} ${styles.search}`}
             placeholder="站内搜索"
-            dataSource={['搜索提示一', '搜索提示二', '搜索提示三']}
-            onSearch={value => {
-              console.lƒog('input', value); // eslint-disable-line
-            }}
-            onPressEnter={value => {
-              console.log('enter', value); // eslint-disable-line
-            }}
           />
           <NoticeIcon
             className={styles.action}
@@ -131,30 +124,30 @@ export default class GlobalHeader extends PureComponent {
             loading={fetchingNotices}
             popupAlign={{ offset: [20, -16] }}
           >
-            <NoticeIcon.Tab
-              list={noticeData['通知']}
-              title="通知"
-              emptyText="你已查看所有通知"
-              emptyImage="https://gw.alipayobjects.com/zos/rmsportal/wAhyIChODzsoKIOBHcBk.svg"
-            />
-            <NoticeIcon.Tab
-              list={noticeData['消息']}
-              title="消息"
-              emptyText="您已读完所有消息"
-              emptyImage="https://gw.alipayobjects.com/zos/rmsportal/sAuJeJzSKbUmHfBQRzmZ.svg"
-            />
-            <NoticeIcon.Tab
-              list={noticeData['待办']}
-              title="待办"
-              emptyText="你已完成所有待办"
-              emptyImage="https://gw.alipayobjects.com/zos/rmsportal/HsIsxMZiWKrNUavQUXqx.svg"
-            />
+            {/*<NoticeIcon.Tab*/}
+              {/*list={noticeData['通知']}*/}
+              {/*title="通知"*/}
+              {/*emptyText="你已查看所有通知"*/}
+              {/*emptyImage="https://gw.alipayobjects.com/zos/rmsportal/wAhyIChODzsoKIOBHcBk.svg"*/}
+            {/*/>*/}
+            {/*<NoticeIcon.Tab*/}
+              {/*list={noticeData['消息']}*/}
+              {/*title="消息"*/}
+              {/*emptyText="您已读完所有消息"*/}
+              {/*emptyImage="https://gw.alipayobjects.com/zos/rmsportal/sAuJeJzSKbUmHfBQRzmZ.svg"*/}
+            {/*/>*/}
+            {/*<NoticeIcon.Tab*/}
+              {/*list={noticeData['待办']}*/}
+              {/*title="待办"*/}
+              {/*emptyText="你已完成所有待办"*/}
+              {/*emptyImage="https://gw.alipayobjects.com/zos/rmsportal/HsIsxMZiWKrNUavQUXqx.svg"*/}
+            {/*/>*/}
           </NoticeIcon>
           {sessionStorage.getItem('userId') ? (
             <Dropdown overlay={menu}>
               <span className={`${styles.action} ${styles.account}`}>
                 <Avatar size="small" className={styles.avatar} src={currentUser.avator || 'https://gw.alipayobjects.com/zos/rmsportal/UjusLxePxWGkttaqqmUI.png'} />
-                <span className={styles.name}>{currentUser.user_name}</span>
+                <span className={styles.name}>{currentUser.nick_name}</span>
               </span>
             </Dropdown>
           ) : (

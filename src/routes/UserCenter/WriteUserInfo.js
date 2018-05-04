@@ -50,7 +50,6 @@ export default class BasicForms extends PureComponent {
     });
   }
 
-
   render() {
     const { submitting, user: { userInfo } } = this.props;
     const { getFieldDecorator } = this.props.form;
@@ -90,7 +89,7 @@ export default class BasicForms extends PureComponent {
                     message: '请输入用户名',
                   },
                 ],
-              })(<Input placeholder="请输入用户名" />)}
+              })(<Input placeholder="请输入用户名" disabled="true" />)}
             </FormItem>
             <FormItem {...formItemLayout} label="昵称">
               {getFieldDecorator('nick_name', {
@@ -123,7 +122,7 @@ export default class BasicForms extends PureComponent {
             </FormItem>
             <FormItem {...formItemLayout} label="birthday">
               {getFieldDecorator('birthday', {
-                initialValue: moment(userInfo.birthday, 'YYYY-MM-DD'),
+                initialValue: moment(userInfo.birthday || '2018-05-04', 'YYYY-MM-DD'),
                 rules: [
                   {
                     required: true,

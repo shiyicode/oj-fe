@@ -8,6 +8,7 @@ import styles from './index.less';
 import 'brace/mode/c_cpp';
 import 'brace/mode/python';
 import 'brace/mode/java';
+import 'brace/mode/golang';
 // 背景色
 import 'brace/theme/github';
 import 'brace/theme/xcode';

@@ -11,10 +11,11 @@ const CheckboxGroup = Checkbox.Group;
 
 
 function setCheckbox (arr) {
-  return arr.map( (value) =>
+  return arr.map( (value) => (
     <div key={value} style={{padding: '5px 0'}}>
       <Checkbox value={value}>{value}</Checkbox>
-    </div>);
+    </div>
+));
 }
 
 const origin = ['官方', 'CodeVs', 'HDU'];
@@ -203,17 +204,23 @@ class OpenProblemList extends PureComponent {
 
     const { originArray, algorithmArray, diffArray } = this.state;
 
-    const content1 = <CheckboxGroup onChange={this.getOriginTag} value={this.state.originArray}>
-                      {setCheckbox(origin)}
-                     </CheckboxGroup>
+    const content1 = (
+      <CheckboxGroup onChange={this.getOriginTag} value={this.state.originArray}>
+        {setCheckbox(origin)}
+      </CheckboxGroup>
+)
 
-    const content2 = <CheckboxGroup onChange={this.getAlgorithmTag} value={this.state.algorithmArray}>
-                        {setCheckbox(algorithm)}
-                     </CheckboxGroup>
+    const content2 = (
+      <CheckboxGroup onChange={this.getAlgorithmTag} value={this.state.algorithmArray}>
+        {setCheckbox(algorithm)}
+      </CheckboxGroup>
+)
 
-    const content3 = <CheckboxGroup onChange={this.getDiffTag} value={this.state.diffArray}>
-                        {setCheckbox(diff)}
-                     </CheckboxGroup>
+    const content3 = (
+      <CheckboxGroup onChange={this.getDiffTag} value={this.state.diffArray}>
+        {setCheckbox(diff)}
+      </CheckboxGroup>
+)
 
     return (
       <PageHeaderLayout title="题库">
