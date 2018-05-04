@@ -251,7 +251,7 @@ class BasicLayout extends React.PureComponent {
                 {
                   key: 'github',
                   title: <Icon type="github" />,
-                  href: 'https://github.com/ant-design/ant-design-pro',
+                  href: 'https://github.com/open-fightcoder',
                   blankTarget: true,
                 },
                 {
