@@ -8,6 +8,12 @@ addFunnel(Highcharts);
 
 export default class UserPie extends PureComponent {
 
+  componentDidMount() {
+    if (this.props.count) {
+      this.initPie(this.props.count);
+    }
+  }
+
   componentWillReceiveProps (nextProps) {
     if (nextProps && nextProps.count) {
       this.initPie(nextProps.count);

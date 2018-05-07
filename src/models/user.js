@@ -1,6 +1,7 @@
 import { message } from 'antd';
 import { routerRedux } from 'dva/router';
-import { getUserInfo, getCount, updateUserInfo, getRecentRank, getRecentSubmit } from '../services/user';
+import { getUserInfo, getCount, updateUserInfo, getRecentRank, getRecentSubmit, getCollection } from '../services/user';
+import { queryCollection } from '../services/api';
 
 export default {
   namespace: 'user',
@@ -11,6 +12,10 @@ export default {
     count: {},
     submitList: [],
     rankList: [],
+    collectionList: [],
+    total: 0,
+    currentPage: 1,
+    collection: {},
     loading: false,
   },
 
@@ -122,6 +127,46 @@ export default {
         payload: false,
       });
     },
+
+    *getCollectProblem({ payload }, { call, put }) {
+      yield put({
+        type: 'changeLoading',
+        payload: true,
+      });
+      const response = yield call(getCollection, payload);
+      if (response.code === 0) {
+        yield put({
+          type: 'saveCollectionList',
+          payload: {
+            collectionList: response.data.list,
+            total: response.data.total,
+            currentPage: response.data.current_page,
+          },
+        });
+      }
+      yield put({
+        type: 'changeLoading',
+        payload: false,
+      });
+    },
+
+    // 收藏题目
+    *collection({ payload }, { call, put }) {
+      const response = yield call(queryCollection, payload);
+      if (response && response.code === 0) {
+        yield put({
+          type: 'saveCollection',
+          payload: response.data,
+        });
+      } else {
+        yield put({
+          type: 'saveCollection',
+          payload: {
+            error: '服务器错误',
+          },
+        });
+      }
+    },
   },
 
 
@@ -168,6 +213,25 @@ export default {
       return {
         ...state,
         rankList: action.payload,
+      };
+    },
+
+    saveCollectionList(state, action) {
+      return {
+        ...state,
+        collectionList: action.payload.collectionList,
+        total: action.payload.total,
+        currentPage: action.payload.currentPage,
+      };
+    },
+
+    saveCollection(state, action) {
+      return {
+        ...state,
+        collection: {
+          isSuccess: action.payload,
+          flag: true,
+        },
       };
     },
 

@@ -16,6 +16,7 @@ const langArr = ['c', 'c++', 'java', 'python', 'golang'];
 const columns = [{
   title: '编号',
   dataIndex: 'submitId',
+  key: 'submitId',
 },{
   title: '题目名称',
   dataIndex: 'problemName',

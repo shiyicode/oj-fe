@@ -85,7 +85,7 @@ export default class GlobalHeader extends PureComponent {
         <Menu.Item key="user">
           <Icon type="user" />我的主页
         </Menu.Item>
-        <Menu.Item type="collection">
+        <Menu.Item key="collection">
           <Icon type="star-o" />收藏的题目
         </Menu.Item>
         <Menu.Divider />

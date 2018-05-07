@@ -7,6 +7,8 @@ import styleIcon from './Icon.less';
 const FormItem = Form.Item;
 const { TabPane } = Tabs;
 
+let count = 0;
+
 @connect(state => ({
   login: state.login,
 }))
@@ -68,10 +70,12 @@ export default class Login extends Component {
         }
       }
     }
+    count += 1;
   }
 
   componentWillUnmount() {
     clearInterval(this.interval);
+    count = 0;
   }
 
   onSwitch = key => {
@@ -143,7 +147,7 @@ export default class Login extends Component {
         <Form onSubmit={this.handleSubmit}>
           <Tabs animated={false} className={styles.tabs} activeKey={type} onChange={this.onSwitch}>
             <TabPane tab="账户密码登录" key="simple">
-              {login.status === false && this.renderMessage('用户名或密码错误')}
+              {login.status === false && count > 0 && this.renderMessage('用户名或密码错误')}
               <FormItem>
                 {getFieldDecorator('email', {
                   rules: [

@@ -98,22 +98,20 @@ export function updateUserInfo (req, res) {
 
 export function getColloctProblem (req, res) {
   const tableListDataSource = [];
-  for (let i = 0; i < 10; i += 1) {
+  for (let i = 0; i < 9; i += 1) {
     tableListDataSource.push({
-      key: `000${i}}`,
-      id: i,
-      status: Math.round(Math.random() * 2),
-      title: '迎春舞会之三人组舞',
-      problemDiff: Math.round(Math.random() * 3),
-      problemValue: Math.ceil(Math.random() * 4),
-      problemProgress: Math.ceil(Math.random() * 100),
-    });
+      "id": i,
+      "title":"字符串反转",
+      "difficulty":"简单",
+      "description":"有m种颜色是小寒所喜欢的颜色。小松希望他折的每种颜色的蝴蝶的数目是一样的。换句话说，小松必须折m*k只蝴蝶的颜色。小松希望他折的每种颜色的蝴蝶的数目是一样的。换句话说，小松必须折m*k只蝴蝶",
+      "status":"已做",
+    },);
   }
   const result = {
     code: 0,
     data: {
       list: tableListDataSource,
-      current_page: 1,
+      current_page: 3,
       total: 100,
     },
   };

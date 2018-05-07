@@ -57,9 +57,7 @@ export function getRankList(req, res) {
   }
   const result = {
     code: 0,
-    data: {
-      userList,
-    },
+    data: userList,
   };
   if (res && res.json) {
     res.json(result);

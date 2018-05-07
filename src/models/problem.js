@@ -199,10 +199,6 @@ export default {
 
     // 收藏题目
     *collection({ payload }, { call, put }) {
-      yield put({
-        type: 'changeLoading',
-        payload: true,
-      });
       const response = yield call(queryCollection, payload);
       if (response && response.code === 0) {
         yield put({
@@ -214,14 +210,9 @@ export default {
           type: 'saveCollection',
           payload: {
             error: '服务器错误',
-            loading: false,
           },
         });
       }
-      yield put({
-        type: 'changeLoading',
-        payload: false,
-      });
     },
   },
 

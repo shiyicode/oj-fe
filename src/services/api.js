@@ -69,6 +69,11 @@ export async function queryProblem(params) {
   return request(`/apiv1/problem/list?${stringify(params)}`);
 }
 
+// 获得所有个人题目
+export async function queryPersonalProblem(params) {
+  return request(`/authv1/problem/userproblem/list?${stringify(params)}`);
+}
+
 // 获得做题进度
 export async function queryProblemProgress(params) {
   return request(`/apiv1/user/progress?${stringify(params)}`);
@@ -170,5 +175,12 @@ export async function getTestList (params) {
 export async function qqLogin (params) {
   return request(`/apiv1/getqqurl?${stringify(params)}`);
 }
+
+// 获得排行榜信息
+export async function queryRankAll(params) {
+  return request(`/apiv1/rank/get?${stringify(params)}`);
+}
+
+
 
 

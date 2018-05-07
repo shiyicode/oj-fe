@@ -165,7 +165,7 @@ class BasicLayout extends React.PureComponent {
       return;
     }
     if (key === 'collection') {
-      dispatch(routerRedux.push(`#/usercollection/${sessionStorage.getItem('userId')}`));
+      dispatch(routerRedux.push(`/usercollection/${sessionStorage.getItem('userName')}`));
       return;
     }
     if (key === 'logout') {

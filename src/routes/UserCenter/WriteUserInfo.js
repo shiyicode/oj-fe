@@ -61,7 +61,7 @@ export default class BasicForms extends PureComponent {
   }
 
   render() {
-    const { submitting, user: { userInfo } } = this.props;
+    const { user: { userInfo } } = this.props;
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
       labelCol: {
@@ -224,7 +224,7 @@ export default class BasicForms extends PureComponent {
               })(<Input placeholder="请输入学校名称" />)}
             </FormItem>
             <FormItem {...submitFormLayout} style={{ marginTop: 32 }}>
-              <Button type="primary" htmlType="submit" loading={submitting}>
+              <Button type="primary" htmlType="submit" >
                 提交
               </Button>
               <Button style={{ marginLeft: 8 }} onClick={this.handleReset}>取消</Button>

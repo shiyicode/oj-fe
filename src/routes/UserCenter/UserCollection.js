@@ -1,101 +1,131 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
-import { Card, Pagination, Alert, Tag, Checkbox, Popover, Button } from 'antd';
-import StandardTable from '../../components/StandardTable';
+import { Link, routerRedux } from 'dva/router';
+import { Card, Pagination, Icon, notification } from 'antd';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
-import styles from './TableList.less';
+import styles from './index.less';
 
-const CheckboxGroup = Checkbox.Group;
-
-const origin = ['官方', 'CodeVs', 'HDU'];
-const algorithm = [
-  '分治',
-  '贪心',
-  '字符串',
-  '动态规划',
-  '搜索',
-  '线性结构',
-  '链表',
-  '堆结构',
-  '树结构',
-  '图论',
-];
-const diff = ['简单', '中等', '困难', '极难'];
+const colors = ['#2EB872', '#E70000', '#58DADA'];
+const statusArr = ['已做', '正做', '待做'];
+let count = 0;
 
 @connect(state => ({
-  problemList: state.problemList,
+  user: state.user,
 }))
-class OpenProblemList extends PureComponent {
+class UserCollection extends PureComponent {
+
+  constructor(props) {
+    super(props);
+
+    this.getCollectionByPage = this.getCollectionByPage.bind(this);
+  }
 
   componentDidMount() {
-    this.fetchProblemList({
-      url: 'problemList/fetch',
-      params: {
-        origin: this.state.originArray,
-        tag: this.state.algorithmArray,
-        diff: this.state.diffArray,
-        current_page: 1,
-        per_page: 10,
-        sort: 1,
-        is_asc: 1,
-      },
-    });
-  }
-
-  // 根据页码获得题库数据
-  getProblemListByPage(pageNumber) {
-    this.fetchProblemList({
-      url: 'problemList/fetch',
-      params: {
-        current_page: pageNumber,
-        per_page: 10,
-        origin: this.state.originArray,
-        tag: this.state.algorithmArray,
-        diff: this.state.diffArray,
-        sort: 1,
-        is_asc: 1,
-      },
-    });
-  }
-
-  fetchProblemList(options) {
     const { dispatch } = this.props;
     dispatch({
-      type: options.url,
-      payload: options.params,
+      type: 'user/getCollectProblem',
+      payload: {
+        current_page: 1,
+        per_page: 9,
+      },
     });
+  }
+
+  componentWillReceiveProps(nextProps) {
+    // 取消收藏返回时的显示逻辑
+    if (nextProps.user.collection && nextProps.user.collection.flag) {
+      if (count === 0) {
+        const { isSuccess } = nextProps.user.collection; // 失败和成功标志
+        let collectionInfo = '';
+        let warnIcon = <Icon type="smile-circle" style={{ color: '#108ee9' }} />;
+        if (isSuccess) {
+          collectionInfo = '取消收藏成功';
+        } else {
+          collectionInfo = '取消收藏失败';
+          warnIcon = <Icon type="frown-o" style={{ color: '#108ee9' }} />;
+        }
+        notification.success({
+          message: '收藏提示',
+          description: collectionInfo,
+          icon: warnIcon,
+          duration: 2,
+        });
+        if (isSuccess){
+          const { dispatch } = this.props;
+          dispatch({
+            type: 'user/getCollectProblem',
+            payload: {
+              current_page: 1,
+              per_page: 9,
+            },
+          });
+        }
+      }
+      count += 1;
+    }
+  }
+
+  getCollectionByPage(pageNum) {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'user/getCollectProblem',
+      payload: {
+        current_page: pageNum,
+        per_page: 9,
+      },
+    });
+  }
+
+  collection(id) {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'user/collection',
+      payload: {
+        problem_id: id,
+        flag: 'cancel',
+      },
+    });
+    count = 0;
   }
 
   render() {
-    const {
-      problemList: { loading, error, list, pagination, collection },
-    } = this.props;
-
+    const { user: { collectionList, total, currentPage, loading } } = this.props;
     return (
       <PageHeaderLayout title="题库">
-        <Card bordered={false}>
-          <div className={styles.tableList}>
-            <StandardTable
-              loading={loading}
-              data={list}
-              collection={collection}
-              dispatch={this.props.dispatch}
-            />
-            {pagination &&
-            pagination.total > 0 && (
-              <Pagination
-                defaultCurrent={1}
-                total={pagination.total}
-                onChange={this.getProblemListByPage}
-                style={{ float: 'right', marginTop: '20px' }}
-              />
-            )}
+        <Card bordered={false} title={`${this.props.match.params.userName}收藏的题目`} loading={loading}>
+          <div style={{overflow: 'auto', padding: '0 1px 10px 0px'}}>
+            { collectionList && collectionList.length > 0 && collectionList.map(item => (
+              <Card.Grid className={styles.projectGrid} key={item.id}>
+                <Card bodyStyle={{ padding: 0 }} bordered={false}>
+                  <Card.Meta
+                    title={
+                      <div className={styles.cardTitle}>
+                        <div style={{background: colors[statusArr.indexOf(item.status)]}} className={styles['card-status']}>
+                          {item.status}
+                        </div>
+                        <Link to={`/problem/detail/${item.id}`}>{item.title}</Link>
+                      </div>
+                  }
+                    description={<div className={styles['collection-content']}>{item.description}</div>}
+                  />
+                  <div className={styles.projectItemContent} style={{float: 'right', cursor: 'pointer', marginTop: 10}}>
+                    <span className={styles.datetime} onClick={() => this.collection(item.id)}>取消收藏</span>
+                  </div>
+                </Card>
+              </Card.Grid>
+          ))}
+            { collectionList && collectionList.length === 0 && <div>暂无收藏题目</div>}
           </div>
-          {error && <Alert style={{ marginBottom: 24 }} message={error} type="error" showIcon />}
+          <Pagination
+            defaultCurrent={currentPage}
+            total={total}
+            onChange={this.getCollectionByPage}
+            style={{ float: 'right', marginTop: '20px' }}
+          />
         </Card>
       </PageHeaderLayout>
     );
   }
 }
 
-export default OpenProblemList;
+export default UserCollection;

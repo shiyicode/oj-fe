@@ -6,7 +6,7 @@ export function getTestList (req, res) {
       "user_name": "fightcoder",
       "nick_name": 'hahhah',
       "user_id": "123",
-      "status": Math.round(Math.random() * 7),
+      "status": Math.round(Math.random() * 7) + 1,
       "memory_cost": 1000,
       "time_cost": 1000,
       "lang": "golang",

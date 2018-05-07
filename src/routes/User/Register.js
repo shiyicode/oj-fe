@@ -193,6 +193,16 @@ export default class Register extends Component {
               ],
             })(<Input size="large" placeholder="用户名" />)}
           </FormItem>
+          <FormItem>
+            {getFieldDecorator('nick_name', {
+              rules: [
+                {
+                  required: true,
+                  message: '请输入昵称！',
+                },
+              ],
+            })(<Input size="large" placeholder="昵称" />)}
+          </FormItem>
           <FormItem help={this.state.help}>
             <Popover
               content={

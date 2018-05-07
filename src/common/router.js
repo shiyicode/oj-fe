@@ -115,13 +115,16 @@ export const getRouterData = app => {
       component: dynamicWrapper(app, ['problem'], () => import('../routes/Problem')),
     },
     '/problem/personal': {
-      component: dynamicWrapper(app, ['list'], () => import('../routes/ProblemList/BasicList')),
+      component: dynamicWrapper(app, ['list'], () => import('../routes/ProblemList/PersonalProblemList')),
     },
-    '/submission/': {
+    '/submission': {
       component: dynamicWrapper(app, ['testList'], () => import('../routes/TestList')),
     },
     '/submission/detail/:id': {
       component: dynamicWrapper(app, ['testInfo'], () => import('../routes/TestInfo')),
+    },
+    '/rank': {
+      component: dynamicWrapper(app, ['rankList'], () => import('../routes/RankList')),
     },
     '/usercenter/:userName': {
       component: dynamicWrapper(app, ['user'], () => import('../routes/UserCenter')),
@@ -129,19 +132,22 @@ export const getRouterData = app => {
     '/usercenter/write/:userName': {
       component: dynamicWrapper(app, ['user'], () => import('../routes/UserCenter/WriteUserInfo')),
     },
-    '/list/card-list': {
+    '/usercollection/:userName': {
+      component: dynamicWrapper(app, ['user'], () => import('../routes/UserCenter/UserCollection')),
+    },
+    '/problem/card-list': {
       component: dynamicWrapper(app, ['list'], () => import('../routes/ProblemList/CardList')),
     },
-    '/list/search': {
+    '/problem/search': {
       component: dynamicWrapper(app, ['list'], () => import('../routes/ProblemList/List')),
     },
-    '/list/search/projects': {
+    '/problem/search/projects': {
       component: dynamicWrapper(app, ['list'], () => import('../routes/ProblemList/Projects')),
     },
-    '/list/search/applications': {
+    '/problem/search/applications': {
       component: dynamicWrapper(app, ['list'], () => import('../routes/ProblemList/Applications')),
     },
-    '/list/search/articles': {
+    '/problem/search/articles': {
       component: dynamicWrapper(app, ['list'], () => import('../routes/ProblemList/Articles')),
     },
     '/profile/basic': {

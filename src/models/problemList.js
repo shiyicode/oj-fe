@@ -4,11 +4,12 @@ import {
   queryRankList,
   queryCollection,
   queryCollectionList,
+  queryPersonalProblem,
 } from '../services/api';
 
 function formatProblemListData(list) {
-  let data = [];
-  for (var i = 0; i < list.length; i++) {
+  const data = [];
+  for (let i = 0; i < list.length; i++) {
     data.push({
       key: list[i].id + list[i].title,
       id: list[i].id,
@@ -58,6 +59,7 @@ export default {
         isSuccess: false,
         flag: '',
       },
+      personalList: [],
     },
     loading: true,
     error: '',
@@ -122,7 +124,6 @@ export default {
           type: 'save',
           payload: {
             error: '服务器错误',
-            loading: false,
           },
         });
       }
@@ -133,10 +134,6 @@ export default {
     },
 
     *getProgress({ payload }, { call, put }) {
-      yield put({
-        type: 'changeLoading',
-        payload: true,
-      });
       const response = yield call(queryProblemProgress, payload);
       if (response && response.code === 0) {
         yield put({
@@ -148,21 +145,12 @@ export default {
           type: 'savProgress',
           payload: {
             error: '服务器错误',
-            loading: false,
           },
         });
       }
-      yield put({
-        type: 'changeLoading',
-        payload: false,
-      });
     },
 
     *getRankList({ payload }, { call, put }) {
-      yield put({
-        type: 'changeLoading',
-        payload: true,
-      });
       const response = yield call(queryRankList, payload);
       if (response && response.code === 0) {
         yield put({
@@ -174,22 +162,12 @@ export default {
           type: 'saveRankList',
           payload: {
             error: '服务器错误',
-            loading: false,
           },
         });
       }
-      yield put({
-        type: 'changeLoading',
-        payload: false,
-      });
     },
 
     *collection({ payload }, { call, put }) {
-      yield put({
-        type: 'changeLoading',
-        payload: true,
-      });
-
       const response = yield call(queryCollection, payload);
       if (response && response.code === 0) {
         yield put({
@@ -203,7 +181,26 @@ export default {
           type: 'saveCollection',
           payload: {
             error: '服务器错误',
-            loading: false,
+          },
+        });
+      }
+    },
+
+    *getPersonalList( {payload}, {put, call}) {
+      yield put({
+        type: 'changeLoading',
+        payload: true,
+      });
+      const response = yield call(queryPersonalProblem, payload);
+      if (response.code === 0) {
+        const tableListDataSource = formatProblemListData(response.data.list); // 格式化信息
+        yield put({
+          type: 'savePersonal',
+          payload: {
+            personalList: tableListDataSource,
+            pagination: {
+              total: response.data.total,
+            },
           },
         });
       }
@@ -241,6 +238,14 @@ export default {
       return {
         ...state,
         collection: action.payload,
+      };
+    },
+
+    savePersonal(state, action) {
+      return {
+        ...state,
+        personalList: action.payload.personalList,
+        pagination: action.payload.pagination,
       };
     },
 

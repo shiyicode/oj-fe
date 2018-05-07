@@ -15,7 +15,8 @@ import {
 } from './mock/problemList';
 import { getProblemInfo, getTestResult, getCommomResult, submitCode, saveCode, getCode } from './mock/problem';
 import { getTestList } from './mock/testList';
-import { getUserInfo, getCount, getRecentRank, getRecentSubmit, updateUserInfo } from './mock/user';
+import { getUserInfo, getCount, getRecentRank, getRecentSubmit, updateUserInfo, getColloctProblem } from './mock/user';
+import { getTopList } from './mock/rankList';
 
 // 是否禁用代理
 const noProxy = process.env.NO_PROXY === 'true';
@@ -161,6 +162,7 @@ const proxy = {
     });
   },
   'GET /apiv1/problem/list': getProblemList,
+  'GET /authv1/problem/userproblem/list': getProblemList,
   'GET /authv1/rank/getlist': getRankList,
   'GET /apiv1/user/progress': getProblemProgress,
   'POST /authv1/problem/collection/set': collection,
@@ -178,6 +180,8 @@ const proxy = {
   'POST /authv1/user/updatemess': updateUserInfo,
   'GET /apiv1/user/recentsubmit': getRecentSubmit,
   'GET /apiv1/user/recentrank': getRecentRank,
+  'GET /authv1/user/collection': getColloctProblem,
+  'GET /apiv1/rank/get': getTopList,
 };
 
 export default (noProxy ? {} : delay(proxy, 1000));

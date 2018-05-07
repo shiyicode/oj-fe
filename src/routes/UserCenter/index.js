@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'dva';
 import { Card } from 'antd';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
@@ -10,7 +10,7 @@ import styles from './index.less';
 @connect(state => ({
   user: state.user,
 }))
-class UserCenter extends PureComponent {
+class UserCenter extends Component {
 
   componentDidMount() {
     const { dispatch } = this.props;
@@ -41,6 +41,40 @@ class UserCenter extends PureComponent {
         user_name: this.props.match.params.userName,
       },
     });
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.match.params.userName !== this.props.match.params.userName) {
+      const { dispatch } = this.props;
+      dispatch({
+        type: 'user/fetchUserInfo',
+        payload: {
+          user_name: nextProps.match.params.userName,
+        },
+      });
+
+      dispatch({
+        type: 'user/fetchCount',
+        payload: {
+          user_name: nextProps.match.params.userName,
+        },
+      });
+
+      dispatch({
+        type: 'user/getRecentSubmitList',
+        payload: {
+          user_name: nextProps.match.params.userName,
+        },
+      });
+
+      dispatch({
+        type: 'user/getRecentRankList',
+        payload: {
+          user_name: nextProps.match.params.userName,
+        },
+      });
+      return true;
+    }
   }
 
 

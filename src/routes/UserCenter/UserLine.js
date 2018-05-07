@@ -93,6 +93,13 @@ class UserLine extends PureComponent {
     const elem = document.createElement('div');
     elem.id = 'chart-line2';
     pane.appendChild(elem);
+    if (this.props.submitList) {
+      initLineChart('chart-line1', '近30天提交次数变化', '提交次数', getSubmitSeriesData(this.props.submitList));
+    }
+
+    if (this.props.rankList) {
+      initLineChart('chart-line2', '近30天排名变化', '排名', getRankSeriesData(this.props.rankList));
+    }
   }
 
   componentWillReceiveProps(nextProps) {

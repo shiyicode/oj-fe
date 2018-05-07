@@ -27,3 +27,8 @@ export async function getRecentSubmit (params) {
 export async function getRecentRank (params) {
   return request(`/apiv1/user/recentrank?${stringify(params)}`);
 }
+
+// 获得个人收藏列表
+export async function getCollection (params) {
+  return request(`/authv1/user/collection?${stringify(params)}`);
+}
