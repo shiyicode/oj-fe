@@ -102,14 +102,14 @@ class PersonalProblemList extends PureComponent {
               pagination={false}
             />
             {pagination &&
-          pagination.total > 0 && (
-            <Pagination
-              defaultCurrent={1}
-              total={pagination.total}
-              onChange={this.getProblemListByPage}
-              style={{ float: 'right', marginTop: '20px' }}
-            />
-          )}
+            pagination.total > 0 && (
+              <Pagination
+                current={pagination.currentPage}
+                total={pagination.total}
+                onChange={this.getProblemListByPage}
+                style={{ float: 'right', marginTop: '20px' }}
+              />
+            )}
           </div>
           {error && <Alert style={{ marginBottom: 24 }} message={error} type="error" showIcon />}
         </Card>

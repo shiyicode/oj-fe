@@ -92,7 +92,7 @@ class UserCollection extends PureComponent {
     const { user: { collectionList, total, currentPage, loading } } = this.props;
     return (
       <PageHeaderLayout title="题库">
-        <Card bordered={false} title={`${this.props.match.params.userName}收藏的题目`} loading={loading}>
+        <Card bordered={false} title="我收藏的题目" loading={loading}>
           <div style={{overflow: 'auto', padding: '0 1px 10px 0px'}}>
             { collectionList && collectionList.length > 0 && collectionList.map(item => (
               <Card.Grid className={styles.projectGrid} key={item.id}>
@@ -117,7 +117,7 @@ class UserCollection extends PureComponent {
             { collectionList && collectionList.length === 0 && <div>暂无收藏题目</div>}
           </div>
           <Pagination
-            defaultCurrent={currentPage}
+            current={currentPage}
             total={total}
             onChange={this.getCollectionByPage}
             style={{ float: 'right', marginTop: '20px' }}

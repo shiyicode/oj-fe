@@ -4,7 +4,7 @@ for (let i = 0; i < 10; i += 1) {
   tableListDataSource.push({
     key: `000${i}}`,
     id: i,
-    status: Math.round(Math.random() * 2),
+    status: '私人题目',
     title: '迎春舞会之三人组舞',
     problemDiff: Math.round(Math.random() * 3),
     problemValue: Math.ceil(Math.random() * 4),

@@ -302,7 +302,7 @@ class OpenProblemList extends PureComponent {
                 {pagination &&
                   pagination.total > 0 && (
                     <Pagination
-                      defaultCurrent={1}
+                      current={pagination.currentPage}
                       total={pagination.total}
                       onChange={this.getProblemListByPage}
                       style={{ float: 'right', marginTop: '20px' }}

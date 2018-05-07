@@ -10,8 +10,6 @@ import {
   Card,
   Radio,
   Cascader,
-  Icon,
-  Upload, Modal,
 } from 'antd';
 import { options } from '../../utils/cityCascader';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';

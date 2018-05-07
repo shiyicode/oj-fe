@@ -58,6 +58,7 @@ const params = {
   status: '',
   current_page: 1,
   per_page: 10,
+  problem_id: '',
 };
 
 function setSelect (arr) {
@@ -129,16 +130,17 @@ export default class TestList extends PureComponent {
 
   // 根据题目id查询
   getSearchByInputValue (value) {
-    if (value !== '') {
-      const { dispatch } =  this.props;
-      dispatch({
-        type: 'testList/fetch',
-        payload: {
-          requestPage: 1,
-          problem_id: value,
-        },
-      });
-    }
+    const { dispatch } =  this.props;
+    params.lang = '';
+    params.status = '';
+    params.current_page = 1;
+    params.per_page = 10;
+    params.problem_id = value;
+
+    dispatch({
+      type: 'testList/fetch',
+      payload: params,
+    });
   }
 
   // 根据分页查询
@@ -232,7 +234,7 @@ export default class TestList extends PureComponent {
             <Table columns={columns} dataSource={list} pagination={false} loading={loading} />
           </div>
           <Pagination
-            defaultCurrent={1}
+            current={pagination.currentPage}
             total={pagination.total}
             onChange={this.getTestListByPage}
             style={{float: 'right', marginTop: '20px'}}

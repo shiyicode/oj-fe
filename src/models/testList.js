@@ -4,6 +4,7 @@ function getTestListResponse (response) {
   const testList = {
     pagination: {
       total: 0,
+      currentPage: 0,
     },
     list: [],
   };
@@ -34,6 +35,7 @@ function getTestListResponse (response) {
 
     if (response.data.total) {
       testList.pagination.total = response.data.total;
+      testList.pagination.currentPage = response.data.current_page;
     }
   }
   return testList;
@@ -46,6 +48,7 @@ export default {
     list: [],
     pagination: {
       total: 0,
+      currentPage: 1,
     },
     loading: true,
     error: '',

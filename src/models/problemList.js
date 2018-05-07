@@ -9,7 +9,7 @@ import {
 
 function formatProblemListData(list) {
   const data = [];
-  for (let i = 0; i < list.length; i++) {
+  for (let i = 0; i < list.length; i += 1) {
     data.push({
       key: list[i].id + list[i].title,
       id: list[i].id,
@@ -52,6 +52,7 @@ export default {
       list: [],
       pagination: {
         total: 0,
+        currentPage: 1,
       },
       progress: {},
       rankList: [],
@@ -102,6 +103,7 @@ export default {
                   list: tableListDataSource,
                   pagination: {
                     total: response.data.total,
+                    currentPage:response.data.current_page,
                   },
                 },
               });
@@ -115,6 +117,7 @@ export default {
               list: tableListDataSource,
               pagination: {
                 total: response.data.total,
+                currentPage:response.data.current_page,
               },
             },
           });
@@ -200,6 +203,7 @@ export default {
             personalList: tableListDataSource,
             pagination: {
               total: response.data.total,
+              currentPage:response.data.current_page,
             },
           },
         });

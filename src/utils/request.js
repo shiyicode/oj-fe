@@ -65,7 +65,7 @@ export default function request (path, options) {
   // const url = path; // 本地测试
   if (arguments.length < 2) {
     return axios.get(url, {withCredentials: true})
-      .then( response => {g
+      .then( response => {
         return response.data;
       })
       .catch( error => {
