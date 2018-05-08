@@ -107,13 +107,13 @@ export const getRouterData = app => {
     // '/form/advanced-form': {
     //   component: dynamicWrapper(app, ['form'], () => import('../routes/Forms/AdvancedForm')),
     // },
-    '/problem/open/': {
+    '/problem/': {
       component: dynamicWrapper(app, ['problemList'], () => import('../routes/ProblemList/OpenProblemList')
       ),
     },
-    '/problem/personal/': {
-      component: dynamicWrapper(app, ['list'], () => import('../routes/ProblemList/PersonalProblemList')),
-    },
+    // '/problem/personal/': {
+    //   component: dynamicWrapper(app, ['list'], () => import('../routes/ProblemList/PersonalProblemList')),
+    // },
     '/problem/detail/:id': {
       component: dynamicWrapper(app, ['problem'], () => import('../routes/Problem')),
     },

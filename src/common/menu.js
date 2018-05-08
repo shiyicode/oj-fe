@@ -47,17 +47,17 @@ const menuData = [
     icon: 'table',
     path: 'problem',
     children: [
-      {
-        name: '公开题库',
-        path: 'open',
-      },
+      // {
+      //   name: '公开题库',
+      //   path: 'open',
+      // },
       {
         path: 'detail/:id',
       },
-      {
-        name: '个人题库',
-        path: 'personal',
-      },
+      // {
+      //   name: '个人题库',
+      //   path: 'personal',
+      // },
       // {
       //   name: '卡片列表',
       //   path: 'card-list',

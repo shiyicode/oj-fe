@@ -22,8 +22,8 @@ function formatProblemListData(list) {
         name: list[i].title,
         isCollect: list[i].isCollect,
       },
-      problemDiff: Math.round(Math.random() * 3),
-      problemProgress: Math.ceil(Math.random() * 100),
+      problemDiff: list[i].difficulty,
+      problemProgress: list[i].ac_rate,
     });
   }
   return data;

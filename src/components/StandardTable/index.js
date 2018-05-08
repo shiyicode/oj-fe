@@ -145,7 +145,7 @@ class StandardTable extends PureComponent {
         title: '难度等级 ',
         dataIndex: 'problemDiff',
         render(val) {
-          return <Badge status={statusMap[val]} text={status[val]} />;
+          return <Badge status={statusMap[status.indexOf(val)]} text={val} />;
         },
         sorter: (a, b) => a.problemDiff - b.problemDiff,
       },

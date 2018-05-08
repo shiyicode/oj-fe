@@ -6,9 +6,8 @@ for (let i = 0; i < 10; i += 1) {
     id: i,
     status: '私人题目',
     title: '迎春舞会之三人组舞',
-    problemDiff: Math.round(Math.random() * 3),
-    problemValue: Math.ceil(Math.random() * 4),
-    problemProgress: Math.ceil(Math.random() * 100),
+    difficulty: '简单',
+    ac_rate: Math.ceil(Math.random() * 100),
   });
 }
 
