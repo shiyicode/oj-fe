@@ -61,8 +61,8 @@ import axios from 'axios';
 
 export default function request (path, options) {
   // const url = `http://128.0.0.207:9001${path}`; // 联调测试
-  // const url = `http://www.fightcoder.com:9001${path}`; // 线上环境
-  const url = path; // 本地测试
+  const url = `http://www.fightcoder.com:9001${path}`; // 线上环境
+  // const url = path; // 本地测试
   if (arguments.length < 2) {
     return axios.get(url, {withCredentials: true})
       .then( response => {
