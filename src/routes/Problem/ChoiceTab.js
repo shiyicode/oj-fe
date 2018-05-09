@@ -140,8 +140,13 @@ class ChoiceTab extends Component {
             </Col>
           </Row>
         </div>
-        <Tabs activeKey={this.props.tabIndex} onChange={this.getTestList} tabBarExtraContent={discussBtn}>
-          <TabPane tab={<span><Icon type="file-text" />描述</span>} key="1">
+        <Tabs
+          activeKey={this.props.tabIndex}
+          onChange={this.getTestList}
+          tabBarExtraContent={discussBtn}
+          className={styles['tab-margin']}
+        >
+          <TabPane tab={<span><Icon type="file-text" />描述</span>} key="1" >
             <ProblemInfo problemInfo={problemInfo} infoLoading={loading} />
           </TabPane>
           <TabPane tab={<span><Icon type="code-o" />数据</span>} key="2">
