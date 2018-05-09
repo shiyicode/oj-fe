@@ -235,7 +235,7 @@ class BasicLayout extends React.PureComponent {
                   redirectPath="/exception/403"
                 />
               ))}
-              <Redirect exact from="/" to="/problem/open" />
+              <Redirect exact from="/" to="/problem" />
               <Route render={NotFound} />
             </Switch>
           </Content>
