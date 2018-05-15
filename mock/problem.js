@@ -71,6 +71,7 @@ export function getCommomResult(req, res) {
         "lang": "Go",
         "code": "代码",
         "time": "2018.04.24 00:00:00",
+        "result_des": '<b>测试点#1.in </b> <b>结果</b>:<label class="text-success">AC</label>    内存使用量:  256kB     时间使用量:  1ms     <br><b>测试点#2.in </b> <b>结果</b>:<label class="text-success">AC</label>    内存使用量:  256kB     时间使用量:  1ms     <br><b>测试点#3.in </b> <b>结果</b>:<label class="text-success">AC</label>    内存使用量:  256kB     时间使用量:  1ms     <br>',
       },
     };
 

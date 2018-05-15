@@ -63,14 +63,24 @@ class ProblemTest extends Component {
         </div>
         {
           testResult.status >= 4 &&
-          <Row style={{ marginTop: '15px' }}>
-            <Col span={12}>
-              <span>占用内存：{testResult.memory_cost}kb</span>
-            </Col>
-            <Col span={12}>
-              <span style={{ float: 'right' }}>总耗时：{testResult.time_cost}ms</span>
-            </Col>
-          </Row>
+            <div>
+              <Row style={{ marginTop: '15px' }}>
+                <Col span={12}>
+                  <span>占用内存：{testResult.memory_cost}kb</span>
+                </Col>
+                <Col span={12}>
+                  <span style={{ float: 'right' }}>总耗时：{testResult.time_cost}ms</span>
+                </Col>
+              </Row>
+              <Row>
+                <Col span={24}>
+                  <div style={{marginTop: 40}}>
+                    <div style={{marginBottom: 10}}>结果描述：</div>
+                    <div dangerouslySetInnerHTML={{__html: testResult.result_des}} />
+                  </div>
+                </Col>
+              </Row>
+            </div>
         }
       </div>
     }
