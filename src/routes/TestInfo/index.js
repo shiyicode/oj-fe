@@ -10,8 +10,8 @@ import 'brace/mode/python';
 import 'brace/mode/java';
 import 'brace/theme/github';
 
-const statusArr = ['Pending','Compiling','Running','Accepted', 'Wrong Answer', 'Compile Error','Time Limit Exceeded', 'Memory Limit Exceeded','Output Limit Exceeded', 'RunTime Error', 'System Error'];
-const colors = ['#bbb', '#fad733', '#4FC1E9', 'rgb(39, 194, 76)', '#f05050', '#f05050', '#f05050', '#f05050', '#f05050', '#f05050', '#f05050'];
+const statusArr = ['', 'Pending','Compiling','Running','Accepted', 'Wrong Answer', 'Compile Error','Time Limit Exceeded', 'Memory Limit Exceeded','Output Limit Exceeded', 'RunTime Error', 'System Error'];
+const colors = ['', '#bbb', '#fad733', '#4FC1E9', 'rgb(39, 194, 76)', '#f05050', '#f05050', '#f05050', '#f05050', '#f05050', '#f05050', '#f05050'];
 const mode = {
   'c++': 'c++',
   'c': 'c_cpp',
