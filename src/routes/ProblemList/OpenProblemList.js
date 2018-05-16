@@ -236,6 +236,7 @@ class OpenProblemList extends PureComponent {
                 >
                   <Button>按来源筛选</Button>
                 </Popover>
+                {/*
                 <Popover
                   placement="bottom"
                   content={content2}
@@ -244,6 +245,7 @@ class OpenProblemList extends PureComponent {
                 >
                   <Button className={styles.popover}>按算法筛选</Button>
                 </Popover>
+                */}
                 <Popover
                   placement="bottom"
                   content={content3}

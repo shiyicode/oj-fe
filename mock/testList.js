@@ -2,6 +2,7 @@ export function getTestList (req, res) {
   const testList = [];
   for (let i = 0; i < 10; i+=1) {
     testList.push({
+      "problem_id": 1,
       "problem_name":'A+B',
       "user_name": "fightcoder",
       "nick_name": 'hahhah',
@@ -19,6 +20,7 @@ export function getTestList (req, res) {
     data: {
       list: testList,
       total: 100,
+      current_page: 1,
     },
   };
   if (res && res.json) {

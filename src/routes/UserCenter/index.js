@@ -4,7 +4,7 @@ import { Card } from 'antd';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 import UserBasic from './UserBasic';
 import UserPie from './UserPie';
-import UserLine from './UserLine';
+// import UserLine from './UserLine';
 import styles from './index.less';
 
 @connect(state => ({
@@ -28,19 +28,19 @@ class UserCenter extends Component {
       },
     });
 
-    dispatch({
-      type: 'user/getRecentSubmitList',
-      payload: {
-        user_name: this.props.match.params.userName,
-      },
-    });
-
-    dispatch({
-      type: 'user/getRecentRankList',
-      payload: {
-        user_name: this.props.match.params.userName,
-      },
-    });
+    // dispatch({
+    //   type: 'user/getRecentSubmitList',
+    //   payload: {
+    //     user_name: this.props.match.params.userName,
+    //   },
+    // });
+    //
+    // dispatch({
+    //   type: 'user/getRecentRankList',
+    //   payload: {
+    //     user_name: this.props.match.params.userName,
+    //   },
+    // });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -60,19 +60,19 @@ class UserCenter extends Component {
         },
       });
 
-      dispatch({
-        type: 'user/getRecentSubmitList',
-        payload: {
-          user_name: nextProps.match.params.userName,
-        },
-      });
-
-      dispatch({
-        type: 'user/getRecentRankList',
-        payload: {
-          user_name: nextProps.match.params.userName,
-        },
-      });
+      // dispatch({
+      //   type: 'user/getRecentSubmitList',
+      //   payload: {
+      //     user_name: nextProps.match.params.userName,
+      //   },
+      // });
+      //
+      // dispatch({
+      //   type: 'user/getRecentRankList',
+      //   payload: {
+      //     user_name: nextProps.match.params.userName,
+      //   },
+      // });
       return true;
     }
   }
@@ -88,6 +88,7 @@ class UserCenter extends Component {
             <UserBasic  userInfo={userInfo} loading={loading} />
             <UserPie count={count} loading={loading} />
           </div>
+          {/*
           <div>
             <UserLine
               submitList={submitList}
@@ -96,6 +97,7 @@ class UserCenter extends Component {
               loading={loading}
             />
           </div>
+          */}
         </Card>
       </PageHeaderLayout>
     );

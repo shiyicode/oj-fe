@@ -12,6 +12,7 @@ import {
   getRankList,
   collection,
   getCollectionList,
+  getProblemStatusList,
 } from './mock/problemList';
 import { getProblemInfo, getTestResult, getCommomResult, submitCode, saveCode, getCode } from './mock/problem';
 import { getTestList } from './mock/testList';
@@ -167,6 +168,7 @@ const proxy = {
   'GET /apiv1/user/progress': getProblemProgress,
   'POST /authv1/problem/collection/set': collection,
   'GET /authv1/problem/collection/get': getCollectionList,
+  'GET /authv1/problem/status': getProblemStatusList,
   'GET /apiv1/problem/get': getProblemInfo,
   'POST /authv1/submit/common': submitCode,
   'POST /authv1/submit/test': submitCode,

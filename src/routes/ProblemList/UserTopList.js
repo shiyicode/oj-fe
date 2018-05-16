@@ -61,8 +61,10 @@ class UserTopList extends PureComponent {
               return (
                 <li key={item.rank_num} style={{ backgroundColor: index === 2 ? '#C7F3FF' : '' }}>
                   <span>{item.rank_num}</span>
-                  <Avatar src={item.avator || 'https://gw.alipayobjects.com/zos/rmsportal/UjusLxePxWGkttaqqmUI.png'} style={{ margin: '0 10px 5px 20px' }} />
-                  <Link to={`/user/${item.user_id}`} style={{ color: '#000' }}>
+                  <Link to={`/usercenter/${item.user_name}`}>
+                    <Avatar src={item.avator || 'https://gw.alipayobjects.com/zos/rmsportal/UjusLxePxWGkttaqqmUI.png'} style={{ margin: '0 10px 5px 20px' }} />
+                  </Link>
+                  <Link to={`/usercenter/${item.user_name}`} style={{ color: '#000' }}>
                     {item.nick_name}
                   </Link>
                   <span style={{ fontSize: '14px', float: 'right' }}>

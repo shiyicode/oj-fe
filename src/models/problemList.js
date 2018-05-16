@@ -5,6 +5,7 @@ import {
   queryCollection,
   queryCollectionList,
   queryPersonalProblem,
+  queryProblemStatus,
 } from '../services/api';
 
 function formatProblemListData(list) {
@@ -78,8 +79,7 @@ export default {
       // 请求题目信息
       const response = yield call(queryProblem, payload);
       if (response && response.code === 0) {
-        // 如果用户登录了
-        if (sessionStorage.getItem('userId')) {
+        if (sessionStorage.getItem('userId')) { // 如果用户登录了
           if (response.data && response.data.list) {
             if (response.data.list.length > 0) {
               const idList = [];
@@ -91,12 +91,25 @@ export default {
               const responseCollectionList = yield call(queryCollectionList, {
                 problem_ids: idList.join(','),
               });
+
               if (responseCollectionList && responseCollectionList.code === 0) {
                 const { list } = response.data;
+                let statusList = [];
                 const collectionList = responseCollectionList.data;
                 list.forEach((item, index) => {
                   list[index].isCollect = collectionList[index]; // 对题目信息和收藏信息进行合并
                 });
+                // 获得题目状态信息
+                const responseStatusList = yield call(queryProblemStatus, {
+                  problem_ids: idList.join(','),
+                });
+
+                if (responseStatusList && responseStatusList.code === 0) {
+                  statusList = responseStatusList.data;
+                  list.forEach((item, index) => {
+                    list[index].status = statusList[index]; // 对题目信息和状态信息进行合并
+                  });
+                }
                 const tableListDataSource = formatProblemListData(list); // 格式化信息
                 yield put({
                   type: 'save',

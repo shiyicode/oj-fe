@@ -94,10 +94,20 @@ export function getCollectionList(req, res) {
   }
 }
 
-export default {
-  getProblemList,
-  getProblemProgress,
-  getRankList,
-  collection,
-  getCollectionList,
-};
+export function getProblemStatusList(req, res) {
+  const list = [];
+  for (let i = 0; i < 10; i += 1) {
+    list.push(Math.round(Math.random() * 2));
+  }
+
+  const result = {
+    code: 0,
+    data: list,
+  };
+  if (res && res.json) {
+    res.json(result);
+  } else {
+    return result;
+  }
+}
+

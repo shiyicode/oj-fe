@@ -21,7 +21,7 @@ const columns = [{
   title: '题目名称',
   dataIndex: 'problemName',
   key: 'problemName',
-  render: obj => <Link to={`/submission/detail/${obj.id}`} ><span dangerouslySetInnerHTML={{__html: obj.problemName}} /></Link>,
+  render: obj => <Link to={`/problem/detail/${obj.problemId}`} ><span dangerouslySetInnerHTML={{__html: obj.problemName}} /></Link>,
 },{
   title: '用户',
   dataIndex: 'userName',
@@ -30,8 +30,8 @@ const columns = [{
   title: '运行状态',
   dataIndex: 'status',
   key: 'runStatus',
-  render (status) {
-    return <Tag color={colors[status]}>{statusArr[status]}</Tag>;
+  render (obj) {
+    return <Link to={`/submission/detail/${obj.submitId}`}><Tag color={colors[obj.status]}>{statusArr[obj.status]}</Tag></Link>;
   },
 }, {
   title: '耗时',
@@ -103,6 +103,7 @@ export default class TestList extends PureComponent {
   // 根据测评状态查询
   getStatusBySelectValue (value) {
     params.status = value;
+    params.current_page = 1;
     this.setState({
       status: statusArr[value],
       statusValue: statusArr[value],
@@ -117,6 +118,7 @@ export default class TestList extends PureComponent {
   // 根据语言查询
   getLangBySelectValue (value) {
     params.lang = langArr[value];
+    params.current_page = 1;
     this.setState({
       lang: langArr[value],
       langValue: langArr[value],
@@ -159,6 +161,7 @@ export default class TestList extends PureComponent {
       langValue: '程序语言',
     });
     params.lang = '';
+    params.current_page = 1;
     const { dispatch } =  this.props;
     dispatch({
       type: 'testList/fetch',
@@ -172,6 +175,7 @@ export default class TestList extends PureComponent {
       statusValue: '测评状态',
     });
     params.status = '';
+    params.current_page = 1;
     const { dispatch } =  this.props;
     dispatch({
       type: 'testList/fetch',

@@ -6,7 +6,7 @@ import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 import styles from './index.less';
 
 const colors = ['#2EB872', '#E70000', '#58DADA'];
-const statusArr = ['已做', '正做', '待做'];
+const statusArr = ['通过', '失败', '待做'];
 let count = 0;
 
 @connect(state => ({

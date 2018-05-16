@@ -97,6 +97,11 @@ export async function queryCollectionList(params) {
   return request(`/authv1/problem/collection/get?${stringify(params)}`);
 }
 
+// 获得每个题目的状态
+export async function queryProblemStatus(params) {
+  return request(`/authv1/problem/status?${stringify(params)}`);
+}
+
 // 注册
 export async function fakeRegister(params) {
   return request('/apiv1/register', {

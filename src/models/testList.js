@@ -16,7 +16,7 @@ function getTestListResponse (response) {
           key: index,
           submitId: item.submit_id,
           problemName: {
-            id: item.submit_id,
+            problemId: item.problem_id,
             problemName: item.problem_name,
           },
           userName: {
@@ -24,7 +24,10 @@ function getTestListResponse (response) {
             userId: item.user_id,
             nickName: item.nick_name,
           },
-          status: item.status,
+          status: {
+            status: item.status,
+            submitId: item.submit_id,
+          },
           runningTime: item.time_cost,
           runningMemory: item.memory_cost,
           language: item.lang,

@@ -19,8 +19,8 @@ function langList (username) {
     '\t}\n'+
     '}',
 
-    'python': '/*\nAuthor：'+ username +'\nDate：' +
-    new Date().toString() +'\n*/\n' +'import string\n' +
+    'python': '#coding=utf-8\n#Author：'+ username +'\n#Date：' +
+    new Date().toString() +'\n\n' +'import string\n' +
     'while True:\n' +
     '    try:\n' +
     '        s = raw_input()\n' +
@@ -41,7 +41,7 @@ function langList (username) {
     new Date().toString() +'\n*/\n' +'support ruby language',
 
     'csharp': '/*\nAuthor：'+ username +'\nDate：' +
-    new Date().toString() +'\n*/\n' +'support csharp language'
+    new Date().toString() +'\n*/\n' +'support csharp language',
   };
 }
 
