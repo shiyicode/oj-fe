@@ -145,49 +145,42 @@ export default class Login extends Component {
     return (
       <div className={styles.main}>
         <Form onSubmit={this.handleSubmit}>
-          <Tabs animated={false} className={styles.tabs} activeKey={type} onChange={this.onSwitch}>
-            <TabPane tab="账户密码登录" key="simple">
-              {login.status === false && count > 0 && this.renderMessage('用户名或密码错误')}
-              <FormItem>
-                {getFieldDecorator('email', {
-                  rules: [
-                    {
-                      required: type === 'simple',
-                      message: '请输入邮箱！',
-                    },
-                  ],
-                })(
-                  <Input
-                    size="large"
-                    prefix={<Icon type="user" className={styles.prefixIcon} />}
-                    placeholder="邮箱"
-                  />
-                )}
-              </FormItem>
-              <FormItem>
-                {getFieldDecorator('password', {
-                  rules: [
-                    {
-                      required: type === 'simple',
-                      message: '请输入密码！',
-                    },
-                  ],
-                })(
-                  <Input
-                    size="large"
-                    prefix={<Icon type="lock" className={styles.prefixIcon} />}
-                    type="password"
-                    placeholder="密码"
-                  />
-                )}
-              </FormItem>
-            </TabPane>
-            <TabPane tab="手机号登录" key="mobile" />
-          </Tabs>
+          {login.status === false && count > 0 && this.renderMessage('用户名或密码错误')}
+          <FormItem>
+            {getFieldDecorator('email', {
+              rules: [
+                {
+                  required: type === 'simple',
+                  message: '请输入邮箱！',
+                },
+              ],
+            })(
+              <Input
+                size="large"
+                prefix={<Icon type="user" className={styles.prefixIcon} />}
+                placeholder="邮箱"
+                style={{marginTop: 40}}
+              />
+            )}
+          </FormItem>
+          <FormItem>
+            {getFieldDecorator('password', {
+              rules: [
+                {
+                  required: type === 'simple',
+                  message: '请输入密码！',
+                },
+              ],
+            })(
+              <Input
+                size="large"
+                prefix={<Icon type="lock" className={styles.prefixIcon} />}
+                type="password"
+                placeholder="密码"
+              />
+            )}
+          </FormItem>
           <FormItem className={styles.additional}>
-            <a className={styles.forgot} href="">
-              忘记密码
-            </a>
             <Button
               size="large"
               loading={login.submitting}

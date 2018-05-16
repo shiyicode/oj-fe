@@ -7,7 +7,9 @@ function langList (username) {
     'c_cpp': '/*\nAuthor：'+ username +'\nDate：' +
     new Date().toString() +'\n*/\n#include <stdio.h>\n'+
     'int main (void) {\n'+
-    '\tprintf("hello world!");\n\treturn 0;\n'+
+    '\tint a, b;\n ' +
+    '\tscanf("%d%d", &a, &b);\n'+
+    '\tprintf("%d\\n", a + b);\n\treturn 0;\n'+
     '}',
 
     'java': '/*\nAuthor：'+ username +'\nDate：' +
@@ -18,9 +20,18 @@ function langList (username) {
     '}',
 
     'python': '/*\nAuthor：'+ username +'\nDate：' +
-    new Date().toString() +'\n*/\n' +'support python language',
+    new Date().toString() +'\n*/\n' +'import string\n' +
+    'while True:\n' +
+    '    try:\n' +
+    '        s = raw_input()\n' +
+    '        arr = string.split(s,\' \')\n' +
+    '        a = int(arr[0])\n' +
+    '        b = int(arr[1])\n' +
+    '        print a + b\n' +
+    '    except EOFError:\n' +
+    '        exit(0)',
 
-    'go': '/*\nAuthor：'+ username +'\nDate：' +
+    'golang': '/*\nAuthor：'+ username +'\nDate：' +
     new Date().toString() +'\n*/\n' +'support go language',
 
     'javascript': '/*\nAuthor：'+ username +'\nDate：' +

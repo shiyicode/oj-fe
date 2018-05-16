@@ -11,8 +11,8 @@ const arr = [
   '等待测试Pending',
   '正在编译Compiling',
   '正在评测Running',
-  '测试通过Accepted',
-  '答案错误Wrong Answer',
+  '运行结果',
+  '运行结果',
   '编译错误Compile Error',
   '时间超限Time Limit Exceeded',
   '内存超限Memory Limit Exceeded',
@@ -47,7 +47,7 @@ class ProblemData extends Component {
         type: 'problem/testSubmitCode',
         payload: {
           language,
-          input: testValue.split('\n').join(','),
+          input: testValue,
           code: codeValue,
         },
       });
@@ -57,7 +57,7 @@ class ProblemData extends Component {
   }
 
   showResult (testResult, isSuccess) {
-    if (testResult && testResult.status >= 0) {
+    if (testResult && testResult.status >= -1 && isSuccess !== 0) {
       return  (
         <div>
           <div style={{ fontSize: '20px' }}>
@@ -70,7 +70,7 @@ class ProblemData extends Component {
               <p>{this.state.testValue}</p>
             </Card>
             <Card title="你的输出" className={styles.cardPlus}>
-              <p>{testResult.output}</p>
+              <p dangerouslySetInnerHTML={{__html: testResult.result_des}} />
             </Card>
           </div>
           )}

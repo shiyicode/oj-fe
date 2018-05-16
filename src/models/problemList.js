@@ -80,23 +80,37 @@ export default {
       if (response && response.code === 0) {
         // 如果用户登录了
         if (sessionStorage.getItem('userId')) {
-          if (response.data && response.data.list && response.data.list.length > 0) {
-            const idList = [];
-            // 获取当前页题目的Id列表
-            response.data.list.forEach(item => {
-              idList.push(item.id);
-            });
-            // 获取题目的收藏信息
-            const responseCollectionList = yield call(queryCollectionList, {
-              problem_ids: idList.join(','),
-            });
-            if (responseCollectionList && responseCollectionList.code === 0) {
-              const { list } = response.data;
-              const collectionList = responseCollectionList.data;
-              list.forEach((item, index) => {
-                list[index].isCollect = collectionList[index]; // 对题目信息和收藏信息进行合并
+          if (response.data && response.data.list) {
+            if (response.data.list.length > 0) {
+              const idList = [];
+              // 获取当前页题目的Id列表
+              response.data.list.forEach(item => {
+                idList.push(item.id);
               });
-              const tableListDataSource = formatProblemListData(list); // 格式化信息
+              // 获取题目的收藏信息
+              const responseCollectionList = yield call(queryCollectionList, {
+                problem_ids: idList.join(','),
+              });
+              if (responseCollectionList && responseCollectionList.code === 0) {
+                const { list } = response.data;
+                const collectionList = responseCollectionList.data;
+                list.forEach((item, index) => {
+                  list[index].isCollect = collectionList[index]; // 对题目信息和收藏信息进行合并
+                });
+                const tableListDataSource = formatProblemListData(list); // 格式化信息
+                yield put({
+                  type: 'save',
+                  payload: {
+                    list: tableListDataSource,
+                    pagination: {
+                      total: response.data.total,
+                      currentPage: response.data.current_page,
+                    },
+                  },
+                });
+              }
+            } else {
+              const tableListDataSource = formatProblemListData(response.data.list); // 格式化信息
               yield put({
                 type: 'save',
                 payload: {

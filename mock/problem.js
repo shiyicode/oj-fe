@@ -92,7 +92,7 @@ export function getTestResult (req, res) {
       "time_cost": 1000,
       "lang": "Go",
       "code": "代码",
-      "output": "123456",
+      "result_des": "123456",
       "time": "2018.04.24 00:00:00",
     },
   };

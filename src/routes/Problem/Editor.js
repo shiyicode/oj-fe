@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { Button, Popover, Icon, Radio, Tooltip, Select, } from 'antd';
 import { routerRedux } from 'dva/router';
 import AceEditor from 'react-ace';
@@ -19,10 +19,12 @@ const RadioGroup = Radio.Group;
 const { Option } = Select;
 let count = 0;
 
-const defaultLangList = getDefaultLangs('Luwenjing');
+const userName = sessionStorage.getItem('userName') || 'FightCoder';
+
+const defaultLangList = getDefaultLangs(userName);
 
 
-class Editor extends Component {
+class Editor extends PureComponent {
   constructor(props) {
     super(props);
 
@@ -213,10 +215,10 @@ class Editor extends Component {
           style={{ width: '100%', height: 510 }}
         />
         <div className={styles.editorFooter}>
-          <Select className={styles.codeLanguage} onChange={this.handleLanguage} defaultValue="选择语言">
+          <Select className={styles.codeLanguage} onChange={this.handleLanguage} defaultValue={this.state.lang}>
             {
               language_limit && language_limit.length > 0 &&  language_limit.map( (item) => {
-                return <Option value={item}>{item}</Option>
+                return <Option value={item} key={item}>{item}</Option>
               })
             }
           </Select>

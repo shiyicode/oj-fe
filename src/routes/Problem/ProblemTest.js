@@ -56,40 +56,45 @@ class ProblemTest extends Component {
 
   showResult (testResult) {
     if (testResult && testResult.status > -1) {
-      return <div>
-        <div style={{ fontSize: '20px' }}>
-          <span style={{ color: colors[testResult.status] }}>{arr[testResult.status]}</span>
-          <Spin spinning={testResult.status < 4} size="large" />
+      return (
+        <div>
+          <div style={{ fontSize: '20px' }}>
+            <span style={{ color: colors[testResult.status] }}>{arr[testResult.status]}</span>
+            <Spin spinning={testResult.status < 4} size="large" />
+          </div>
+          {
+          testResult.status >= 4 && (
+          <div>
+            <Row style={{ marginTop: '15px' }}>
+              <Col span={12}>
+                <span>占用内存：{testResult.memory_cost}kb</span>
+              </Col>
+              <Col span={12}>
+                <span style={{ float: 'right' }}>总耗时：{testResult.time_cost}ms</span>
+              </Col>
+            </Row>
+            {
+                testResult.result_des && (
+                <Row>
+                  <Col span={24}>
+                    <div style={{ marginTop: 40 }}>
+                      <div style={{ marginBottom: 10 }}>结果描述：</div>
+                      <div dangerouslySetInnerHTML={{ __html: testResult.result_des }} />
+                    </div>
+                  </Col>
+                </Row>
+              )}
+          </div>
+        )}
         </div>
-        {
-          testResult.status >= 4 &&
-            <div>
-              <Row style={{ marginTop: '15px' }}>
-                <Col span={12}>
-                  <span>占用内存：{testResult.memory_cost}kb</span>
-                </Col>
-                <Col span={12}>
-                  <span style={{ float: 'right' }}>总耗时：{testResult.time_cost}ms</span>
-                </Col>
-              </Row>
-              <Row>
-                <Col span={24}>
-                  <div style={{marginTop: 40}}>
-                    <div style={{marginBottom: 10}}>结果描述：</div>
-                    <div dangerouslySetInnerHTML={{__html: testResult.result_des}} />
-                  </div>
-                </Col>
-              </Row>
-            </div>
-        }
-      </div>
+      )
     }
   }
 
   render() {
     const { testResult, loading } = this.props;
     const { isSubmit } = this.state;
-    if (testResult.status >= 0) {
+    if (testResult.status >= 0 && isSubmit !== -1) {
       return (
           this.showResult(testResult)
         );
