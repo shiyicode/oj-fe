@@ -6,6 +6,7 @@ import UserBasic from './UserBasic';
 import UserPie from './UserPie';
 // import UserLine from './UserLine';
 import styles from './index.less';
+import image from '../../assets/usercenter.jpg';
 
 @connect(state => ({
   user: state.user,

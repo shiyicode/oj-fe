@@ -127,7 +127,7 @@ export default class BasicForms extends PureComponent {
                 )}
               </div>
             </FormItem>
-            <FormItem {...formItemLayout} label="birthday">
+            <FormItem {...formItemLayout} label="生日">
               {getFieldDecorator('birthday', {
                 initialValue: moment(userInfo.birthday || '2018-05-04', 'YYYY-MM-DD'),
                 rules: [

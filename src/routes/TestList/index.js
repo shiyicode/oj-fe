@@ -21,7 +21,7 @@ const columns = [{
   title: '题目名称',
   dataIndex: 'problemName',
   key: 'problemName',
-  render: obj => <Link to={`/problem/detail/${obj.problemId}`} ><span dangerouslySetInnerHTML={{__html: obj.problemName}} /></Link>,
+  render: obj => <Link to={`/problem/detail/${obj.problemId}`} ><span>{obj.problemId}</span>&nbsp;&nbsp;&nbsp;<span dangerouslySetInnerHTML={{__html: obj.problemName}} /></Link>,
 },{
   title: '用户',
   dataIndex: 'userName',

@@ -14,7 +14,7 @@ class UserBasic extends PureComponent {
       <Card className={styles['basic-info']}  bordered={false} loading={loading} >
         <div className={styles['info-header']}>
           <div className={styles['info-header-avator']}>
-            <Avatar src={userInfo.avator || 'https://gw.alipayobjects.com/zos/rmsportal/UjusLxePxWGkttaqqmUI.png'} style={{width: 100, height: 100}} />
+            <Avatar src={userInfo.avator} style={{width: 100, height: 100}} shape="circle" />
           </div>
           <div className={styles['info-header-basic']}>
             <h1 style={{marginLeft: 20}}>{userInfo.nick_name}</h1>

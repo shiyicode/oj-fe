@@ -104,7 +104,7 @@ export function getColloctProblem (req, res) {
       "title":"字符串反转",
       "difficulty":"简单",
       "description":"有m种颜色是小寒所喜欢的颜色。小松希望他折的每种颜色的蝴蝶的数目是一样的。换句话说，小松必须折m*k只蝴蝶的颜色。小松希望他折的每种颜色的蝴蝶的数目是一样的。换句话说，小松必须折m*k只蝴蝶",
-      "status":"已做",
+      "status":"通过",
     },);
   }
   const result = {

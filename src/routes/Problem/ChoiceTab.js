@@ -97,7 +97,7 @@ class ChoiceTab extends Component {
 
   render() {
     const { problemInfo, loading, testResult } = this.props;
-    const discussBtn = <Link to="/discuss">前往讨论&nbsp;<Icon type="right" /></Link>
+    // const discussBtn = <Link to="/discuss">前往讨论&nbsp;<Icon type="right" /></Link>
     return (
       <div className={styles.problemTab}>
         <div className={styles['problem-header']}>
@@ -143,7 +143,7 @@ class ChoiceTab extends Component {
         <Tabs
           activeKey={this.props.tabIndex}
           onChange={this.getTestList}
-          tabBarExtraContent={discussBtn}
+          // tabBarExtraContent={discussBtn}
           className={styles['tab-margin']}
         >
           <TabPane tab={<span><Icon type="file-text" />描述</span>} key="1" >

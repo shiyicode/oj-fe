@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
-import { Link, routerRedux } from 'dva/router';
+import { Link } from 'dva/router';
 import { Card, Pagination, Icon, notification } from 'antd';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 import styles from './index.less';
@@ -106,7 +106,7 @@ class UserCollection extends PureComponent {
                         <Link to={`/problem/detail/${item.id}`}>{item.title}</Link>
                       </div>
                   }
-                    description={<div className={styles['collection-content']}>{item.description}</div>}
+                    description={<div className={styles['collection-content']} dangerouslySetInnerHTML={{__html: item.description}} />}
                   />
                   <div className={styles.projectItemContent} style={{float: 'right', cursor: 'pointer', marginTop: 10}}>
                     <span className={styles.datetime} onClick={() => this.collection(item.id)}>取消收藏</span>

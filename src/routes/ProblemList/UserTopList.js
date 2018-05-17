@@ -81,7 +81,7 @@ class UserTopList extends PureComponent {
             <div style={{height: '200px'}}>暂无排名信息</div>
         }
         </TabPane>
-        <TabPane tab="上周" key="2">
+        <TabPane tab="本月" key="2">
           {
             rankList && rankList.length > 0 ? (
               <ul>
