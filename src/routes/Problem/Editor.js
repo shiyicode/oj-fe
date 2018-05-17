@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Button, Popover, Icon, Radio, Tooltip, Select, } from 'antd';
+import { Button, Popover, Icon, Radio, Tooltip, Select } from 'antd';
 import { routerRedux } from 'dva/router';
 import AceEditor from 'react-ace';
 import getDefaultLangs from '../../utils/langFormat';
@@ -18,22 +18,23 @@ import 'brace/theme/monokai';
 const RadioGroup = Radio.Group;
 const { Option } = Select;
 let count = 0;
-
-const userName = sessionStorage.getItem('userName') || 'FightCoder';
-
-const defaultLangList = getDefaultLangs(userName);
+let defaultLangList;
 
 
 class Editor extends PureComponent {
   constructor(props) {
     super(props);
 
+    const nickName = props.currentUser.nick_name || 'FightCoder';
+
+    defaultLangList = getDefaultLangs(nickName);
+
     this.state = {
       theme: 'github',
       size: 4,
       lang: 'c',
       mode: 'c_cpp',
-      defaultCode: defaultLangList['c_cpp'],
+      defaultCode: defaultLangList.c_cpp,
     };
 
     this.handleTheme = this.handleTheme.bind(this);
@@ -61,7 +62,7 @@ class Editor extends PureComponent {
     if (count === 1) {
       let { language, codeValue } = nextProps;
       language = language || 'c';
-      codeValue = codeValue || defaultLangList['c_cpp'];
+      codeValue = codeValue || defaultLangList.c_cpp;
       const mode = language === 'c' || language === 'c++' ? 'c_cpp' : language;
       this.setState({
         defaultCode: codeValue,
@@ -124,8 +125,7 @@ class Editor extends PureComponent {
       this.setState({
         defaultCode,
       });
-    } else {
-      if (sessionStorage.getItem('userId')) {
+    } else if (sessionStorage.getItem('userId')) {
         const { dispatch } = this.props;
         dispatch({
           type: 'problem/fetchCode',
@@ -135,7 +135,6 @@ class Editor extends PureComponent {
         });
         count = 0;
       }
-    }
   }
 
   handleSave() {
@@ -176,7 +175,7 @@ class Editor extends PureComponent {
   }
 
   render() {
-    const { language_limit } = this.props.problemInfo;
+    const languageLimit = this.props.problemInfo.language_limit;
     const content = (
       <div>
         <h4>环境配色</h4>
@@ -217,7 +216,7 @@ class Editor extends PureComponent {
         <div className={styles.editorFooter}>
           <Select className={styles.codeLanguage} onChange={this.handleLanguage} defaultValue={this.state.lang}>
             {
-              language_limit && language_limit.length > 0 &&  language_limit.map( (item) => {
+              languageLimit && languageLimit.length > 0 &&  languageLimit.map( (item) => {
                 return <Option value={item} key={item}>{item}</Option>
               })
             }

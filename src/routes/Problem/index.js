@@ -8,6 +8,7 @@ import Editor from './Editor';
 
 @connect(state => ({
   problem: state.problem,
+  user: state.user,
 }))
 export default class Problem extends PureComponent {
   constructor(props) {
@@ -88,7 +89,7 @@ export default class Problem extends PureComponent {
   }
 
   render() {
-    const { problem } = this.props;
+    const { problem, user } = this.props;
     return (
       <PageHeaderLayout title="题目">
         <Card bordered={false}>
@@ -126,6 +127,7 @@ export default class Problem extends PureComponent {
                   problemId={this.props.match.params.id}
                   handleSubmit={this.handleSubmit}
                   problemInfo={problem.problemInfo}
+                  currentUser={user.currentUser}
                 />
               </div>
             </div>

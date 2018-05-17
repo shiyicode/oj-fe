@@ -115,7 +115,7 @@ export const getRouterData = app => {
     //   component: dynamicWrapper(app, ['list'], () => import('../routes/ProblemList/PersonalProblemList')),
     // },
     '/problem/detail/:id': {
-      component: dynamicWrapper(app, ['problem'], () => import('../routes/Problem')),
+      component: dynamicWrapper(app, ['problem', 'user'], () => import('../routes/Problem')),
     },
     '/submission/': {
       component: dynamicWrapper(app, ['testList'], () => import('../routes/TestList')),
