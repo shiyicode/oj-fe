@@ -1,21 +1,21 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
 import { Link, routerRedux } from 'dva/router';
-import { Card, Tag, Spin, Divider } from 'antd';
+import { Card, Tag, Spin } from 'antd';
 import AceEditor from 'react-ace';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 import styles from './index.less';
 import 'brace/mode/c_cpp';
 import 'brace/mode/python';
-import 'brace/mode/java';
+import 'brace/mode/golang';
 import 'brace/theme/github';
 
 const statusArr = ['', 'Pending','Compiling','Running','Accepted', 'Wrong Answer', 'Compile Error','Time Limit Exceeded', 'Memory Limit Exceeded','Output Limit Exceeded', 'RunTime Error', 'System Error'];
 const colors = ['', '#bbb', '#fad733', '#4FC1E9', 'rgb(39, 194, 76)', '#f05050', '#f05050', '#f05050', '#f05050', '#f05050', '#f05050', '#f05050'];
 const mode = {
-  'c++': 'c++',
+  'c++': 'c_cpp',
   'c': 'c_cpp',
-  'java': 'java',
+  'golang': 'golang',
   'python': 'python',
 };
 
