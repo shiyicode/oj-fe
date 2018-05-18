@@ -181,7 +181,7 @@ export default class Login extends Component {
         <div className={styles.other}>
           其他登录方式
           {/* 需要加到 Icon 中 */}
-          <span className={styleIcon.iconWeixin} />
+          {/* <span className={styleIcon.iconWeixin} /> */}
           <span className={styleIcon.iconQq} onClick={this.toQQLogin} />
           <a href="https://github.com/login/oauth/authorize?client_id=080191e49e855122ea33&scope=user:email">
             <span className={styleIcon.iconGithub} />
