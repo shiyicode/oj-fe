@@ -66,7 +66,7 @@ class Editor extends PureComponent {
       const mode = language === 'c' || language === 'c++' ? 'c_cpp' : language;
       this.setState({
         defaultCode: codeValue,
-        lang: language.toLowerCase(),
+        lang: language,
         mode,
       });
       this.props.setCodeValue(codeValue); // 设置代码
@@ -116,7 +116,7 @@ class Editor extends PureComponent {
     const { value } = e.target;
     if (value === 'default') {
       const { lang } = this.state;
-      let defaultCode = defaultLangList.c_cpp;
+      let defaultCode = defaultLangList.c;
       for (const key in defaultLangList) {
         if (key === lang) {
           defaultCode = defaultLangList[key];
@@ -214,7 +214,7 @@ class Editor extends PureComponent {
           style={{ width: '100%', height: 510 }}
         />
         <div className={styles.editorFooter}>
-          <Select className={styles.codeLanguage} onChange={this.handleLanguage} defaultValue={this.state.lang}>
+          <Select className={styles.codeLanguage} onChange={this.handleLanguage} value={this.state.lang}>
             {
               languageLimit && languageLimit.length > 0 &&  languageLimit.map( (item) => {
                 return <Option value={item} key={item}>{item}</Option>

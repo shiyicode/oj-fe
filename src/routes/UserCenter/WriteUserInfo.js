@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
+import { routerRedux } from 'dva/router';
 import moment from 'moment';
 import {
   Form,
@@ -55,7 +56,7 @@ export default class BasicForms extends PureComponent {
   }
 
   handleReset() {
-    this.props.form.resetFields();
+    this.props.dispatch(routerRedux.push(`/usercenter/${sessionStorage.getItem('userName')}`));
   }
 
   render() {
