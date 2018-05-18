@@ -4,12 +4,23 @@
 
 function langList (username) {
   return {
-    'c_cpp': '/*\nAuthor：'+ username +'\nDate：' +
+    'c': '/*\nAuthor：'+ username +'\nDate：' +
     new Date().toString() +'\n*/\n#include <stdio.h>\n'+
     'int main (void) {\n'+
     '\tint a, b;\n ' +
     '\tscanf("%d%d", &a, &b);\n'+
     '\tprintf("%d\\n", a + b);\n\treturn 0;\n'+
+    '}',
+
+    'c++': '/*\nAuthor：'+ username +'\nDate：' +
+    new Date().toString() +'\n*/\n#include <iostream>\n'+
+    'using namespace std;\n'+
+
+    'int main() {\n'+
+    '\tint a, b, sum;\n'+
+    '\tcin >> a >> b;\n'+
+    '\tcout  << a + b << "\\n";\n'+
+    '\treturn 0;\n'+
     '}',
 
     'java': '/*\nAuthor：'+ username +'\nDate：' +

@@ -25,7 +25,7 @@ class Editor extends PureComponent {
   constructor(props) {
     super(props);
 
-    const nickName = props.currentUser.nick_name || 'FightCoder';
+    const nickName = sessionStorage.getItem('nickName') || 'FightCoder';
 
     defaultLangList = getDefaultLangs(nickName);
 
@@ -34,7 +34,7 @@ class Editor extends PureComponent {
       size: 4,
       lang: 'c',
       mode: 'c_cpp',
-      defaultCode: defaultLangList.c_cpp,
+      defaultCode: defaultLangList.c,
     };
 
     this.handleTheme = this.handleTheme.bind(this);
@@ -62,7 +62,7 @@ class Editor extends PureComponent {
     if (count === 1) {
       let { language, codeValue } = nextProps;
       language = language || 'c';
-      codeValue = codeValue || defaultLangList.c_cpp;
+      codeValue = codeValue || defaultLangList.c;
       const mode = language === 'c' || language === 'c++' ? 'c_cpp' : language;
       this.setState({
         defaultCode: codeValue,
@@ -92,10 +92,10 @@ class Editor extends PureComponent {
   handleLanguage(value) {
     const mode = value === 'c' || value === 'c++' ? 'c_cpp' : value;
     this.props.setLanguage(value);
-    this.props.setCodeValue(defaultLangList[mode]);
+    this.props.setCodeValue(defaultLangList[value]);
     this.setState({
       lang: value,
-      defaultCode: defaultLangList[mode],
+      defaultCode: defaultLangList[value],
       mode,
     });
   }

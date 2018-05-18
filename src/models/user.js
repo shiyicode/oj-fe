@@ -28,6 +28,7 @@ export default {
       });
       const response = yield call(getUserInfo, payload);
       if (response.code === 0) {
+        sessionStorage.setItem('nickName', response.data.nick_name);
         yield put({
           type: 'saveCurrent',
           payload: response.data,

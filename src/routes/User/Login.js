@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
 import { Link } from 'dva/router';
-import { Form, Input, Tabs, Button, Icon, Row, Col, Alert } from 'antd';
+import { Form, Input,Button, Icon, Alert } from 'antd';
 import styles from './Login.less';
 import styleIcon from './Icon.less';
+
 const FormItem = Form.Item;
-const { TabPane } = Tabs;
 
 let count = 0;
 
@@ -74,7 +74,6 @@ export default class Login extends Component {
   }
 
   componentWillUnmount() {
-    clearInterval(this.interval);
     count = 0;
   }
 
@@ -83,19 +82,6 @@ export default class Login extends Component {
       type: key,
     });
   };
-
-  // // 用户手机登录，获取验证码
-  // onGetCaptcha = () => {
-  //   let count = 59;
-  //   this.setState({ count });
-  //   this.interval = setInterval(() => {
-  //     count -= 1;
-  //     this.setState({ count });
-  //     if (count === 0) {
-  //       clearInterval(this.interval);
-  //     }
-  //   }, 1000);
-  // };
 
   // 获得Hash内容
   getCodeAndState(url) {
@@ -145,7 +131,7 @@ export default class Login extends Component {
     return (
       <div className={styles.main}>
         <Form onSubmit={this.handleSubmit}>
-          {login.status === false && count > 0 && this.renderMessage('用户名或密码错误')}
+          {login.status === false && count > 0 && this.renderMessage('邮箱或密码错误')}
           <FormItem>
             {getFieldDecorator('email', {
               rules: [
