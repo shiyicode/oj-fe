@@ -19,7 +19,7 @@ function langList (username) {
     'int main() {\n'+
     '\tint a, b, sum;\n'+
     '\tcin >> a >> b;\n'+
-    '\tcout  << a + b << "\\n";\n'+
+    '\tcout  << a + b << endl;\n'+
     '\treturn 0;\n'+
     '}',
 

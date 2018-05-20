@@ -4,17 +4,6 @@ import { Link } from 'dva/router';
 
 const { TabPane } = Tabs;
 
-// const rankList = [];
-// for (let i = 0; i < 5; i += 1) {
-//   rankList.push({
-//     user_id: i,
-//     rank_num: 60 + i,
-//     avator: 'https://gw.alipayobjects.com/zos/rmsportal/UjusLxePxWGkttaqqmUI.png',
-//     nick_name: '一棵树',
-//     ac_rate: 90,
-//   });
-// }
-
 class UserTopList extends PureComponent {
   constructor(props) {
     super(props);

@@ -5,11 +5,6 @@ import Highcharts from 'highcharts';
 addFunnel(Highcharts);
 
 let count = 0;
-// const data = {
-//   ac_num: 500,
-//   fail_num: 100,
-//   pre_num: 20,
-// };
 
 export default class PieGraph extends PureComponent {
   componentDidMount() {

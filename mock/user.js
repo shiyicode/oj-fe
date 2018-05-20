@@ -6,7 +6,7 @@ export function getUserInfo (req, res) {
     "data": {
       "account_id": 2,
       "user_name": "luwenjing",
-      "nick_name": "hahah",
+      "nick_name": "鲁文静",
       "sex": "女",
       "avator": "https://gw.alipayobjects.com/zos/rmsportal/UjusLxePxWGkttaqqmUI.png",
       "blog": "https://blog.csdn.net/Picking_up_stones",
